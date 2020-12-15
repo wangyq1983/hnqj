@@ -1,0 +1,52 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/xqlist/xqlist",
+			"style": {
+				"onReachBottomDistance":126
+			}
+		},
+		{
+			"path": "pages/my/my",
+			"style": {}
+		},
+		{
+            "path" : "pages/info/info",
+            "style" : {}
+        },
+		{
+		    "path" : "pages/infoshow/infoshow",
+		    "style" : {}
+		},
+		{
+			"path" : "pages/imgshow/imgshow",
+			"style" : {}
+		}
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "红娘清姐单身脱单交友",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#FFFFFF"
+	},
+	"tabBar":{
+		"color": "#7A7E83",
+		"selectedColor": "#b69406",
+		"borderStyle": "black",
+		"backgroundColor": "#F8F8F8",
+		"list": [{
+					"pagePath": "pages/xqlist/xqlist",
+					"iconPath": "static/love.png",
+					"selectedIconPath": "static/love_cur.png",
+					"text": "相亲"
+				},
+				{
+					"pagePath": "pages/my/my",
+					"iconPath": "static/my.png",
+					"selectedIconPath": "static/my_cur.png",
+					"text": "我的"
+				}
+			]
+		
+	}
+	}
