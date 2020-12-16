@@ -1,203 +1,185 @@
 <template>
-	<view>
-		<view class="">
-			
+	<view class="bg">
+		<view class="bgimg">
+			<image src="/static/bg.jpg" mode=""></image>
 		</view>
-		<view class="">
-			<button class="" style="width:600upx;" @tap="infoEvent">
-				填写/编辑 个人资料
-			</button>
-		</view>
-		<view class="login">
-			<view class="">
-				<button class="wxloginbtn" open-type="getUserInfo" withCredentials="true" lang="zh_CN" @getuserinfo="login">微信授权登录</button>
+		<view class="userbox">
+			<view class="userinfo">
+				
+				<image :src="icon" mode="" class="usericon"></image>
+				
+				<view class="username">
+					<view class="name">
+						{{name}}
+					</view>
+					<view class="bindtxt">
+						还未绑定账号
+					</view>
+					
+				</view>
+				
+				<view class="openCode">
+					
+					<view class="codeBtn">
+						马上绑定
+					</view>
+				</view>
 			</view>
+			
+			<view class="userMenu">
+				<view class="menuItem" @tap="infoEvent">
+					<image src="/static/edit.png" mode=""></image>
+					<view class="menuTxt">
+						填写/编辑 个人资料
+					</view>
+				</view>
+			</view>
+			<!-- <button class="" style="width:600upx; margin-top: 100upx;;" @tap="infoEvent">填写/编辑 个人资料</button> -->
 		</view>
 	</view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				
+export default {
+	data() {
+		return {
+			icon: uni.getStorageSync('avatarUrl') ? uni.getStorageSync('avatarUrl') : '', //头像
+			name: uni.getStorageSync('nickName') ? uni.getStorageSync('nickName') : '', //昵称
+		};
+	},
+	onLoad:function(option){
+		this.init()
+	},
+	onShow: function(){
+		
+	},
+	methods: {
+		async init(){
+			await this.$api.showLoading(); // 显示loading
+			var userinfo = await this.$api.getData(this.$api.webapi.userInfo);
+			await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
+			console.log('当前路由')
+			console.log(this.$mp.page.route)
+			if (this.$api.reshook(userinfo, this.$mp.page.route)) {
+				console.log(userinfo)
 			}
 		},
-		methods: {
-			infoEvent(){
-				uni.navigateTo({
-					url:"/pages/info/info"
-				})
-			},
-			//第一授权获取用户信息===》按钮触发
-			wxGetUserInfo() {
-				// #ifdef MP-QQ
-					var pro = 'qq';
-				// #endif
-					
-				// #ifdef MP-WEIXIN
-					var pro = 'weixin';
-				// #endif
-				let _this = this;
-				uni.getUserInfo({
-					provider: pro,
-					success: function(infoRes) {
-						console.log(infoRes);
-						let nickName = infoRes.userInfo.nickName; //昵称
-						let avatarUrl = infoRes.userInfo.avatarUrl; //头像
-						try {
-							uni.setStorageSync('isCanUse', false); //记录是否第一次授权  false:表示不是第一次授权
-							_this.updateUserInfo();
-						} catch (e) {}
-					},
-					fail(res) {}
-				});
-			},
-			// 默认微信小程序登录
-			login() {
-				let _this = this;
-				uni.showLoading({
-					title: '登录中...'
-				});
-				
-				// #ifdef MP-QQ
-					var pro = 'qq';
-				// #endif
-					
-				// #ifdef MP-WEIXIN
-					var pro = 'weixin';
-				// #endif
-				// 1.wx获取登录用户code
-				uni.login({
-					
-					provider: pro,
-					success: async function(loginRes) {
-						console.log(loginRes);
+		infoEvent() {
+			uni.navigateTo({
+				url: '/pages/info/info'
+			});
+		}
+	}
+};
+</script>
+
+<style lang="scss">
+	.bg{
+		position: relative;
+	}
+	.bgimg{
+		width:750upx;
+		height: 100vh;
+		overflow: hidden;
+		z-index: 1;
+		position: absolute;
+		top:0;
+		left:0;
+		image{
+			width:750upx;
+			height: 1200upx;
+			opacity: 0.5;
+		}
+	}
+	.userbox{
+		width:750upx;
+		position: absolute;
+		top:0;
+		left:0;
+		z-index: 9;
+	}
+	.userinfo{
+		width:650upx;
+		height:140upx;
+		padding:20upx 50upx;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		.usericon{
+			width:120upx;
+			height:120upx;
+			border-radius: 160upx;
+			border: 10upx solid #fff;
+		}
+		.username{
+			width:260upx;
+			padding-left: 30upx;
+			height: 140upx;
+			line-height: 140upx;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items:flex-start;
+			.name{
+				height:80upx;
+				line-height: 80upx;
+				font-size: 32upx;
+			}
+			.bindtxt{
+				height: 60upx;
+				line-height: 60upx;
+				color: #999;
+				font-size: 28upx;
+			}
+		}
 		
-						var code = {
-							code: loginRes.code
-						};
-						uni.getUserInfo({
-							provider: pro,
-							success: async function(infoRes) {
-								// console.log(infoRes); //获取用户信息后向调用信息更新方法
-								let nickName = infoRes.userInfo.nickName; //昵称
-								let avatarUrl = infoRes.userInfo.avatarUrl; //头像
-								//_this.updateUserInfo(); //调用更新信息方法
-								_this.userinfo = infoRes.userInfo;
-								var otherinfo = {
-									rawData: infoRes.rawData,
-									signature: infoRes.signature,
-									encryptedData: infoRes.encryptedData,
-									iv: infoRes.iv
-								};
-								Object.assign(_this.userinfo, code, otherinfo);
-		
-								var params = _this.userinfo;
-								console.log(params);
-								await _this.$api.showLoading(); // 显示loading
-								
-								let loginres = await _this.$api.postData(_this.$api.webapi.uniLogin, params);
-								await _this.$api.hideLoading();
-		
-								if (_this.$api.reshook(loginres, '/pages/login/login')) {
-									_this.loginSuccess(loginres, pro);
-								}
-							}
-						});
-					}
-				});
-			},
-	
-			async loginSuccess(res, platform) {
-				console.log(this.origin);
-				console.log('loginsuccess');
-				console.log(res.data);
-				// this.$store.commit('login',res.data);
-				var storgeName = ['avatarUrl', 'nickName', 'isLogin', 'userId',"userType"];
-				// #ifdef MP-QQ
-					var storgeVal = [res.data.qqAuthUser.avatarUrl, res.data.name, true, res.data.userId,"正式"];
-				// #endif
-					
-				// #ifdef MP-WEIXIN
-					var storgeVal = [res.data.weiChatAuthUser.avatarUrl, res.data.name, true, res.data.userId,"正式"];
-				// #endif
-				
-				var that = this;
-				for (var i = 0; i < storgeName.length; i++) {
-					uni.setStorage({
-						key: storgeName[i],
-						data: storgeVal[i]
-					});
-				}
-				uni.setStorage({
-					key: 'token',
-					data: res.data.token,
-					success: async function() {
-						console.log('set token is = ');
-						console.log(uni.getStorageSync('token'));
-						var userinfo = await that.$api.getUserinfo();
-						if (userinfo) {
-							console.log('来源网址');
-							console.log(that.origin);
-							uni.reLaunch({
-								url: (that.origin !== '/undefined')?that.origin:'/pages/rwlist/rwlist'
-							});
-						} else {
-							uni.showToast({
-								title: '获取用户信息失败',
-								icon: 'none',
-								duration: 2000
-							});
-						}
-					}
-				});
-				// if((this.origin.indexOf('pages/rwlist/rwlist') != -1) ||(this.origin.indexOf('pages/my/my') != -1)){
-				// 	uni.switchTab({
-				// 		url:this.origin
-				// 	})
-				// }else{
-				// 	uni.redirectTo({
-				// 		url:this.origin
-				// 	})
-				// }
-			},
-			//向后台更新信息
-			updateUserInfo() {
-				let _this = this;
-				uni.request({
-					url: 'url', //服务器端地址
-					data: {
-						appKey: this.$store.state.appKey,
-						customerId: _this.customerId,
-						nickName: _this.nickName,
-						headUrl: _this.avatarUrl
-					},
-					method: 'POST',
-					header: {
-						'content-type': 'application/json'
-					},
-					success: res => {
-						if (res.data.state == 'success') {
-							uni.reLaunch({
-								//信息更新成功后跳转到小程序首页
-								url: '/pages/index/index'
-							});
-						}
-					}
-				});
+		.openCode{
+			width:200upx;
+			height: 140upx;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			
+			.codeBtn{
+				background: #ff4443;
+				color: #fff;
+				width:160upx;
+				height:80upx;
+				line-height: 80upx;
+				border-radius: 10upx;
+				text-align: center;
 			}
 		}
 	}
-</script>
+	.userMenu{
+		width:750upx;
+		border-top: 10upx solid #ff4443;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
+		background: #fff;
+	}	
+	.menuItem{
+		width:650upx;
+		padding:0 50upx;
+		height:120upx;
+		line-height: 120upx;
+		display: flex;
+		flex-direction: row;
+		justify-content:flex-start;
+		align-items: center;
+		image{
+			width:80upx;
+			height: 80upx;
+			margin-right: 50upx;
+		}
+		.menuTxt{
+			font-size: 36upx;
+			text-decoration: underline;
+		}
+	}
 
-<style>
-.login{
-	width:750upx;
-	height:300upx;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-}
 </style>

@@ -4,7 +4,8 @@
     "pages/my/my",
     "pages/info/info",
     "pages/infoshow/infoshow",
-    "pages/imgshow/imgshow"
+    "pages/imgshow/imgshow",
+    "pages/login/login"
   ],
   "subPackages": [],
   "window": {
@@ -33,5 +34,6 @@
       }
     ]
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap5.json"
 }

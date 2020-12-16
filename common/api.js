@@ -10,11 +10,23 @@ var webhost = "https://jielongtest.vsclouds.com/ceshi/";
 
 // 接口列表
 var webapi = {
-	// 任务类别创建
-	cTaskType: webhost + 'type/create',
-
-	// 分享作业任务
-	shareTask: webhost + 'public/share/jobs',
+	//会员与微信用户绑定接口 post
+	memberBind:webhost + 'member/number/bind',
+	
+	//会员资料创建 post
+	memberCreate:webhost + 'member/create',
+	
+	//会员资料编辑接口 post
+	memberUpdate:webhost + 'member/update',
+	
+	//会员查询自己资料详情接口 get
+	memberInfo:webhost + 'member/info/detail/self',
+	
+	//根据编号查询 get eg:member/info/detail?number=A001
+	memberInfoNum:webhost + 'member/info/detail',
+	
+	//会员列表查询 异性 get eg:member/single/info/list?from=1&count=10   from 从1开始
+	memberList:webhost + 'member/single/info/list',
 	
 	// 微信登陆
 	// #ifdef MP-WEIXIN
@@ -26,14 +38,13 @@ var webapi = {
 	uniLogin:webhost + "public/qq/mp/common/user/login",
 	// #endif
 	
-	
 	// 游客登录
 	visitLogin: webhost + "public/weixin/mp/common/tourist/login/wx",
 	
 	// #ifdef MP-WEIXIN 
 	// 获取用户信息
-	userInfo: webhost + "weixin/mp/common/user/info",
-	//userInfo: webhost + "common/c/user/info",
+	//userInfo: webhost + "weixin/mp/common/user/info",
+	userInfo: webhost + "common/c/user/info",
 	// #endif
 	
 	// #ifdef APP-PLUS || H5
@@ -149,66 +160,7 @@ const strbool = (str) =>{
 const getUserinfo = async() => {
 	// 获取用户信息
 	var userRes = await getData(webapi.userInfo);
-
-	// console.log('token is');
-	// console.log(uni.getStorageSync("token"))
-	// console.log('userinfo is')
-	// console.log(userRes)
 	if (reshook(userRes)) {
-		
-		// userRes字段  currentExperience  、  totalExperienceForCurrentLevel
-		var expProgress = parseInt((userRes.data.userLevelInfo.currentExperience / userRes.data.userLevelInfo.totalExperienceForCurrentLevel)*100); 
-		// console.log('====================================================================================================================================')
-		// console.log('currentExperience');
-		// console.log(userRes.data.userLevelInfo.currentExperience);
-		// console.log('totalExperienceForCurrentLevel');
-		// console.log(userRes.data.userLevelInfo.totalExperienceForCurrentLevel);
-		// console.log('exp Progress is = ');
-		// console.log(expProgress)
-		// console.log('获取状态开始--------------------------------------------------------------------------------')
-		// console.log(store.state)
-		// console.log('获取状态结束--------------------------------------------------------------------------------')
-		
-		if(uni.getStorageSync('level')){
-			if(userRes.data.userLevelInfo.level == uni.getStorageSync('level')){
-				store.commit('levelUpdata', false)
-			}else{
-				store.commit('levelUpdata', true)
-			}
-		}
-		
-		if(uni.getStorageSync('honor')){
-			if(expTitle(userRes.data.userLevelInfo.level) == uni.getStorageSync('honor')){
-				store.commit('honorUpdata', false)
-			}else{
-				store.commit('honorUpdata', true)
-			}
-		}
-		
-		uni.setStorage({
-			key: 'level',
-			data: userRes.data.userLevelInfo.level
-		});
-		store.commit('changeLevel', userRes.data.userLevelInfo.level)
-		
-		uni.setStorage({
-			key: 'honor',
-			data:expTitle(userRes.data.userLevelInfo.level)
-		})
-		store.commit('changeHonor', expTitle(userRes.data.userLevelInfo.level))
-		
-		
-		uni.setStorage({
-			key: 'progress',
-			data: expProgress
-		})
-		store.commit('changeProgress', expProgress)
-		
-		uni.setStorage({
-			key: 'starNum',
-			data: userRes.data.starSummary.currentCount
-		});
-		store.commit('changeStar', userRes.data.starSummary.currentCount)
 		return true
 	}else{
 		uni.showModal({
@@ -237,6 +189,22 @@ const showLoading = () => {
 	return new Promise((resolve, reject) => {
 		uni.showLoading({
 			title: '加载中...',
+			mask: true,
+			success(res) {
+				// console.log('显示loading')
+				resolve(res)
+			},
+			fail(err) {
+				reject(err)
+			}
+		})
+	})
+}
+// 上传中
+const uploading = () => {
+	return new Promise((resolve, reject) => {
+		uni.showLoading({
+			title: '上传中...',
 			mask: true,
 			success(res) {
 				// console.log('显示loading')
@@ -341,6 +309,7 @@ export default {
 	webapi,
 	reshook,
 	showLoading,
+	uploading,
 	hideLoading,
 	getUserinfo,
 	trim

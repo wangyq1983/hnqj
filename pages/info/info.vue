@@ -1,3 +1,4 @@
+
 <template>
 	<view>
 		<view class="">个人信息</view>
@@ -53,7 +54,90 @@
 					</radio-group>
 				</view>
 			</view>
-
+			<view class="infoItem">
+				<view class="left">工作:</view>
+				<view class="right">
+					<input type="text" style="width:180upx" v-model="job" />
+					<text>例如：国企、老师、私企</text>
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">年收入:</view>
+				<view class="right">
+					<input type="text" style="width:180upx" v-model="income" />
+					<text>例如: 12万</text>
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">是否有房:</view>
+				<view class="right">
+					<radio-group @change="radioChangeHouse">
+						<label v-for="(item, index) in itemsHouse" :key="item.value">
+							<view><radio :value="item.value" :checked="item.checked" /></view>
+							<view>{{ item.name }}</view>
+						</label>
+					</radio-group>
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">房屋描述:</view>
+				<view class="right">
+					<textarea placeholder="房子信息描述" v-model="houseTxt"></textarea>
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">是否有车:</view>
+				<view class="right">
+					<radio-group @change="radioChangeCar">
+						<label v-for="(item, index) in itemsCar" :key="item.value">
+							<view><radio :value="item.value" :checked="item.checked" /></view>
+							<view>{{ item.name }}</view>
+						</label>
+					</radio-group>
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">车辆描述:</view>
+				<view class="right">
+					<textarea placeholder="车辆描述" v-model="carTxt"></textarea>
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">家乡地区:</view>
+				<view class="right">
+					<input type="text" v-model="hometown" />
+					<text>老家是哪里</text>
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">工作地区:</view>
+				<view class="right">
+					<input type="text" v-model="workArea" />
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">父母情况:</view>
+				<view class="right">
+					<textarea v-model="parentsInfo"></textarea>
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">独生子女:</view>
+				<view class="right">
+					<radio-group @change="radioChangeOnlyChild">
+						<label v-for="(item, index) in itemsOnlyChild" :key="item.value">
+							<view><radio :value="item.value" :checked="item.checked" /></view>
+							<view>{{ item.name }}</view>
+						</label>
+					</radio-group>
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">家庭成员描述:</view>
+				<view class="right">
+					<textarea v-model="family" placeholder="例如兄弟姐妹信息"></textarea>
+				</view>
+			</view>
 			<view class="imageArea" v-if="imglist.length > 0">
 				<view class="bg-img" v-for="(item, index) in imglist" :key="index">
 					<image :src="item" mode="aspectFill" :data-index="index" @tap="preview"></image>
@@ -138,10 +222,63 @@ export default {
 					checked: false
 				}
 			],
+			itemsHouse:[
+				{
+					value:'0',
+					name:'无房',
+					checked:false
+				},
+				{
+					value:'1',
+					name:'有房无贷款',
+					checked:false
+				},
+				{
+					value:'2',
+					name:'有房有贷款',
+					checked:false
+				}
+			],
+			itemsCar:[
+				{
+					value:'0',
+					name:'无车',
+					checked:false
+				},
+				{
+					value:'1',
+					name:'有车',
+					checked:false
+				}
+			],
+			itemsOnlyChild:[
+				{
+					value:'1',
+					name:'是独生子女',
+					checked:false
+				},
+				{
+					value:'2',
+					name:'非独生子女',
+					checked:false
+				},
+			],
+			
 			date: currentDate,
 			shengao: '',
 			tizhong: '',
 			sxxz: '',
+			job:'',
+			income:'',
+			house:'',
+			houseTxt:'',
+			car:'',
+			carTxt:'',
+			hometown:'',
+			workArea:'',
+			parentsInfo:'',
+			onlyChild:'',
+			family:'',
 			imglist: [],
 			compressPaths: [],
 			paths: [],
@@ -177,6 +314,33 @@ export default {
 				if (this.itemsSex[i].value === evt.target.value) {
 					this.current = i;
 					this.sex = evt.target.value;
+					break;
+				}
+			}
+		},
+		radioChangeOnlyChild: function(evt) {
+			for (let i = 0; i < this.itemsOnlyChild.length; i++) {
+				if (this.itemsOnlyChild[i].value === evt.target.value) {
+					this.current = i;
+					this.sex = evt.target.value;
+					break;
+				}
+			}
+		},
+		radioChangeHouse: function(evt) {
+			for (let i = 0; i < this.itemsHouse.length; i++) {
+				if (this.itemsHouse[i].value === evt.target.value) {
+					this.current = i;
+					this.house = evt.target.value;
+					break;
+				}
+			}
+		},
+		radioChangeCar: function(evt) {
+			for (let i = 0; i < this.itemsCar.length; i++) {
+				if (this.itemsCar[i].value === evt.target.value) {
+					this.current = i;
+					this.car = evt.target.value;
 					break;
 				}
 			}
@@ -586,7 +750,11 @@ label {
 	padding: 10upx 0;
 }
 input {
+	width:180upx;
 	border: 2upx solid #999;
 	height: 60upx;
+}
+textarea{
+	border:2upx solid #999
 }
 </style>
