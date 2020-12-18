@@ -1,4 +1,7 @@
 {
   "onReachBottomDistance": 126,
-  "usingComponents": {}
+  "usingComponents": {
+    "nodata": "/components/nodata/nodata",
+    "end-line": "/components/endLine/endLine"
+  }
 }

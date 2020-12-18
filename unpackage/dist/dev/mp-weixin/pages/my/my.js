@@ -171,6 +171,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 var _default =
 {
   data: function data() {
@@ -186,6 +188,11 @@ var _default =
 
   },
   methods: {
+    gotoBind: function gotoBind() {
+      uni.navigateTo({
+        url: "/pages/bindcode/bindcode" });
+
+    },
     init: function init() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var userinfo;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
                   _this.$api.showLoading());case 2:_context.next = 4;return (
                   _this.$api.getData(_this.$api.webapi.userInfo));case 4:userinfo = _context.sent;_context.next = 7;return (
@@ -195,6 +202,11 @@ var _default =
                 if (_this.$api.reshook(userinfo, _this.$mp.page.route)) {
                   console.log(userinfo);
                 }case 10:case "end":return _context.stop();}}}, _callee);}))();
+    },
+    infoDetail: function infoDetail() {
+      uni.navigateTo({
+        url: '/pages/detail/detail' });
+
     },
     infoEvent: function infoEvent() {
       uni.navigateTo({

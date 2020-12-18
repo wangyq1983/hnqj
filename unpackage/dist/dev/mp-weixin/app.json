@@ -5,7 +5,10 @@
     "pages/info/info",
     "pages/infoshow/infoshow",
     "pages/imgshow/imgshow",
-    "pages/login/login"
+    "pages/login/login",
+    "pages/bindcode/bindcode",
+    "pages/detail/detail",
+    "pages/search/search"
   ],
   "subPackages": [],
   "window": {
@@ -35,5 +38,5 @@
     ]
   },
   "usingComponents": {},
-  "sitemapLocation": "sitemap5.json"
+  "sitemapLocation": "sitemap59.json"
 }

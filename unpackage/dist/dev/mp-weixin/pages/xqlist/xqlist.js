@@ -105,7 +105,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  nodata: function() {
+    return __webpack_require__.e(/*! import() | components/nodata/nodata */ "components/nodata/nodata").then(__webpack_require__.bind(null, /*! @/components/nodata/nodata.vue */ 87))
+  },
+  endLine: function() {
+    return __webpack_require__.e(/*! import() | components/endLine/endLine */ "components/endLine/endLine").then(__webpack_require__.bind(null, /*! @/components/endLine/endLine.vue */ 94))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -141,7 +148,12 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} //
+//
+//
+//
+//
+//
 //
 //
 //
@@ -206,11 +218,54 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 var _default =
 {
   data: function data() {
-    return {};
-
+    return {
+      dataStep: 10,
+      isEmpty: 0,
+      isEnd: false,
+      rwlist: [],
+      searchTxt: '' };
 
   },
-  methods: {} };exports.default = _default;
+  onLoad: function onLoad(options) {
+    this.init();
+  },
+  methods: {
+    searchEvent: function searchEvent() {
+      console.log(this.searchTxt);
+      if (this.searchTxt == '') {
+        uni.showToast({
+          title: '请输入查询编号',
+          icon: 'none' });
+
+      } else {
+        uni.navigateTo({
+          url: '/pages/search/search?keyword=' + this.searchTxt });
+
+      }
+    },
+    init: function init() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                _this.renderList(1, _this.dataStep);case 1:case "end":return _context.stop();}}}, _callee);}))();
+    },
+
+    renderList: function renderList(from, count) {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var params, cjlist;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+                params = {
+                  from: from,
+                  count: count };_context2.next = 3;return (
+
+                  _this2.$api.showLoading());case 3:_context2.next = 5;return (
+                  _this2.$api.getData(_this2.$api.webapi.memberList, params));case 5:cjlist = _context2.sent;_context2.next = 8;return (
+                  _this2.$api.hideLoading());case 8: // 等待请求数据成功后，隐藏loading
+                if (cjlist.data.length == 0) {
+                  _this2.isEmpty = 1;
+                  _this2.isEnd = false;
+                  _this2.rwlist = cjlist.data;
+                } else {
+                  _this2.isEmpty = 0;
+                  _this2.isEnd = cjlist.data.length < _this2.dataStep ? true : false;
+                  _this2.rwlist = _this2.rwlist.length == 0 ? cjlist.data : _this2.rwlist.concat(cjlist.data);
+                }case 9:case "end":return _context2.stop();}}}, _callee2);}))();
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 23 */

@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   helangCompress: function() {
-    return Promise.all(/*! import() | components/helang-compress/helang-compress */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/helang-compress/helang-compress")]).then(__webpack_require__.bind(null, /*! @/components/helang-compress/helang-compress.vue */ 63))
+    return __webpack_require__.e(/*! import() | components/helang-compress/helang-compress */ "components/helang-compress/helang-compress").then(__webpack_require__.bind(null, /*! @/components/helang-compress/helang-compress.vue */ 101))
   }
 }
 var render = function() {
@@ -134,7 +134,48 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni, uniCloud) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var helangCompress = function helangCompress() {Promise.all(/*! require.ensure | components/helang-compress/helang-compress */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/helang-compress/helang-compress")]).then((function () {return resolve(__webpack_require__(/*! ../../components/helang-compress/helang-compress */ 63));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni, uniCloud) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var helangCompress = function helangCompress() {__webpack_require__.e(/*! require.ensure | components/helang-compress/helang-compress */ "components/helang-compress/helang-compress").then((function () {return resolve(__webpack_require__(/*! ../../components/helang-compress/helang-compress */ 101));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -315,12 +356,12 @@ __webpack_require__.r(__webpack_exports__);
       sex: '',
       itemsSex: [
       {
-        value: '男',
+        value: '1',
         name: '男',
         checked: false },
 
       {
-        value: '女',
+        value: '2',
         name: '女',
         checked: true }],
 
@@ -399,6 +440,34 @@ __webpack_require__.r(__webpack_exports__);
         checked: false }],
 
 
+      itemsMarriage: [
+      {
+        value: '0',
+        name: '未婚',
+        checked: false },
+
+      {
+        value: '1',
+        name: '离异无孩子',
+        checked: false },
+
+      {
+        value: '2',
+        name: '离异有孩子',
+        checked: false }],
+
+
+      itemsPhotoPublic: [
+      {
+        value: '0',
+        name: '不公开',
+        checked: false },
+
+      {
+        value: '1',
+        name: '公开',
+        checked: false }],
+
 
       date: currentDate,
       shengao: '',
@@ -415,15 +484,16 @@ __webpack_require__.r(__webpack_exports__);
       parentsInfo: '',
       onlyChild: '',
       family: '',
+      marriage: '',
+      marriageTxt: '',
+      introduction: '',
+      requirement: '',
+      photoPublic: '',
+      state: 0,
+      infoLock: 0,
       imglist: [],
       compressPaths: [],
       paths: [],
-      imgparams: {
-        maxSize: 1080,
-        fileType: 'png',
-        quality: 0.95,
-        minSize: 640 },
-
       curindex: 0,
       filelist: [] };
 
@@ -437,6 +507,7 @@ __webpack_require__.r(__webpack_exports__);
     } },
 
   methods: {
+
     delimg: function delimg(e) {
       var delid = e.target.dataset.fileid;
       console.log(e);
@@ -484,6 +555,24 @@ __webpack_require__.r(__webpack_exports__);
     radioChangeEdu: function radioChangeEdu(evt) {
       for (var i = 0; i < this.itemsEdu.length; i++) {
         if (this.itemsEdu[i].value === evt.target.value) {
+          this.current = i;
+          this.edu = evt.target.value;
+          break;
+        }
+      }
+    },
+    radioChangeMarriage: function radioChangeMarriage(evt) {
+      for (var i = 0; i < this.itemsMarriage.length; i++) {
+        if (this.itemsMarriage[i].value === evt.target.value) {
+          this.current = i;
+          this.edu = evt.target.value;
+          break;
+        }
+      }
+    },
+    radioChangePhotoPublic: function radioChangePhotoPublic(evt) {
+      for (var i = 0; i < this.itemsPhotoPublic.length; i++) {
+        if (this.itemsPhotoPublic[i].value === evt.target.value) {
           this.current = i;
           this.edu = evt.target.value;
           break;
@@ -764,18 +853,75 @@ __webpack_require__.r(__webpack_exports__);
 
     },
 
-    submitEvent: function submitEvent() {
-      var params = {
-        sex: this.sex,
-        year: this.date,
-        shengao: this.shengao,
-        tizhong: this.tizhong,
-        sxxz: this.sxxz,
-        edu: this.edu,
-        imglist: this.imglist };
+    submitEvent: function () {var _submitEvent = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var that, yearmonth, birthYear, birthMonth, params, memcreat;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                that = this;
+                if (this.sex == '') {
+                  uni.showToast({
+                    title: '请必须填写性别',
+                    icon: 'none' });
 
-      console.log(params);
-    } } };exports.default = _default;
+                }
+                yearmonth = this.date.split('-');
+                birthYear = yearmonth[0];
+                birthMonth = yearmonth[1];
+                params = {
+
+                  gender: this.sex ? this.sex : '',
+                  birthYear: birthYear,
+                  birthMonth: birthMonth,
+                  zodiacConstellation: this.sxxz,
+                  height: this.shengao,
+                  bodyWeight: this.tizhong,
+                  education: this.edu,
+                  job: this.job,
+                  income: this.income,
+                  house: this.house,
+                  houseTxt: this.houseTxt,
+                  car: this.car,
+                  carTxt: this.carTxt,
+                  hometown: this.hometown,
+                  workArea: this.workArea,
+                  parentsInfo: this.parentsInfo,
+                  onlyChild: this.onlyChild,
+                  family: this.family,
+                  marriage: this.marriage,
+                  marriageTxt: this.marriageTxt,
+                  introduction: this.introduction,
+                  requirement: this.requirement };
+
+                console.log(params);_context.next = 9;return (
+                  this.$api.showLoading());case 9:_context.next = 11;return (
+                  this.$api.postData(this.$api.webapi.memberCreate, params));case 11:memcreat = _context.sent;_context.next = 14;return (
+                  this.$api.hideLoading());case 14: // 等待请求数据成功后，隐藏loading
+                if (this.$api.reshook(memcreat, this.$mp.page.route)) {
+                  // this.createSuccess(memcreat,true); 
+                  console.log(memcreat);
+
+
+                  uniCloud.callFunction({
+                    //调用云端函数，把图片地址写入表
+                    name: 'adduserimg', //云函数名称
+                    data: {
+                      //提交给云端的数据
+                      userId: uni.getStorageSync('userId'),
+                      imglist: that.imglist,
+                      createTime: Date.now() },
+
+                    success: function success(res) {
+                      console.log('数据插入成功');
+                      console.log(res);
+                      uni.showToast({
+                        title: '提交成功',
+                        icon: 'none' });
+
+                    },
+                    fail: function fail(err) {
+                      console.log(err);
+                    },
+                    complete: function complete() {} });
+
+
+                }case 15:case "end":return _context.stop();}}}, _callee, this);}));function submitEvent() {return _submitEvent.apply(this, arguments);}return submitEvent;}() } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 39)["default"]))
 
 /***/ }),

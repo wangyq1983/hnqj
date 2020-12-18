@@ -5,9 +5,7 @@
 		</view>
 		<view class="userbox">
 			<view class="userinfo">
-				
 				<image :src="icon" mode="" class="usericon"></image>
-				
 				<view class="username">
 					<view class="name">
 						{{name}}
@@ -15,12 +13,9 @@
 					<view class="bindtxt">
 						还未绑定账号
 					</view>
-					
 				</view>
-				
 				<view class="openCode">
-					
-					<view class="codeBtn">
+					<view class="codeBtn" @tap = "gotoBind">
 						马上绑定
 					</view>
 				</view>
@@ -33,7 +28,14 @@
 						填写/编辑 个人资料
 					</view>
 				</view>
+				<view class="menuItem" @tap="infoDetail">
+					<image src="/static/ziliao.png" mode=""></image>
+					<view class="menuTxt">
+						查看个人资料
+					</view>
+				</view>
 			</view>
+			
 			<!-- <button class="" style="width:600upx; margin-top: 100upx;;" @tap="infoEvent">填写/编辑 个人资料</button> -->
 		</view>
 	</view>
@@ -54,6 +56,11 @@ export default {
 		
 	},
 	methods: {
+		gotoBind:function(){
+			uni.navigateTo({
+				url:"/pages/bindcode/bindcode"
+			})
+		},
 		async init(){
 			await this.$api.showLoading(); // 显示loading
 			var userinfo = await this.$api.getData(this.$api.webapi.userInfo);
@@ -63,6 +70,11 @@ export default {
 			if (this.$api.reshook(userinfo, this.$mp.page.route)) {
 				console.log(userinfo)
 			}
+		},
+		infoDetail(){
+			uni.navigateTo({
+				url:'/pages/detail/detail'
+			})
 		},
 		infoEvent() {
 			uni.navigateTo({
@@ -141,7 +153,6 @@ export default {
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
-			
 			.codeBtn{
 				background: #ff4443;
 				color: #fff;
@@ -171,6 +182,8 @@ export default {
 		flex-direction: row;
 		justify-content:flex-start;
 		align-items: center;
+		border-bottom: 6upx solid #ccc;
+		margin-bottom: 10upx;;
 		image{
 			width:80upx;
 			height: 80upx;

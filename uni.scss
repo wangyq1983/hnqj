@@ -85,3 +85,43 @@ $uni-font-size-paragraph:30rpx;
 	text-align: center;
 	line-height: 100upx;
 }
+.pageTitle{
+	width:750upx;
+	height: 80upx;
+	line-height: 80upx;
+	text-align: center;
+	font-size: 32upx;
+	border-bottom: 5upx solid #ff4443;
+}
+.searchBox{
+	width:650upx;
+	height:100upx;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	background: #fff;
+	padding:0 50upx;
+	position: fixed;
+	top:0;
+	left:0;
+	z-index: 99;
+	input{
+		width:430upx;
+		height: 66upx;
+		line-height: 66upx;
+		padding:0 10upx;
+		border: 2upx solid #ff4443;
+		border-radius: 10upx 0 0 10upx;
+	}
+	.searchBtn{
+		width:180upx;
+		height: 70upx;
+		line-height: 70upx;
+		color: #fff;
+		background: #ff4443;
+		text-align: center;
+		font-size: 32upx;
+		border-radius: 0 10upx 10upx 0;
+	}
+}

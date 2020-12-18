@@ -1,7 +1,7 @@
 
 <template>
 	<view>
-		<view class="">个人信息</view>
+		<view class="pageTitle">个人信息</view>
 		<view class="infoList">
 			<view class="infoItem">
 				<view class="left">性别:</view>
@@ -138,6 +138,36 @@
 					<textarea v-model="family" placeholder="例如兄弟姐妹信息"></textarea>
 				</view>
 			</view>
+			<view class="infoItem">
+				<view class="left">婚姻情况:</view>
+				<view class="right">
+					<radio-group @change="radioChangeMarriage">
+						<label v-for="(item, index) in itemsMarriage" :key="item.value">
+							<view><radio :value="item.value" :checked="item.checked" /></view>
+							<view>{{ item.name }}</view>
+						</label>
+					</radio-group>
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">补充说明:</view>
+				<view class="right">
+					<textarea v-model="marriageTxt" placeholder="婚姻情况补充说明"></textarea>
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">个人介绍:</view>
+				<view class="right">
+					<textarea v-model="introduction" placeholder="个人优缺点"></textarea>
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">择偶要求:</view>
+				<view class="right">
+					<textarea v-model="requirement" placeholder="择偶要求"></textarea>
+				</view>
+			</view>
+			
 			<view class="imageArea" v-if="imglist.length > 0">
 				<view class="bg-img" v-for="(item, index) in imglist" :key="index">
 					<image :src="item" mode="aspectFill" :data-index="index" @tap="preview"></image>
@@ -160,6 +190,17 @@
 				</view>
 				<helang-compress ref="helangCompress"></helang-compress>
 			</view>
+			<view class="infoItem">
+				<view class="left">照片是否公开:</view>
+				<view class="right">
+					<radio-group @change="radioChangePhotoPublic">
+						<label v-for="(item, index) in itemsPhotoPublic" :key="item.value">
+							<view><radio :value="item.value" :checked="item.checked" /></view>
+							<view>{{ item.name }}</view>
+						</label>
+					</radio-group>
+				</view>
+			</view>
 			<view class="actionBox"><view class="btn" @tap="submitEvent">确认提交</view></view>
 		</view>
 	</view>
@@ -179,12 +220,12 @@ export default {
 			sex: '',
 			itemsSex: [
 				{
-					value: '男',
+					value: '1',
 					name: '男',
 					checked: false
 				},
 				{
-					value: '女',
+					value: '2',
 					name: '女',
 					checked: true
 				}
@@ -261,9 +302,37 @@ export default {
 					value:'2',
 					name:'非独生子女',
 					checked:false
+				}
+			],
+			itemsMarriage:[
+				{
+					value:'0',
+					name:'未婚',
+					checked:false
+				},
+				{
+					value:'1',
+					name:'离异无孩子',
+					checked:false
+				},
+				{
+					value:'2',
+					name:'离异有孩子',
+					checked:false
+				}
+			],
+			itemsPhotoPublic:[
+				{
+					value:'0',
+					name:'不公开',
+					checked:false
+				},
+				{
+					value:'1',
+					name:'公开',
+					checked:false
 				},
 			],
-			
 			date: currentDate,
 			shengao: '',
 			tizhong: '',
@@ -279,15 +348,16 @@ export default {
 			parentsInfo:'',
 			onlyChild:'',
 			family:'',
+			marriage:'',
+			marriageTxt:'',
+			introduction:'',
+			requirement:'',
+			photoPublic:'',
+			state:0,
+			infoLock:0,
 			imglist: [],
 			compressPaths: [],
 			paths: [],
-			imgparams: {
-				maxSize: 1080,
-				fileType: 'png',
-				quality: 0.95,
-				minSize: 640
-			},
 			curindex:0,
 			filelist:[]
 		};
@@ -301,6 +371,7 @@ export default {
 		}
 	},
 	methods: {
+		
 		delimg: function(e) {
 			var delid = e.target.dataset.fileid;
 			console.log(e);
@@ -348,6 +419,24 @@ export default {
 		radioChangeEdu: function(evt) {
 			for (let i = 0; i < this.itemsEdu.length; i++) {
 				if (this.itemsEdu[i].value === evt.target.value) {
+					this.current = i;
+					this.edu = evt.target.value;
+					break;
+				}
+			}
+		},
+		radioChangeMarriage: function(evt) {
+			for (let i = 0; i < this.itemsMarriage.length; i++) {
+				if (this.itemsMarriage[i].value === evt.target.value) {
+					this.current = i;
+					this.edu = evt.target.value;
+					break;
+				}
+			}
+		},
+		radioChangePhotoPublic: function(evt) {
+			for (let i = 0; i < this.itemsPhotoPublic.length; i++) {
+				if (this.itemsPhotoPublic[i].value === evt.target.value) {
 					this.current = i;
 					this.edu = evt.target.value;
 					break;
@@ -628,17 +717,75 @@ export default {
 			});
 		},
 
-		submitEvent: function() {
+		submitEvent: async function() {
+			var that = this;
+			if(this.sex == ''){
+				uni.showToast({
+					title:'请必须填写性别',
+					icon:'none'
+				})
+			}
+			var yearmonth = this.date.split('-');
+			var birthYear = yearmonth[0];
+			var birthMonth = yearmonth[1];
 			var params = {
-				sex: this.sex,
-				year: this.date,
-				shengao: this.shengao,
-				tizhong: this.tizhong,
-				sxxz: this.sxxz,
-				edu: this.edu,
-				imglist: this.imglist
+				
+				gender: this.sex?this.sex:'',
+				birthYear: birthYear,
+				birthMonth:birthMonth,
+				zodiacConstellation:this.sxxz,
+				height: this.shengao,
+				bodyWeight: this.tizhong,
+				education: this.edu,
+				job:this.job,
+				income:this.income,
+				house:this.house,
+				houseTxt:this.houseTxt,
+				car:this.car,
+				carTxt:this.carTxt,
+				hometown:this.hometown,
+				workArea:this.workArea,
+				parentsInfo:this.parentsInfo,
+				onlyChild:this.onlyChild,
+				family:this.family,
+				marriage:this.marriage,
+				marriageTxt:this.marriageTxt,
+				introduction:this.introduction,
+				requirement:this.requirement
 			};
 			console.log(params);
+			await this.$api.showLoading(); // 显示loading
+			var memcreat = await this.$api.postData(this.$api.webapi.memberCreate, params);
+			await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
+			if (this.$api.reshook(memcreat, this.$mp.page.route)) {
+				// this.createSuccess(memcreat,true); 
+				console.log(memcreat);
+				
+				
+				uniCloud.callFunction({
+					//调用云端函数，把图片地址写入表
+					name: 'adduserimg', //云函数名称
+					data: {
+						//提交给云端的数据
+						userId:uni.getStorageSync('userId'),
+						imglist: that.imglist,
+						createTime: Date.now()
+					},
+					success: res => {
+						console.log('数据插入成功');
+						console.log(res);
+						uni.showToast({
+							title: '提交成功',
+							icon: 'none'
+						});
+					},
+					fail: err => {
+						console.log(err);
+					},
+					complete: () => {}
+				});
+				
+			}
 		}
 	}
 };
