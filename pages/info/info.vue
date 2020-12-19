@@ -217,6 +217,7 @@ export default {
 			format: true
 		});
 		return {
+			isEdit:false,
 			sex: '',
 			itemsSex: [
 				{
@@ -227,7 +228,7 @@ export default {
 				{
 					value: '2',
 					name: '女',
-					checked: true
+					checked: false
 				}
 			],
 			edu: '',
@@ -370,8 +371,64 @@ export default {
 			return this.getDate('end');
 		}
 	},
+	onLoad:function(option){
+		this.init()
+	},
 	methods: {
 		
+		
+		async init(){
+			await this.$api.showLoading(); // 显示loading
+			var searchRes = await this.$api.getData(this.$api.webapi.memberInfo);
+			await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
+			if(searchRes.resultCode == 0){
+				var arr = Object.keys(searchRes.data);
+				if(arr.length == 0){
+					this.isEdit = false;
+				}else{
+					this.isEdit = true;
+					var oldData = searchRes.data;
+					
+					var valItem = [this.sex,this.edu,this.house,this.car,this.onlyChild,this.marriage,this.photoPublic];
+					var arrItem = [this.itemsSex,this.itemsEdu,this.itemsHouse,this.itemsCar,this.itemsOnlyChild,this.itemsMarriage,this.itemsPhotoPublic];
+					//this.initItem(this.itemsSex,this.sex);
+					
+					this.sex = oldData.gender;
+					this.edu = oldData.education;
+					this.house = oldData.house;
+					this.car = oldData.car;
+					this.onlyChild = oldData.onlyChild;
+					this.itemsMarriage = oldData.itemsMarriage;
+					this.photoPublic = oldData.photoPublic;
+					
+					for(var i = 0; i <= valItem.length; i++){
+						this.initItem(arrItem[i],valItem[i]);
+					}
+					
+					this.date = oldData.birthYear + '-' + oldData.birthMonth;
+					this.shengao = oldData.height;
+					this.tizhong = oldData.bodyWeight;
+					this.sxxz = oldData.zodiacConstellation;
+					this.job = oldData.job;
+					this.income = oldData.income;
+
+					this.houseTxt = oldData.houseTxt;
+
+					this.carTxt = oldData.carTxt;
+					this.hometown = oldData.hometown;
+					this.workArea = oldData.workArea;
+					this.parentsInfo = oldData.parentsInfo;
+					this.family = oldData.family;
+					this.marriageTxt = oldData.marriageTxt;
+					this.introduction = oldData.introduction;
+					this.requirement = oldData.requirement;
+					this.state = oldData.state;
+					this.infoLock = oldData.infoLock;
+					this.imglist = oldData.imageList;
+					
+				}
+			}
+		},
 		delimg: function(e) {
 			var delid = e.target.dataset.fileid;
 			console.log(e);
@@ -385,6 +442,14 @@ export default {
 				if (this.itemsSex[i].value === evt.target.value) {
 					this.current = i;
 					this.sex = evt.target.value;
+					break;
+				}
+			}
+		},
+		initItem:function(arr,val){
+			for (let i = 0; i < arr.length; i++) {
+				if (arr[i].value === val) {
+					arr[i].checked = true;
 					break;
 				}
 			}
@@ -751,7 +816,8 @@ export default {
 				marriage:this.marriage,
 				marriageTxt:this.marriageTxt,
 				introduction:this.introduction,
-				requirement:this.requirement
+				requirement:this.requirement,
+				imageList:this.imglist
 			};
 			console.log(params);
 			await this.$api.showLoading(); // 显示loading
@@ -760,35 +826,38 @@ export default {
 			if (this.$api.reshook(memcreat, this.$mp.page.route)) {
 				// this.createSuccess(memcreat,true); 
 				console.log(memcreat);
-				
-				
-				uniCloud.callFunction({
-					//调用云端函数，把图片地址写入表
-					name: 'adduserimg', //云函数名称
-					data: {
-						//提交给云端的数据
-						userId:uni.getStorageSync('userId'),
-						imglist: that.imglist,
-						createTime: Date.now()
-					},
-					success: res => {
-						console.log('数据插入成功');
-						console.log(res);
-						uni.showToast({
-							title: '提交成功',
-							icon: 'none'
-						});
-					},
-					fail: err => {
-						console.log(err);
-					},
-					complete: () => {}
-				});
+				uni.showToast({
+					title:'提交成功',
+					icon:'none'
+				})
+				// uniCloud.callFunction({
+				// 	//调用云端函数，把图片地址写入表
+				// 	name: 'adduserimg', //云函数名称
+				// 	data: {
+				// 		//提交给云端的数据
+				// 		userId:uni.getStorageSync('userId'),
+				// 		imglist: that.imglist,
+				// 		createTime: Date.now()
+				// 	},
+				// 	success: res => {
+				// 		console.log('数据插入成功');
+				// 		console.log(res);
+				// 		uni.showToast({
+				// 			title: '提交成功',
+				// 			icon: 'none'
+				// 		});
+				// 	},
+				// 	fail: err => {
+				// 		console.log(err);
+				// 	},
+				// 	complete: () => {}
+				// });
 				
 			}
 		}
 	}
 };
+
 </script>
 
 <style lang="scss">

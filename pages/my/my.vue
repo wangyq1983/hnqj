@@ -10,25 +10,31 @@
 					<view class="name">
 						{{name}}
 					</view>
-					<view class="bindtxt">
+					<view class="bindtxt" v-if="!isbind">
 						还未绑定账号
+					</view>
+					<view class="bindtxt" v-if="isbind">
+						已绑定账号
 					</view>
 				</view>
 				<view class="openCode">
-					<view class="codeBtn" @tap = "gotoBind">
+					<view class="codeBtn" @tap = "gotoBind" v-if="!isbind">
 						马上绑定
+					</view>
+					<view class="codeBtn" @tap = "gotoBind" v-if="isbind">
+						已绑定
 					</view>
 				</view>
 			</view>
 			
 			<view class="userMenu">
-				<view class="menuItem" @tap="infoEvent">
+				<view class="menuItem" @tap="infoEvent" v-if="isbind">
 					<image src="/static/edit.png" mode=""></image>
 					<view class="menuTxt">
 						填写/编辑 个人资料
 					</view>
 				</view>
-				<view class="menuItem" @tap="infoDetail">
+				<view class="menuItem" @tap="infoDetail" v-if="isbind">
 					<image src="/static/ziliao.png" mode=""></image>
 					<view class="menuTxt">
 						查看个人资料
@@ -45,6 +51,7 @@
 export default {
 	data() {
 		return {
+			isbind:false,
 			icon: uni.getStorageSync('avatarUrl') ? uni.getStorageSync('avatarUrl') : '', //头像
 			name: uni.getStorageSync('nickName') ? uni.getStorageSync('nickName') : '', //昵称
 		};
@@ -68,12 +75,21 @@ export default {
 			console.log('当前路由')
 			console.log(this.$mp.page.route)
 			if (this.$api.reshook(userinfo, this.$mp.page.route)) {
-				console.log(userinfo)
+				console.log(userinfo);
+				
+				var arr = Object.keys(userinfo.data.memberInfo);  // 判断是否绑定邀请码
+				if(arr.length == 0){
+					console.log('未绑定');
+					this.isbind = false;
+				}else{
+					console.log('已绑定');
+					this.isbind = true;
+				}
 			}
 		},
 		infoDetail(){
 			uni.navigateTo({
-				url:'/pages/detail/detail'
+				url:'/pages/detail/detail?number=self'
 			})
 		},
 		infoEvent() {

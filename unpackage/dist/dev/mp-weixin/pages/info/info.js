@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   helangCompress: function() {
-    return __webpack_require__.e(/*! import() | components/helang-compress/helang-compress */ "components/helang-compress/helang-compress").then(__webpack_require__.bind(null, /*! @/components/helang-compress/helang-compress.vue */ 101))
+    return __webpack_require__.e(/*! import() | components/helang-compress/helang-compress */ "components/helang-compress/helang-compress").then(__webpack_require__.bind(null, /*! @/components/helang-compress/helang-compress.vue */ 108))
   }
 }
 var render = function() {
@@ -134,7 +134,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni, uniCloud) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var helangCompress = function helangCompress() {__webpack_require__.e(/*! require.ensure | components/helang-compress/helang-compress */ "components/helang-compress/helang-compress").then((function () {return resolve(__webpack_require__(/*! ../../components/helang-compress/helang-compress */ 101));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni, uniCloud) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var helangCompress = function helangCompress() {__webpack_require__.e(/*! require.ensure | components/helang-compress/helang-compress */ "components/helang-compress/helang-compress").then((function () {return resolve(__webpack_require__(/*! ../../components/helang-compress/helang-compress */ 108));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -353,6 +353,7 @@ __webpack_require__.r(__webpack_exports__);
       format: true });
 
     return {
+      isEdit: false,
       sex: '',
       itemsSex: [
       {
@@ -363,7 +364,7 @@ __webpack_require__.r(__webpack_exports__);
       {
         value: '2',
         name: '女',
-        checked: true }],
+        checked: false }],
 
 
       edu: '',
@@ -506,8 +507,64 @@ __webpack_require__.r(__webpack_exports__);
       return this.getDate('end');
     } },
 
+  onLoad: function onLoad(option) {
+    this.init();
+  },
   methods: {
 
+
+    init: function init() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var searchRes, arr, oldData, valItem, arrItem, i;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
+                  _this2.$api.showLoading());case 2:_context.next = 4;return (
+                  _this2.$api.getData(_this2.$api.webapi.memberInfo));case 4:searchRes = _context.sent;_context.next = 7;return (
+                  _this2.$api.hideLoading());case 7: // 等待请求数据成功后，隐藏loading
+                if (searchRes.resultCode == 0) {
+                  arr = Object.keys(searchRes.data);
+                  if (arr.length == 0) {
+                    _this2.isEdit = false;
+                  } else {
+                    _this2.isEdit = true;
+                    oldData = searchRes.data;
+
+                    valItem = [_this2.sex, _this2.edu, _this2.house, _this2.car, _this2.onlyChild, _this2.marriage, _this2.photoPublic];
+                    arrItem = [_this2.itemsSex, _this2.itemsEdu, _this2.itemsHouse, _this2.itemsCar, _this2.itemsOnlyChild, _this2.itemsMarriage, _this2.itemsPhotoPublic];
+                    //this.initItem(this.itemsSex,this.sex);
+
+                    _this2.sex = oldData.gender;
+                    _this2.edu = oldData.education;
+                    _this2.house = oldData.house;
+                    _this2.car = oldData.car;
+                    _this2.onlyChild = oldData.onlyChild;
+                    _this2.itemsMarriage = oldData.itemsMarriage;
+                    _this2.photoPublic = oldData.photoPublic;
+
+                    for (i = 0; i <= valItem.length; i++) {
+                      _this2.initItem(arrItem[i], valItem[i]);
+                    }
+
+                    _this2.date = oldData.birthYear + '-' + oldData.birthMonth;
+                    _this2.shengao = oldData.height;
+                    _this2.tizhong = oldData.bodyWeight;
+                    _this2.sxxz = oldData.zodiacConstellation;
+                    _this2.job = oldData.job;
+                    _this2.income = oldData.income;
+
+                    _this2.houseTxt = oldData.houseTxt;
+
+                    _this2.carTxt = oldData.carTxt;
+                    _this2.hometown = oldData.hometown;
+                    _this2.workArea = oldData.workArea;
+                    _this2.parentsInfo = oldData.parentsInfo;
+                    _this2.family = oldData.family;
+                    _this2.marriageTxt = oldData.marriageTxt;
+                    _this2.introduction = oldData.introduction;
+                    _this2.requirement = oldData.requirement;
+                    _this2.state = oldData.state;
+                    _this2.infoLock = oldData.infoLock;
+                    _this2.imglist = oldData.imageList;
+
+                  }
+                }case 8:case "end":return _context.stop();}}}, _callee);}))();
+    },
     delimg: function delimg(e) {
       var delid = e.target.dataset.fileid;
       console.log(e);
@@ -521,6 +578,14 @@ __webpack_require__.r(__webpack_exports__);
         if (this.itemsSex[i].value === evt.target.value) {
           this.current = i;
           this.sex = evt.target.value;
+          break;
+        }
+      }
+    },
+    initItem: function initItem(arr, val) {
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].value === val) {
+          arr[i].checked = true;
           break;
         }
       }
@@ -775,7 +840,7 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     // 单张压缩
-    compress: function compress(paths, extname, imgtype) {var _this2 = this;
+    compress: function compress(paths, extname, imgtype) {var _this3 = this;
       uni.showLoading({
         title: '压缩中',
         mask: true });
@@ -795,9 +860,9 @@ __webpack_require__.r(__webpack_exports__);
           title: '压缩成功',
           icon: 'success' });
 
-        _this2.compressPaths = _this2.compressPaths.concat([res]);
+        _this3.compressPaths = _this3.compressPaths.concat([res]);
 
-        _this2.cloudUpload(res, extname);
+        _this3.cloudUpload(res, extname);
       }).
       catch(function (err) {
         uni.hideLoading();
@@ -808,7 +873,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     // 批量压缩
-    batchCompress: function batchCompress(paths, extname, imgtype) {var _this3 = this;
+    batchCompress: function batchCompress(paths, extname, imgtype) {var _this4 = this;
       this.$refs.helangCompress.
       batchCompress({
         batchSrc: paths,
@@ -833,9 +898,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log('批量压缩返回图片 ================= ');
         console.log(res);
 
-        _this3.compressPaths = _this3.compressPaths.concat(res);
+        _this4.compressPaths = _this4.compressPaths.concat(res);
 
-        _this3.cloudUploads(res);
+        _this4.cloudUploads(res);
       }).
       catch(function (err) {
         uni.hideLoading();
@@ -853,7 +918,7 @@ __webpack_require__.r(__webpack_exports__);
 
     },
 
-    submitEvent: function () {var _submitEvent = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var that, yearmonth, birthYear, birthMonth, params, memcreat;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+    submitEvent: function () {var _submitEvent = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var that, yearmonth, birthYear, birthMonth, params, memcreat;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
                 that = this;
                 if (this.sex == '') {
                   uni.showToast({
@@ -887,41 +952,44 @@ __webpack_require__.r(__webpack_exports__);
                   marriage: this.marriage,
                   marriageTxt: this.marriageTxt,
                   introduction: this.introduction,
-                  requirement: this.requirement };
+                  requirement: this.requirement,
+                  imageList: this.imglist };
 
-                console.log(params);_context.next = 9;return (
-                  this.$api.showLoading());case 9:_context.next = 11;return (
-                  this.$api.postData(this.$api.webapi.memberCreate, params));case 11:memcreat = _context.sent;_context.next = 14;return (
+                console.log(params);_context2.next = 9;return (
+                  this.$api.showLoading());case 9:_context2.next = 11;return (
+                  this.$api.postData(this.$api.webapi.memberCreate, params));case 11:memcreat = _context2.sent;_context2.next = 14;return (
                   this.$api.hideLoading());case 14: // 等待请求数据成功后，隐藏loading
                 if (this.$api.reshook(memcreat, this.$mp.page.route)) {
                   // this.createSuccess(memcreat,true); 
                   console.log(memcreat);
+                  uni.showToast({
+                    title: '提交成功',
+                    icon: 'none' });
 
+                  // uniCloud.callFunction({
+                  // 	//调用云端函数，把图片地址写入表
+                  // 	name: 'adduserimg', //云函数名称
+                  // 	data: {
+                  // 		//提交给云端的数据
+                  // 		userId:uni.getStorageSync('userId'),
+                  // 		imglist: that.imglist,
+                  // 		createTime: Date.now()
+                  // 	},
+                  // 	success: res => {
+                  // 		console.log('数据插入成功');
+                  // 		console.log(res);
+                  // 		uni.showToast({
+                  // 			title: '提交成功',
+                  // 			icon: 'none'
+                  // 		});
+                  // 	},
+                  // 	fail: err => {
+                  // 		console.log(err);
+                  // 	},
+                  // 	complete: () => {}
+                  // });
 
-                  uniCloud.callFunction({
-                    //调用云端函数，把图片地址写入表
-                    name: 'adduserimg', //云函数名称
-                    data: {
-                      //提交给云端的数据
-                      userId: uni.getStorageSync('userId'),
-                      imglist: that.imglist,
-                      createTime: Date.now() },
-
-                    success: function success(res) {
-                      console.log('数据插入成功');
-                      console.log(res);
-                      uni.showToast({
-                        title: '提交成功',
-                        icon: 'none' });
-
-                    },
-                    fail: function fail(err) {
-                      console.log(err);
-                    },
-                    complete: function complete() {} });
-
-
-                }case 15:case "end":return _context.stop();}}}, _callee, this);}));function submitEvent() {return _submitEvent.apply(this, arguments);}return submitEvent;}() } };exports.default = _default;
+                }case 15:case "end":return _context2.stop();}}}, _callee2, this);}));function submitEvent() {return _submitEvent.apply(this, arguments);}return submitEvent;}() } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 39)["default"]))
 
 /***/ }),

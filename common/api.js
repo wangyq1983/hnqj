@@ -3,7 +3,7 @@ import store from '@/store'
 // var webhost = "https://task.vsclouds.com/";
 
 // 开发服务器
-// var webhost = "http://192.168.3.9:8080/";
+//var webhost = "http://192.168.3.86:8081/";
 
 // 开发服务器
 var webhost = "https://jielongtest.vsclouds.com/ceshi/";

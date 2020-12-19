@@ -3,6 +3,12 @@
 		<view class="pageTitle">个人信息</view>
 		<view class="infoList">
 			<view class="infoItem">
+				<view class="left">编号:</view>
+				<view class="right">
+					{{itemcon.number}}
+				</view>
+			</view>
+			<view class="infoItem">
 				<view class="left">性别:</view>
 				<view class="right">
 					{{gender}}
@@ -146,8 +152,12 @@
 					</view>
 				</view> -->
 			</view>
+			<view class="actionBox" v-if="itemcon.userId == userId">
+				<button class="shareAc" open-type="share"><view class="">分享一下</view></button>
+			</view>
+			<view class="actionBox" v-if="showImg"><view class="btn" @tap="submitEvent">申请查看照片</view></view>
+			<view class="actionBox" v-if="itemcon.userId !== userId"><view class="btn" @tap="submitEvent">请红娘递橄榄枝</view></view>
 			
-			<view class="actionBox"><view class="btn" @tap="submitEvent">确认提交</view></view>
 		</view>
 	</view>
 </template>
@@ -156,6 +166,7 @@
 	export default {
 		data() {
 			return {
+				userId:uni.getStorageSync('userId'),
 				itemcon:{
 					
 				}
@@ -184,6 +195,13 @@
 			},
 			marriage1(){
 				return (this.itemcon.marriage == 0)?'未婚':((this.itemcon.marriage == 1)?'离异无孩子':'其他')
+			},
+			showImg(){
+				if((this.itemcon.photoPublic == 0) && (this.itemcon.userId !== this.userId)){
+					return true
+				}else{
+					return false
+				}
 			}
 		},
 		methods:{
@@ -286,5 +304,14 @@ page{
 		font-size: 38upx;
 	}
 }
-
+.shareAc {
+		padding: 0 30upx;
+		height: 100upx;
+		line-height: 100upx;
+		background: #3d8ceb;
+		color: #fff;
+		font-size: 32upx;
+		text-align: center;
+		border-radius: 6upx;
+	}
 </style>

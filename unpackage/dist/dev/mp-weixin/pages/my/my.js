@@ -173,10 +173,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
     return {
+      isbind: false,
       icon: uni.getStorageSync('avatarUrl') ? uni.getStorageSync('avatarUrl') : '', //头像
       name: uni.getStorageSync('nickName') ? uni.getStorageSync('nickName') : '' //昵称
     };
@@ -193,7 +200,7 @@ var _default =
         url: "/pages/bindcode/bindcode" });
 
     },
-    init: function init() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var userinfo;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
+    init: function init() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var userinfo, arr;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
                   _this.$api.showLoading());case 2:_context.next = 4;return (
                   _this.$api.getData(_this.$api.webapi.userInfo));case 4:userinfo = _context.sent;_context.next = 7;return (
                   _this.$api.hideLoading());case 7: // 等待请求数据成功后，隐藏loading
@@ -201,11 +208,20 @@ var _default =
                 console.log(_this.$mp.page.route);
                 if (_this.$api.reshook(userinfo, _this.$mp.page.route)) {
                   console.log(userinfo);
+
+                  arr = Object.keys(userinfo.data.memberInfo); // 判断是否绑定邀请码
+                  if (arr.length == 0) {
+                    console.log('未绑定');
+                    _this.isbind = false;
+                  } else {
+                    console.log('已绑定');
+                    _this.isbind = true;
+                  }
                 }case 10:case "end":return _context.stop();}}}, _callee);}))();
     },
     infoDetail: function infoDetail() {
       uni.navigateTo({
-        url: '/pages/detail/detail' });
+        url: '/pages/detail/detail?number=self' });
 
     },
     infoEvent: function infoEvent() {

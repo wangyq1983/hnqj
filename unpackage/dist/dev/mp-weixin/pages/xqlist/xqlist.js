@@ -106,11 +106,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
+  listitem: function() {
+    return __webpack_require__.e(/*! import() | components/listitem/listitem */ "components/listitem/listitem").then(__webpack_require__.bind(null, /*! @/components/listitem/listitem.vue */ 87))
+  },
   nodata: function() {
-    return __webpack_require__.e(/*! import() | components/nodata/nodata */ "components/nodata/nodata").then(__webpack_require__.bind(null, /*! @/components/nodata/nodata.vue */ 87))
+    return __webpack_require__.e(/*! import() | components/nodata/nodata */ "components/nodata/nodata").then(__webpack_require__.bind(null, /*! @/components/nodata/nodata.vue */ 94))
   },
   endLine: function() {
-    return __webpack_require__.e(/*! import() | components/endLine/endLine */ "components/endLine/endLine").then(__webpack_require__.bind(null, /*! @/components/endLine/endLine.vue */ 94))
+    return __webpack_require__.e(/*! import() | components/endLine/endLine */ "components/endLine/endLine").then(__webpack_require__.bind(null, /*! @/components/endLine/endLine.vue */ 101))
   }
 }
 var render = function() {
@@ -167,54 +170,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var _default =
 {
   data: function data() {
@@ -223,7 +178,8 @@ var _default =
       isEmpty: 0,
       isEnd: false,
       rwlist: [],
-      searchTxt: '' };
+      searchTxt: '',
+      loginState: true };
 
   },
   onLoad: function onLoad(options) {
@@ -255,15 +211,21 @@ var _default =
                   _this2.$api.showLoading());case 3:_context2.next = 5;return (
                   _this2.$api.getData(_this2.$api.webapi.memberList, params));case 5:cjlist = _context2.sent;_context2.next = 8;return (
                   _this2.$api.hideLoading());case 8: // 等待请求数据成功后，隐藏loading
-                if (cjlist.data.length == 0) {
-                  _this2.isEmpty = 1;
-                  _this2.isEnd = false;
-                  _this2.rwlist = cjlist.data;
+                console.log(cjlist);
+                if (cjlist.resultCode == 4001 || cjlist.resultCode == 4000) {
+                  _this2.loginState = false;
                 } else {
-                  _this2.isEmpty = 0;
-                  _this2.isEnd = cjlist.data.length < _this2.dataStep ? true : false;
-                  _this2.rwlist = _this2.rwlist.length == 0 ? cjlist.data : _this2.rwlist.concat(cjlist.data);
-                }case 9:case "end":return _context2.stop();}}}, _callee2);}))();
+                  _this2.loginState = true;
+                  if (cjlist.data.length == 0) {
+                    _this2.isEmpty = 1;
+                    _this2.isEnd = false;
+                    _this2.rwlist = cjlist.data;
+                  } else {
+                    _this2.isEmpty = 0;
+                    _this2.isEnd = cjlist.data.length < _this2.dataStep ? true : false;
+                    _this2.rwlist = _this2.rwlist.length == 0 ? cjlist.data : _this2.rwlist.concat(cjlist.data);
+                  }
+                }case 10:case "end":return _context2.stop();}}}, _callee2);}))();
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
