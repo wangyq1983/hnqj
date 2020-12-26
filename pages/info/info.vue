@@ -217,6 +217,9 @@ export default {
 			format: true
 		});
 		return {
+			state:null,
+			id:null,
+			number:'',
 			isEdit:false,
 			sex: '',
 			itemsSex: [
@@ -374,38 +377,45 @@ export default {
 	onLoad:function(option){
 		this.init()
 	},
+	
 	methods: {
-		
-		
 		async init(){
 			await this.$api.showLoading(); // 显示loading
 			var searchRes = await this.$api.getData(this.$api.webapi.memberInfo);
 			await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
 			if(searchRes.resultCode == 0){
 				var arr = Object.keys(searchRes.data);
+				console.log('searchRes.data');
+				console.log(searchRes.data);
+				console.log(arr);
+				console.log(arr.length)
 				if(arr.length == 0){
 					this.isEdit = false;
 				}else{
 					this.isEdit = true;
 					var oldData = searchRes.data;
 					
-					var valItem = [this.sex,this.edu,this.house,this.car,this.onlyChild,this.marriage,this.photoPublic];
-					var arrItem = [this.itemsSex,this.itemsEdu,this.itemsHouse,this.itemsCar,this.itemsOnlyChild,this.itemsMarriage,this.itemsPhotoPublic];
-					//this.initItem(this.itemsSex,this.sex);
-					
+										//this.initItem(this.itemsSex,this.sex);
+					this.id = oldData.id;
+					this.number = oldData.number;
 					this.sex = oldData.gender;
 					this.edu = oldData.education;
 					this.house = oldData.house;
 					this.car = oldData.car;
 					this.onlyChild = oldData.onlyChild;
-					this.itemsMarriage = oldData.itemsMarriage;
+					this.marriage = oldData.marriage;
 					this.photoPublic = oldData.photoPublic;
 					
-					for(var i = 0; i <= valItem.length; i++){
+					var valItem = [this.sex,this.edu,this.house,this.car,this.onlyChild,this.marriage,this.photoPublic];
+					var arrItem = [this.itemsSex,this.itemsEdu,this.itemsHouse,this.itemsCar,this.itemsOnlyChild,this.itemsMarriage,this.itemsPhotoPublic];
+					
+					//this.initItem(this.itemsSex,this.sex);
+					
+					for(var i = 0; i < valItem.length; i++){
 						this.initItem(arrItem[i],valItem[i]);
 					}
 					
-					this.date = oldData.birthYear + '-' + oldData.birthMonth;
+					this.date = oldData.birthYear + '-' + (oldData.birthMonth?oldData.birthMonth:'');
 					this.shengao = oldData.height;
 					this.tizhong = oldData.bodyWeight;
 					this.sxxz = oldData.zodiacConstellation;
@@ -424,7 +434,7 @@ export default {
 					this.requirement = oldData.requirement;
 					this.state = oldData.state;
 					this.infoLock = oldData.infoLock;
-					this.imglist = oldData.imageList;
+					this.imglist = JSON.parse(oldData.imageList);
 					
 				}
 			}
@@ -448,7 +458,7 @@ export default {
 		},
 		initItem:function(arr,val){
 			for (let i = 0; i < arr.length; i++) {
-				if (arr[i].value === val) {
+				if (arr[i].value === String(val)) {
 					arr[i].checked = true;
 					break;
 				}
@@ -458,7 +468,7 @@ export default {
 			for (let i = 0; i < this.itemsOnlyChild.length; i++) {
 				if (this.itemsOnlyChild[i].value === evt.target.value) {
 					this.current = i;
-					this.sex = evt.target.value;
+					this.onlyChild = evt.target.value;
 					break;
 				}
 			}
@@ -494,7 +504,7 @@ export default {
 			for (let i = 0; i < this.itemsMarriage.length; i++) {
 				if (this.itemsMarriage[i].value === evt.target.value) {
 					this.current = i;
-					this.edu = evt.target.value;
+					this.marriage = evt.target.value;
 					break;
 				}
 			}
@@ -503,7 +513,7 @@ export default {
 			for (let i = 0; i < this.itemsPhotoPublic.length; i++) {
 				if (this.itemsPhotoPublic[i].value === evt.target.value) {
 					this.current = i;
-					this.edu = evt.target.value;
+					this.photoPublic = evt.target.value;
 					break;
 				}
 			}
@@ -600,9 +610,20 @@ export default {
 				filePath: filePath,
 				cloudPath: extname,
 				fileType: 'image',
-				success(res) {
+				async success(res) {
 					console.log(res);
 					let imageUrl = res.fileID; //云端返回的图片地址
+					
+					var params = {
+						media_url:res.fileID,
+						media_type:2
+					}
+					await _this.$api.showLoading(); // 显示loading
+					let checkres = await _this.$api.postData(_this.$api.webapi.mediaCheck, params);
+					await _this.$api.hideLoading();
+					
+					console.log(checkres)
+					
 					_this.imglist = _this.imglist.concat(res.fileID);
 					console.log('this_imglist is =');
 					console.log(_this.imglist);
@@ -724,8 +745,7 @@ export default {
 						title: '压缩成功',
 						icon: 'success'
 					});
-					this.compressPaths = this.compressPaths.concat([res]);
-
+					this.compressPaths = this.compressPaths.concat([res]);					
 					this.cloudUpload(res, extname);
 				})
 				.catch(err => {
@@ -781,7 +801,15 @@ export default {
 				urls: this.imglist
 			});
 		},
-
+		
+		submitSuccess(){
+			setTimeout(function(){
+				uni.reLaunch({
+					url:'/pages/my/my'
+				})
+			},1500)
+		},
+		
 		submitEvent: async function() {
 			var that = this;
 			if(this.sex == ''){
@@ -793,67 +821,89 @@ export default {
 			var yearmonth = this.date.split('-');
 			var birthYear = yearmonth[0];
 			var birthMonth = yearmonth[1];
-			var params = {
-				
-				gender: this.sex?this.sex:'',
-				birthYear: birthYear,
-				birthMonth:birthMonth,
-				zodiacConstellation:this.sxxz,
-				height: this.shengao,
-				bodyWeight: this.tizhong,
-				education: this.edu,
-				job:this.job,
-				income:this.income,
-				house:this.house,
-				houseTxt:this.houseTxt,
-				car:this.car,
-				carTxt:this.carTxt,
-				hometown:this.hometown,
-				workArea:this.workArea,
-				parentsInfo:this.parentsInfo,
-				onlyChild:this.onlyChild,
-				family:this.family,
-				marriage:this.marriage,
-				marriageTxt:this.marriageTxt,
-				introduction:this.introduction,
-				requirement:this.requirement,
-				imageList:this.imglist
-			};
-			console.log(params);
-			await this.$api.showLoading(); // 显示loading
-			var memcreat = await this.$api.postData(this.$api.webapi.memberCreate, params);
-			await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
-			if (this.$api.reshook(memcreat, this.$mp.page.route)) {
-				// this.createSuccess(memcreat,true); 
-				console.log(memcreat);
-				uni.showToast({
-					title:'提交成功',
-					icon:'none'
-				})
-				// uniCloud.callFunction({
-				// 	//调用云端函数，把图片地址写入表
-				// 	name: 'adduserimg', //云函数名称
-				// 	data: {
-				// 		//提交给云端的数据
-				// 		userId:uni.getStorageSync('userId'),
-				// 		imglist: that.imglist,
-				// 		createTime: Date.now()
-				// 	},
-				// 	success: res => {
-				// 		console.log('数据插入成功');
-				// 		console.log(res);
-				// 		uni.showToast({
-				// 			title: '提交成功',
-				// 			icon: 'none'
-				// 		});
-				// 	},
-				// 	fail: err => {
-				// 		console.log(err);
-				// 	},
-				// 	complete: () => {}
-				// });
-				
+			if(this.isEdit == true){
+				var params = {
+					id:this.id,
+					number:this.number,
+					gender: this.sex?this.sex:'',
+					birthYear: birthYear,
+					birthMonth:birthMonth,
+					zodiacConstellation:this.sxxz,
+					height: this.shengao,
+					bodyWeight: this.tizhong,
+					education: this.edu,
+					job:this.job,
+					income:this.income,
+					house:this.house,
+					houseTxt:this.houseTxt,
+					car:this.car,
+					carTxt:this.carTxt,
+					hometown:this.hometown,
+					workArea:this.workArea,
+					parentsInfo:this.parentsInfo,
+					onlyChild:this.onlyChild,
+					family:this.family,
+					marriage:this.marriage,
+					marriageTxt:this.marriageTxt,
+					introduction:this.introduction,
+					requirement:this.requirement,
+					imageList:JSON.stringify(this.imglist)
+				};
+				console.log(params);
+				await this.$api.showLoading(); // 显示loading
+				var memcreat = await this.$api.postData(this.$api.webapi.memberUpdate, params);
+				await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
+				if (this.$api.reshook(memcreat, this.$mp.page.route)) {
+					// this.createSuccess(memcreat,true); 
+					console.log(memcreat);
+					uni.showToast({
+						title:'提交成功,后台审核通过后自动发布此信息',
+						icon:'none'
+					})
+					that.submitSuccess()
+				}
+			}else{
+				var params = {
+					
+					gender: this.sex?this.sex:'',
+					birthYear: birthYear,
+					birthMonth:birthMonth,
+					zodiacConstellation:this.sxxz,
+					height: this.shengao,
+					bodyWeight: this.tizhong,
+					education: this.edu,
+					job:this.job,
+					income:this.income,
+					house:this.house,
+					houseTxt:this.houseTxt,
+					car:this.car,
+					carTxt:this.carTxt,
+					hometown:this.hometown,
+					workArea:this.workArea,
+					parentsInfo:this.parentsInfo,
+					onlyChild:this.onlyChild,
+					family:this.family,
+					marriage:this.marriage,
+					marriageTxt:this.marriageTxt,
+					introduction:this.introduction,
+					requirement:this.requirement,
+					imageList:JSON.stringify(this.imglist)
+				};
+				console.log(params);
+				await this.$api.showLoading(); // 显示loading
+				var memcreat = await this.$api.postData(this.$api.webapi.memberCreate, params);
+				await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
+				if (this.$api.reshook(memcreat, this.$mp.page.route)) {
+					// this.createSuccess(memcreat,true); 
+					console.log(memcreat);
+					uni.showToast({
+						title:'提交成功',
+						icon:'none'
+					})
+					that.submitSuccess()
+				}
 			}
+			
 		}
 	}
 };

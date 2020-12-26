@@ -14,14 +14,14 @@
 						还未绑定账号
 					</view>
 					<view class="bindtxt" v-if="isbind">
-						已绑定账号
+						有效期{{expiryDate}}
 					</view>
 				</view>
 				<view class="openCode">
 					<view class="codeBtn" @tap = "gotoBind" v-if="!isbind">
 						马上绑定
 					</view>
-					<view class="codeBtn" @tap = "gotoBind" v-if="isbind">
+					<view class="codeBtn" v-if="isbind">
 						已绑定
 					</view>
 				</view>
@@ -52,6 +52,7 @@ export default {
 	data() {
 		return {
 			isbind:false,
+			expiryDate:'',
 			icon: uni.getStorageSync('avatarUrl') ? uni.getStorageSync('avatarUrl') : '', //头像
 			name: uni.getStorageSync('nickName') ? uni.getStorageSync('nickName') : '', //昵称
 		};
@@ -84,6 +85,19 @@ export default {
 				}else{
 					console.log('已绑定');
 					this.isbind = true;
+					uni.setStorage({
+						key: 'number',
+						data: userinfo.data.memberInfo.number
+					});
+					uni.setStorage({
+						key: 'expiryDate',
+						data: userinfo.data.memberInfo.expiryDate
+					});
+					uni.setStorage({
+						key: 'state',
+						data: userinfo.data.memberInfo.state
+					});
+					this.expiryDate =  userinfo.data.memberInfo.expiryDate
 				}
 			}
 		},
@@ -159,9 +173,9 @@ export default {
 				line-height: 60upx;
 				color: #999;
 				font-size: 28upx;
+				overflow: hidden;
 			}
 		}
-		
 		.openCode{
 			width:200upx;
 			height: 140upx;

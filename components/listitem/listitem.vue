@@ -1,28 +1,35 @@
 <template>
 	<view class="xqitem">
-		<div class="xq1">
+		<view class="xq1">
 			{{itemcon.number}}<text>/</text>{{gender}}<text>/</text>{{itemcon.birthYear}}年<text>/</text>{{itemcon.height}}厘米<text>/</text>{{itemcon.bodyWeight}}公斤
-		</div>
-		<div class="xq2">
+		</view>
+		<view class="xq2">
 			{{itemcon.education}}<text>/</text> {{itemcon.job}} <text>/</text> 年收入{{itemcon.income}}
-		</div>
-		<div class="xq3">
+		</view>
+		<view class="xq3">
 			{{house1}}/{{car1}}<text>/</text>工作区域{{itemcon.workArea}}<text>/</text> {{marriage1}} 
-		</div>
-		<div class="xq4">
+		</view>
+		<view class="xq4">
 			个人描述：{{itemcon.introduction}}
-		</div>
-		<div class="actionWarp">
+		</view>
+		<view class="userimg" v-if="hasImg && showImg">
+			<image :src="item" mode="aspectFill" v-for="(item, index) in imglist" :key="index"></image>
+		</view>
+		<view class="userimg" v-if="hasImg && (!showImg)">
+			<text>用户已设置照片不公开</text>
+		</view>
+		
+		<view class="actionWarp">
 			<view class="enterdetail" @tap = "viewDetail" :data-number = "itemcon.number">
 				<image src="/static/view.png" mode=""></image>
 				<text>查看详情</text>
 				
 			</view>
-			<view class="">
+			<!-- <view class="">
 				<image src="/static/glz.png" mode=""></image>
 				<text>请红娘递橄榄枝</text>
-			</view>
-		</div>
+			</view> -->
+		</view>
 	</view>
 </template>
 
@@ -56,6 +63,28 @@
 			},
 			marriage1(){
 				return (this.itemcon.marriage == 0)?'未婚':((this.itemcon.marriage == 1)?'离异无孩子':'其他')
+			},
+			imglist(){
+				if(JSON.parse(this.itemcon.imageList).length > 0){
+					return JSON.parse(this.itemcon.imageList)
+				}else{
+					return []
+				}
+				 
+			},
+			hasImg(){
+				if(JSON.parse(this.itemcon.imageList).length > 0){
+					return true;
+				}else{
+					return false;
+				}
+			},
+			showImg(){
+				if(this.itemcon.photoPublic == 0){
+					return false
+				}else{
+					return true
+				}
 			}
 		},
 		methods: {
@@ -74,7 +103,8 @@
 	background: #fff;
 	width:700upx;
 	padding:25upx;
-	margin: 25upx 0;
+	border-top: 25upx solid #ededed;
+	margin-bottom: 25upx;
 	text{
 		padding:0 5upx;
 		opacity: 0.3;
@@ -101,10 +131,20 @@
 		border-bottom:1upx solid #eee;
 		line-height: 64upx;
 	}
+	.userimg{
+		 display: flex;
+		 flex-direction: row;
+		 justify-content: center;
+		 align-items: center;
+		 image{
+			 width:200upx;
+			 height:200upx;
+		 }
+	}
 	.actionWarp{
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
+		justify-content: center;
 		align-items: center;
 		padding:20upx 20upx 0 20upx;
 		view{

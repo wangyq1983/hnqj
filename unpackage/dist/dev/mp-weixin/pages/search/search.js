@@ -94,10 +94,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   nodata: function() {
-    return __webpack_require__.e(/*! import() | components/nodata/nodata */ "components/nodata/nodata").then(__webpack_require__.bind(null, /*! @/components/nodata/nodata.vue */ 94))
+    return __webpack_require__.e(/*! import() | components/nodata/nodata */ "components/nodata/nodata").then(__webpack_require__.bind(null, /*! @/components/nodata/nodata.vue */ 102))
   },
   detailinfo: function() {
-    return __webpack_require__.e(/*! import() | components/detailinfo/detailinfo */ "components/detailinfo/detailinfo").then(__webpack_require__.bind(null, /*! @/components/detailinfo/detailinfo.vue */ 115))
+    return __webpack_require__.e(/*! import() | components/detailinfo/detailinfo */ "components/detailinfo/detailinfo").then(__webpack_require__.bind(null, /*! @/components/detailinfo/detailinfo.vue */ 123))
   }
 }
 var render = function() {

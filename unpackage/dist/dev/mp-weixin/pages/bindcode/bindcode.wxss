@@ -35,6 +35,15 @@
   text-align: center;
   line-height: 100rpx;
 }
+.defaultBtn {
+  background: #363636;
+  color: #ffce00;
+  font-size: 36rpx;
+  -webkit-border-radius: 6rpx;
+          border-radius: 6rpx;
+  text-align: center;
+  line-height: 100rpx;
+}
 .pageTitle {
   width: 750rpx;
   height: 80rpx;

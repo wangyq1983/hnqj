@@ -107,13 +107,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   listitem: function() {
-    return __webpack_require__.e(/*! import() | components/listitem/listitem */ "components/listitem/listitem").then(__webpack_require__.bind(null, /*! @/components/listitem/listitem.vue */ 87))
+    return __webpack_require__.e(/*! import() | components/listitem/listitem */ "components/listitem/listitem").then(__webpack_require__.bind(null, /*! @/components/listitem/listitem.vue */ 95))
   },
   nodata: function() {
-    return __webpack_require__.e(/*! import() | components/nodata/nodata */ "components/nodata/nodata").then(__webpack_require__.bind(null, /*! @/components/nodata/nodata.vue */ 94))
+    return __webpack_require__.e(/*! import() | components/nodata/nodata */ "components/nodata/nodata").then(__webpack_require__.bind(null, /*! @/components/nodata/nodata.vue */ 102))
   },
   endLine: function() {
-    return __webpack_require__.e(/*! import() | components/endLine/endLine */ "components/endLine/endLine").then(__webpack_require__.bind(null, /*! @/components/endLine/endLine.vue */ 101))
+    return __webpack_require__.e(/*! import() | components/endLine/endLine */ "components/endLine/endLine").then(__webpack_require__.bind(null, /*! @/components/endLine/endLine.vue */ 109))
   }
 }
 var render = function() {
@@ -174,7 +174,7 @@ var _default =
 {
   data: function data() {
     return {
-      dataStep: 10,
+      dataStep: 20,
       isEmpty: 0,
       isEnd: false,
       rwlist: [],
@@ -185,6 +185,16 @@ var _default =
   onLoad: function onLoad(options) {
     this.init();
   },
+  onReachBottom: function () {var _onReachBottom = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var params;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+              params = {
+                from: this.rwlist.length + 1,
+                count: this.dataStep };
+
+
+              if (this.isEnd !== true) {
+                this.renderList(this.rwlist.length + 1, this.dataStep, this.date);
+              }case 2:case "end":return _context.stop();}}}, _callee, this);}));function onReachBottom() {return _onReachBottom.apply(this, arguments);}return onReachBottom;}(),
+
   methods: {
     searchEvent: function searchEvent() {
       console.log(this.searchTxt);
@@ -199,17 +209,17 @@ var _default =
 
       }
     },
-    init: function init() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-                _this.renderList(1, _this.dataStep);case 1:case "end":return _context.stop();}}}, _callee);}))();
+    init: function init() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+                _this.renderList(1, _this.dataStep);case 1:case "end":return _context2.stop();}}}, _callee2);}))();
     },
 
-    renderList: function renderList(from, count) {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var params, cjlist;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+    renderList: function renderList(from, count) {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var params, cjlist;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
                 params = {
                   from: from,
-                  count: count };_context2.next = 3;return (
+                  count: count };_context3.next = 3;return (
 
-                  _this2.$api.showLoading());case 3:_context2.next = 5;return (
-                  _this2.$api.getData(_this2.$api.webapi.memberList, params));case 5:cjlist = _context2.sent;_context2.next = 8;return (
+                  _this2.$api.showLoading());case 3:_context3.next = 5;return (
+                  _this2.$api.getData(_this2.$api.webapi.memberList, params));case 5:cjlist = _context3.sent;_context3.next = 8;return (
                   _this2.$api.hideLoading());case 8: // 等待请求数据成功后，隐藏loading
                 console.log(cjlist);
                 if (cjlist.resultCode == 4001 || cjlist.resultCode == 4000) {
@@ -225,7 +235,7 @@ var _default =
                     _this2.isEnd = cjlist.data.length < _this2.dataStep ? true : false;
                     _this2.rwlist = _this2.rwlist.length == 0 ? cjlist.data : _this2.rwlist.concat(cjlist.data);
                   }
-                }case 10:case "end":return _context2.stop();}}}, _callee2);}))();
+                }case 10:case "end":return _context3.stop();}}}, _callee3);}))();
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   helangCompress: function() {
-    return __webpack_require__.e(/*! import() | components/helang-compress/helang-compress */ "components/helang-compress/helang-compress").then(__webpack_require__.bind(null, /*! @/components/helang-compress/helang-compress.vue */ 108))
+    return __webpack_require__.e(/*! import() | components/helang-compress/helang-compress */ "components/helang-compress/helang-compress").then(__webpack_require__.bind(null, /*! @/components/helang-compress/helang-compress.vue */ 116))
   }
 }
 var render = function() {
@@ -134,7 +134,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni, uniCloud) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var helangCompress = function helangCompress() {__webpack_require__.e(/*! require.ensure | components/helang-compress/helang-compress */ "components/helang-compress/helang-compress").then((function () {return resolve(__webpack_require__(/*! ../../components/helang-compress/helang-compress */ 108));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni, uniCloud) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var helangCompress = function helangCompress() {__webpack_require__.e(/*! require.ensure | components/helang-compress/helang-compress */ "components/helang-compress/helang-compress").then((function () {return resolve(__webpack_require__(/*! ../../components/helang-compress/helang-compress */ 116));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -348,11 +348,14 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     helangCompress: helangCompress },
 
-  data: function data() {
+  data: function data() {var _ref;
     var currentDate = this.getDate({
       format: true });
 
-    return {
+    return _ref = {
+      state: null,
+      id: null,
+      number: '',
       isEdit: false,
       sex: '',
       itemsSex: [
@@ -489,14 +492,14 @@ __webpack_require__.r(__webpack_exports__);
       marriageTxt: '',
       introduction: '',
       requirement: '',
-      photoPublic: '',
-      state: 0,
-      infoLock: 0,
-      imglist: [],
-      compressPaths: [],
-      paths: [],
-      curindex: 0,
-      filelist: [] };
+      photoPublic: '' }, _defineProperty(_ref, "state",
+    0), _defineProperty(_ref, "infoLock",
+    0), _defineProperty(_ref, "imglist",
+    []), _defineProperty(_ref, "compressPaths",
+    []), _defineProperty(_ref, "paths",
+    []), _defineProperty(_ref, "curindex",
+    0), _defineProperty(_ref, "filelist",
+    []), _ref;
 
   },
   computed: {
@@ -510,38 +513,45 @@ __webpack_require__.r(__webpack_exports__);
   onLoad: function onLoad(option) {
     this.init();
   },
+
   methods: {
-
-
     init: function init() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var searchRes, arr, oldData, valItem, arrItem, i;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
                   _this2.$api.showLoading());case 2:_context.next = 4;return (
                   _this2.$api.getData(_this2.$api.webapi.memberInfo));case 4:searchRes = _context.sent;_context.next = 7;return (
                   _this2.$api.hideLoading());case 7: // 等待请求数据成功后，隐藏loading
                 if (searchRes.resultCode == 0) {
                   arr = Object.keys(searchRes.data);
+                  console.log('searchRes.data');
+                  console.log(searchRes.data);
+                  console.log(arr);
+                  console.log(arr.length);
                   if (arr.length == 0) {
                     _this2.isEdit = false;
                   } else {
                     _this2.isEdit = true;
                     oldData = searchRes.data;
 
-                    valItem = [_this2.sex, _this2.edu, _this2.house, _this2.car, _this2.onlyChild, _this2.marriage, _this2.photoPublic];
-                    arrItem = [_this2.itemsSex, _this2.itemsEdu, _this2.itemsHouse, _this2.itemsCar, _this2.itemsOnlyChild, _this2.itemsMarriage, _this2.itemsPhotoPublic];
                     //this.initItem(this.itemsSex,this.sex);
-
+                    _this2.id = oldData.id;
+                    _this2.number = oldData.number;
                     _this2.sex = oldData.gender;
                     _this2.edu = oldData.education;
                     _this2.house = oldData.house;
                     _this2.car = oldData.car;
                     _this2.onlyChild = oldData.onlyChild;
-                    _this2.itemsMarriage = oldData.itemsMarriage;
+                    _this2.marriage = oldData.marriage;
                     _this2.photoPublic = oldData.photoPublic;
 
-                    for (i = 0; i <= valItem.length; i++) {
+                    valItem = [_this2.sex, _this2.edu, _this2.house, _this2.car, _this2.onlyChild, _this2.marriage, _this2.photoPublic];
+                    arrItem = [_this2.itemsSex, _this2.itemsEdu, _this2.itemsHouse, _this2.itemsCar, _this2.itemsOnlyChild, _this2.itemsMarriage, _this2.itemsPhotoPublic];
+
+                    //this.initItem(this.itemsSex,this.sex);
+
+                    for (i = 0; i < valItem.length; i++) {
                       _this2.initItem(arrItem[i], valItem[i]);
                     }
 
-                    _this2.date = oldData.birthYear + '-' + oldData.birthMonth;
+                    _this2.date = oldData.birthYear + '-' + (oldData.birthMonth ? oldData.birthMonth : '');
                     _this2.shengao = oldData.height;
                     _this2.tizhong = oldData.bodyWeight;
                     _this2.sxxz = oldData.zodiacConstellation;
@@ -560,7 +570,7 @@ __webpack_require__.r(__webpack_exports__);
                     _this2.requirement = oldData.requirement;
                     _this2.state = oldData.state;
                     _this2.infoLock = oldData.infoLock;
-                    _this2.imglist = oldData.imageList;
+                    _this2.imglist = JSON.parse(oldData.imageList);
 
                   }
                 }case 8:case "end":return _context.stop();}}}, _callee);}))();
@@ -584,7 +594,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     initItem: function initItem(arr, val) {
       for (var i = 0; i < arr.length; i++) {
-        if (arr[i].value === val) {
+        if (arr[i].value === String(val)) {
           arr[i].checked = true;
           break;
         }
@@ -594,7 +604,7 @@ __webpack_require__.r(__webpack_exports__);
       for (var i = 0; i < this.itemsOnlyChild.length; i++) {
         if (this.itemsOnlyChild[i].value === evt.target.value) {
           this.current = i;
-          this.sex = evt.target.value;
+          this.onlyChild = evt.target.value;
           break;
         }
       }
@@ -630,7 +640,7 @@ __webpack_require__.r(__webpack_exports__);
       for (var i = 0; i < this.itemsMarriage.length; i++) {
         if (this.itemsMarriage[i].value === evt.target.value) {
           this.current = i;
-          this.edu = evt.target.value;
+          this.marriage = evt.target.value;
           break;
         }
       }
@@ -639,7 +649,7 @@ __webpack_require__.r(__webpack_exports__);
       for (var i = 0; i < this.itemsPhotoPublic.length; i++) {
         if (this.itemsPhotoPublic[i].value === evt.target.value) {
           this.current = i;
-          this.edu = evt.target.value;
+          this.photoPublic = evt.target.value;
           break;
         }
       }
@@ -736,32 +746,43 @@ __webpack_require__.r(__webpack_exports__);
         filePath: filePath,
         cloudPath: extname,
         fileType: 'image',
-        success: function success(res) {
-          console.log(res);
-          var imageUrl = res.fileID; //云端返回的图片地址
-          _this.imglist = _this.imglist.concat(res.fileID);
-          console.log('this_imglist is =');
-          console.log(_this.imglist);
-          uniCloud.callFunction({
-            //调用云端函数，把图片地址写入表
-            name: 'addImage', //云函数名称
-            data: {
-              //提交给云端的数据
-              imageUrl: imageUrl,
-              createTime: Date.now() },
+        success: function success(res) {return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var imageUrl, params, checkres;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+                    console.log(res);
+                    imageUrl = res.fileID; //云端返回的图片地址
 
-            success: function success(res) {
-              console.log('数据插入成功');
-              console.log(res);
-              uni.showToast({
-                title: '上传成功',
-                icon: 'none' });
+                    params = {
+                      media_url: res.fileID,
+                      media_type: 2 };_context2.next = 5;return (
 
-            },
-            fail: function fail(err) {
-              console.log(err);
-            },
-            complete: function complete() {} });
+                      _this.$api.showLoading());case 5:_context2.next = 7;return (
+                      _this.$api.postData(_this.$api.webapi.mediaCheck, params));case 7:checkres = _context2.sent;_context2.next = 10;return (
+                      _this.$api.hideLoading());case 10:
+
+                    console.log(checkres);
+
+                    _this.imglist = _this.imglist.concat(res.fileID);
+                    console.log('this_imglist is =');
+                    console.log(_this.imglist);
+                    uniCloud.callFunction({
+                      //调用云端函数，把图片地址写入表
+                      name: 'addImage', //云函数名称
+                      data: {
+                        //提交给云端的数据
+                        imageUrl: imageUrl,
+                        createTime: Date.now() },
+
+                      success: function success(res) {
+                        console.log('数据插入成功');
+                        console.log(res);
+                        uni.showToast({
+                          title: '上传成功',
+                          icon: 'none' });
+
+                      },
+                      fail: function fail(err) {
+                        console.log(err);
+                      },
+                      complete: function complete() {} });case 15:case "end":return _context2.stop();}}}, _callee2);}))();
 
         },
         fail: function fail(err) {
@@ -861,7 +882,6 @@ __webpack_require__.r(__webpack_exports__);
           icon: 'success' });
 
         _this3.compressPaths = _this3.compressPaths.concat([res]);
-
         _this3.cloudUpload(res, extname);
       }).
       catch(function (err) {
@@ -918,7 +938,15 @@ __webpack_require__.r(__webpack_exports__);
 
     },
 
-    submitEvent: function () {var _submitEvent = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var that, yearmonth, birthYear, birthMonth, params, memcreat;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+    submitSuccess: function submitSuccess() {
+      setTimeout(function () {
+        uni.reLaunch({
+          url: '/pages/my/my' });
+
+      }, 1500);
+    },
+
+    submitEvent: function () {var _submitEvent = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var that, yearmonth, birthYear, birthMonth, params, memcreat;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
                 that = this;
                 if (this.sex == '') {
                   uni.showToast({
@@ -928,7 +956,49 @@ __webpack_require__.r(__webpack_exports__);
                 }
                 yearmonth = this.date.split('-');
                 birthYear = yearmonth[0];
-                birthMonth = yearmonth[1];
+                birthMonth = yearmonth[1];if (!(
+                this.isEdit == true)) {_context3.next = 18;break;}
+                params = {
+                  id: this.id,
+                  number: this.number,
+                  gender: this.sex ? this.sex : '',
+                  birthYear: birthYear,
+                  birthMonth: birthMonth,
+                  zodiacConstellation: this.sxxz,
+                  height: this.shengao,
+                  bodyWeight: this.tizhong,
+                  education: this.edu,
+                  job: this.job,
+                  income: this.income,
+                  house: this.house,
+                  houseTxt: this.houseTxt,
+                  car: this.car,
+                  carTxt: this.carTxt,
+                  hometown: this.hometown,
+                  workArea: this.workArea,
+                  parentsInfo: this.parentsInfo,
+                  onlyChild: this.onlyChild,
+                  family: this.family,
+                  marriage: this.marriage,
+                  marriageTxt: this.marriageTxt,
+                  introduction: this.introduction,
+                  requirement: this.requirement,
+                  imageList: JSON.stringify(this.imglist) };
+
+                console.log(params);_context3.next = 10;return (
+                  this.$api.showLoading());case 10:_context3.next = 12;return (
+                  this.$api.postData(this.$api.webapi.memberUpdate, params));case 12:memcreat = _context3.sent;_context3.next = 15;return (
+                  this.$api.hideLoading());case 15: // 等待请求数据成功后，隐藏loading
+                if (this.$api.reshook(memcreat, this.$mp.page.route)) {
+                  // this.createSuccess(memcreat,true); 
+                  console.log(memcreat);
+                  uni.showToast({
+                    title: '提交成功,后台审核通过后自动发布此信息',
+                    icon: 'none' });
+
+                  that.submitSuccess();
+                }_context3.next = 28;break;case 18:
+
                 params = {
 
                   gender: this.sex ? this.sex : '',
@@ -953,12 +1023,12 @@ __webpack_require__.r(__webpack_exports__);
                   marriageTxt: this.marriageTxt,
                   introduction: this.introduction,
                   requirement: this.requirement,
-                  imageList: this.imglist };
+                  imageList: JSON.stringify(this.imglist) };
 
-                console.log(params);_context2.next = 9;return (
-                  this.$api.showLoading());case 9:_context2.next = 11;return (
-                  this.$api.postData(this.$api.webapi.memberCreate, params));case 11:memcreat = _context2.sent;_context2.next = 14;return (
-                  this.$api.hideLoading());case 14: // 等待请求数据成功后，隐藏loading
+                console.log(params);_context3.next = 22;return (
+                  this.$api.showLoading());case 22:_context3.next = 24;return (
+                  this.$api.postData(this.$api.webapi.memberCreate, params));case 24:memcreat = _context3.sent;_context3.next = 27;return (
+                  this.$api.hideLoading());case 27: // 等待请求数据成功后，隐藏loading
                 if (this.$api.reshook(memcreat, this.$mp.page.route)) {
                   // this.createSuccess(memcreat,true); 
                   console.log(memcreat);
@@ -966,30 +1036,8 @@ __webpack_require__.r(__webpack_exports__);
                     title: '提交成功',
                     icon: 'none' });
 
-                  // uniCloud.callFunction({
-                  // 	//调用云端函数，把图片地址写入表
-                  // 	name: 'adduserimg', //云函数名称
-                  // 	data: {
-                  // 		//提交给云端的数据
-                  // 		userId:uni.getStorageSync('userId'),
-                  // 		imglist: that.imglist,
-                  // 		createTime: Date.now()
-                  // 	},
-                  // 	success: res => {
-                  // 		console.log('数据插入成功');
-                  // 		console.log(res);
-                  // 		uni.showToast({
-                  // 			title: '提交成功',
-                  // 			icon: 'none'
-                  // 		});
-                  // 	},
-                  // 	fail: err => {
-                  // 		console.log(err);
-                  // 	},
-                  // 	complete: () => {}
-                  // });
-
-                }case 15:case "end":return _context2.stop();}}}, _callee2, this);}));function submitEvent() {return _submitEvent.apply(this, arguments);}return submitEvent;}() } };exports.default = _default;
+                  that.submitSuccess();
+                }case 28:case "end":return _context3.stop();}}}, _callee3, this);}));function submitEvent() {return _submitEvent.apply(this, arguments);}return submitEvent;}() } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 39)["default"]))
 
 /***/ }),

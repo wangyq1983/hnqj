@@ -184,6 +184,7 @@ var _default =
   data: function data() {
     return {
       isbind: false,
+      expiryDate: '',
       icon: uni.getStorageSync('avatarUrl') ? uni.getStorageSync('avatarUrl') : '', //头像
       name: uni.getStorageSync('nickName') ? uni.getStorageSync('nickName') : '' //昵称
     };
@@ -216,6 +217,19 @@ var _default =
                   } else {
                     console.log('已绑定');
                     _this.isbind = true;
+                    uni.setStorage({
+                      key: 'number',
+                      data: userinfo.data.memberInfo.number });
+
+                    uni.setStorage({
+                      key: 'expiryDate',
+                      data: userinfo.data.memberInfo.expiryDate });
+
+                    uni.setStorage({
+                      key: 'state',
+                      data: userinfo.data.memberInfo.state });
+
+                    _this.expiryDate = userinfo.data.memberInfo.expiryDate;
                   }
                 }case 10:case "end":return _context.stop();}}}, _callee);}))();
     },

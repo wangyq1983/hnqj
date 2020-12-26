@@ -138,12 +138,9 @@
 				</view>
 			</view>
 			
-			<view class="imageArea" v-if="imglist.length > 0">
+			<view class="imageArea" v-if="imglist.length > 0 && (!showImg)">
 				<view class="bg-img" v-for="(item, index) in imglist" :key="index">
 					<image :src="item" mode="aspectFill" :data-index="index" @tap="preview"></image>
-					<view class="delimg" @tap = 'delimg' :data-fileid = "item">
-						×
-					</view>
 				</view>
 				<!-- <view v-for="items in imglist" :key = "items" class="imgwarp">
 					<image :src="items" mode="aspectFit"></image>
@@ -155,9 +152,8 @@
 			<view class="actionBox" v-if="itemcon.userId == userId">
 				<button class="shareAc" open-type="share"><view class="">分享一下</view></button>
 			</view>
-			<view class="actionBox" v-if="showImg"><view class="btn" @tap="submitEvent">申请查看照片</view></view>
-			<view class="actionBox" v-if="itemcon.userId !== userId"><view class="btn" @tap="submitEvent">请红娘递橄榄枝</view></view>
-			
+			<view class="actionBox" v-if="showImg"><view class="btn" @tap="viewphoto">申请查看照片</view></view>
+			<view class="actionBox" v-if="itemcon.userId !== userId"><view class="btn" @tap="ganlanzhi">请红娘递橄榄枝</view></view>
 		</view>
 	</view>
 </template>
@@ -167,9 +163,11 @@
 		data() {
 			return {
 				userId:uni.getStorageSync('userId'),
+				selfNumber:uni.getStorageSync('number'),
 				itemcon:{
 					
-				}
+				},
+				imglist:[]
 			};
 		},
 		props: {
@@ -179,6 +177,7 @@
 			console.log('detailinfo');
 			console.log(this.info);
 			this.itemcon = this.info;
+			this.imglist = JSON.parse(this.info.imageList);
 		},
 		computed: {
 			gender() {
@@ -197,7 +196,7 @@
 				return (this.itemcon.marriage == 0)?'未婚':((this.itemcon.marriage == 1)?'离异无孩子':'其他')
 			},
 			showImg(){
-				if((this.itemcon.photoPublic == 0) && (this.itemcon.userId !== this.userId)){
+				if((this.itemcon.photoPublic == 0) && (this.itemcon.userId !== this.userId) && (JSON.parse(this.itemcon.imageList).length > 0)){
 					return true
 				}else{
 					return false
@@ -205,7 +204,33 @@
 			}
 		},
 		methods:{
-			
+			preview(e) {
+				const index = e.currentTarget.dataset.index;
+				uni.previewImage({
+					current: this.imglist[index],
+					urls: this.imglist
+				});
+			},
+			viewphoto(){
+				var params = {
+					applyNumber:this.selfNumber,
+					responseNumber:this.itemcon.number,
+					eventType:'viewphoto',
+				}
+				uni.navigateTo({
+					url:"/pages/examine/examine?"+this.$api.encodeData(params)
+				})
+			},
+			ganlanzhi(){
+				var params = {
+					applyNumber:this.selfNumber,
+					responseNumber:this.itemcon.number,
+					eventType:'ganlanzhi',
+				}
+				uni.navigateTo({
+					url:"/pages/examine/examine?"+this.$api.encodeData(params)
+				})
+			}
 		}
 	}
 </script>

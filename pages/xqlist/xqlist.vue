@@ -12,7 +12,7 @@
 		<view class="xqlist">
 			<listitem v-for="items in rwlist" :key="items.id" :info="items"></listitem>
 		</view>	
-		<view v-if="isEmpty == 1"><nodata wordinfo="没有任务哦" type="1"></nodata></view>
+		<view v-if="isEmpty == 1"><nodata wordinfo="没有数据哦" type="1"></nodata></view>
 		<view v-if="isEnd == true"><endLine></endLine></view>
 	</view>
 </template>
@@ -21,7 +21,7 @@
 	export default {
 		data() {
 			return {
-				dataStep:10,
+				dataStep:20,
 				isEmpty: 0,
 				isEnd: false,
 				rwlist:[],
@@ -32,6 +32,16 @@
 		onLoad:function(options){
 			this.init()
 		},
+		onReachBottom: async function() {
+		let params = {
+			from: this.rwlist.length + 1,
+			count: this.dataStep
+		};
+
+		if (this.isEnd !== true) {
+			this.renderList(this.rwlist.length + 1, this.dataStep, this.date);
+		}
+	},
 		methods: {
 			searchEvent(){
 				console.log(this.searchTxt);
@@ -79,9 +89,7 @@
 </script>
 
 <style lang="scss">
-page{
-	background: #ededed;
-}
+
 
 .xqlist{
 	width:750upx;

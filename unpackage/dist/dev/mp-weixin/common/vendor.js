@@ -8037,7 +8037,7 @@ function normalizeComponent (
 // var webhost = "https://task.vsclouds.com/";
 
 // 开发服务器
-//var webhost = "http://192.168.3.86:8081/";
+// var webhost = "http://192.168.3.86:8081/";
 
 // 开发服务器
 var webhost = "https://jielongtest.vsclouds.com/ceshi/";
@@ -8062,6 +8062,19 @@ var webapi = {
   //会员列表查询 异性 get eg:member/single/info/list?from=1&count=10   from 从1开始
   memberList: webhost + 'member/single/info/list',
 
+  //照片查看申请审核接口
+  imgapply: webhost + 'member/picture/apply/check',
+
+  // 牵线申请同意接口
+  qianxianApply: webhost + 'member/introduce/apply/check',
+
+  // 被动房同意接口
+  agreeApply: webhost + 'member/introduce/apply/agree',
+
+  //图片内容检查
+  mediaCheck: webhost + 'media/check/url',
+
+  //
   // 微信登陆
 
   uniLogin: webhost + "public/weixin/mp/common/user/login/wx",
