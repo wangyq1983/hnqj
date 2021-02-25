@@ -6,12 +6,15 @@
 				搜索
 			</view>
 		</view>
-		<!-- <view class="nologin" v-if="loginState">
-			请您微信登录并绑定邀请码
+		<!-- <view class="nologin" v-if="!loginState">
+			<listitem v-for="items in nodatalist" :key="items.id" :info="items" :btnevent='nologin'></listitem>
+			<view class="pleaseLogin">
+				请您微信登录并绑定邀请码查看更多信息
+			</view>
 		</view> -->
-		<view class="xqlist">
+		<view class="xqlist" v-if="loginState">
 			<listitem v-for="items in rwlist" :key="items.id" :info="items"></listitem>
-		</view>	
+		</view>
 		<view v-if="isEmpty == 1"><nodata wordinfo="没有数据哦" type="1"></nodata></view>
 		<view v-if="isEnd == true"><endLine></endLine></view>
 	</view>
@@ -24,13 +27,19 @@
 				dataStep:20,
 				isEmpty: 0,
 				isEnd: false,
-				rwlist:[],
+				rwlist:[
+					
+				],
+				nodatalist:[],
 				searchTxt:'',
 				loginState:true
 			}
 		},
 		onLoad:function(options){
 			this.init()
+		},
+		onShareAppMessage: function() {
+			
 		},
 		onReachBottom: async function() {
 		let params = {
@@ -59,7 +68,6 @@
 			async init(){
 				this.renderList(1, this.dataStep);
 			},
-			
 			async renderList(from, count) {
 				var params = {
 					from,
@@ -98,6 +106,11 @@
 .nologin{
 	padding-top: 100upx;
 	width: 750upx;
-	text-align: center;
+}
+.pleaseLogin{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 }
 </style>

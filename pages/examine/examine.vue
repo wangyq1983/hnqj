@@ -1,4 +1,4 @@
-<template>
+ <template>
 	<view>
 		<view class="title">
 			<view class="kantupian" v-if="type == 1">
@@ -30,7 +30,7 @@
 			<view class="userTitle">
 				申请方信息
 			</view>
-			<listitem :info="applyInfo" v-if="infoOk"></listitem>
+			<listitem :info="applyInfo" v-if="infoOk" :showButton=false></listitem>
 		</view>
 		<view class="" style="width:750upx;height: 20upx; background: #ccc;">
 			
@@ -39,13 +39,13 @@
 			<view class="userTitle">
 				被申请方信息
 			</view>
-			<listitem :info="responseInfo" v-if="infoOk"></listitem>
+			<listitem :info="responseInfo" v-if="infoOk" :showButton=false></listitem>
 		</view>
 		<view class="hongniangAction">
-			<view class="defaultBtn" v-if="type == 1" @tap = "hnapplyimg">
+			<view class="defaultBtn" v-if="type == 1 && userType == 3 " @tap = "hnapplyimg">
 				同意查看图片
 			</view>
-			<view class="defaultBtn" v-if="type == 2" @tap = "hnapplyglz">
+			<view class="defaultBtn" v-if="type == 2 && userType == 3" @tap = "hnapplyglz">
 				同意递橄榄枝
 			</view>
 		</view>
@@ -73,6 +73,7 @@
 			}
 		},
 		onLoad:function(options){
+			console.log('examine share options is')
 			console.log(options);
 			this.applyNumber = decodeURIComponent(options.applyNumber);
 			this.responseNumber = decodeURIComponent(options.responseNumber);
@@ -87,11 +88,10 @@
 		},
 		onShareAppMessage: async function() {
 			//console.log('分享');
-		
 			var jielongpath = '/pages/examine/examine';
 			var params = {
 				applyNumber:this.applyNumber,
-				responseNumber:this.applyNumber,
+				responseNumber:this.responseNumber,
 				eventType:this.eventType
 			}
 			var applypath = "/pages/examine/examine?"+this.$api.encodeData(params)
@@ -134,11 +134,13 @@
 				var applyInfo = await this.$api.getData(this.$api.webapi.memberInfoNum, params);
 				var responseInfo = await this.$api.getData(this.$api.webapi.memberInfoNum, params1);
 				await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
-				console.log(applyInfo);
-				console.log(responseInfo);
-				this.applyInfo = applyInfo.data;
-				this.responseInfo = responseInfo.data;
-				this.infoOk = true
+				if (this.$api.reshook(applyInfo, this.$mp.page.route)) {
+					console.log(applyInfo);
+					console.log(responseInfo);
+					this.applyInfo = applyInfo.data;
+					this.responseInfo = responseInfo.data;
+					this.infoOk = true
+				}
 			},
 			async hnapplyimg(){
 				var params = {
@@ -147,10 +149,23 @@
 					state:1
 				}
 				await this.$api.showLoading(); // 显示loading
-				var hnimgRes = await this.$api.getData(this.$api.webapi.imgapply, params1);
+				var hnimgRes = await this.$api.postData(this.$api.webapi.imgapply, params);
 				await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
 				if (this.$api.reshook(hnimgRes, this.$mp.page.route)) {
-					console.log(hnimgRes)
+					console.log(hnimgRes);
+					if(hnimgRes.resultCode == 0){
+						uni.showToast({
+							title:'操作成功',
+							icon:'none',
+							duration:2000
+						})
+					}else{
+						uni.showToast({
+							title:'操作失败',
+							icon:'none',
+							duration:2000
+						})
+					}
 				}
 			},
 			async hnapplyglz(){
@@ -160,10 +175,23 @@
 					state:1
 				}
 				await this.$api.showLoading(); // 显示loading
-				var hnglzRes = await this.$api.getData(this.$api.webapi.qianxianApply, params1);
+				var hnglzRes = await this.$api.postData(this.$api.webapi.qianxianApply, params);
 				await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
 				if (this.$api.reshook(hnglzRes, this.$mp.page.route)) {
-					console.log(hnglzRes)
+					console.log(hnglzRes);
+					if(hnglzRes.resultCode == 0){
+						uni.showToast({
+							title:'操作成功',
+							icon:'none',
+							duration:2000
+						})
+					}else{
+						uni.showToast({
+							title:'操作失败',
+							icon:'none',
+							duration:2000
+						})
+					}
 				}
 			},
 			async bdfapply(){
@@ -173,10 +201,23 @@
 					state:1
 				}
 				await this.$api.showLoading(); // 显示loading
-				var bdfagreeRes = await this.$api.getData(this.$api.webapi.agreeApply, params1);
+				var bdfagreeRes = await this.$api.postData(this.$api.webapi.agreeApply, params);
 				await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
 				if (this.$api.reshook(bdfagreeRes, this.$mp.page.route)) {
 					console.log(bdfagreeRes)
+					if(bdfagreeRes.resultCode == 0){
+						uni.showToast({
+							title:'操作成功',
+							icon:'none',
+							duration:2000
+						})
+					}else{
+						uni.showToast({
+							title:'操作失败',
+							icon:'none',
+							duration:2000
+						})
+					}
 				}
 			}
 		}

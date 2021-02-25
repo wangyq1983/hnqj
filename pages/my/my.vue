@@ -1,7 +1,7 @@
 <template>
 	<view class="bg">
 		<view class="bgimg">
-			<image src="/static/bg.jpg" mode=""></image>
+			<!-- <image src="/static/bg.jpg" mode=""></image> -->
 		</view>
 		<view class="userbox">
 			<view class="userinfo">
@@ -40,6 +40,12 @@
 						查看个人资料
 					</view>
 				</view>
+				<!-- <view class="menuItem" @tap="mianzeEvent" v-if="isbind">
+					<image src="/static/mz.png" mode=""></image>
+					<view class="menuTxt">
+						友情提示 免责声明
+					</view>
+				</view> -->
 			</view>
 			
 			<!-- <button class="" style="width:600upx; margin-top: 100upx;;" @tap="infoEvent">填写/编辑 个人资料</button> -->
@@ -109,6 +115,11 @@ export default {
 		infoEvent() {
 			uni.navigateTo({
 				url: '/pages/info/info'
+			});
+		},
+		mianzeEvent(){
+			uni.navigateTo({
+				url: '/pages/mianze/mianze'
 			});
 		}
 	}
@@ -215,13 +226,12 @@ export default {
 		border-bottom: 6upx solid #ccc;
 		margin-bottom: 10upx;;
 		image{
-			width:80upx;
-			height: 80upx;
+			width:60upx;
+			height: 60upx;
 			margin-right: 50upx;
 		}
 		.menuTxt{
-			font-size: 36upx;
-			text-decoration: underline;
+			font-size: 32upx;
 		}
 	}
 

@@ -9,12 +9,13 @@
     "pages/bindcode/bindcode",
     "pages/detail/detail",
     "pages/search/search",
-    "pages/examine/examine"
+    "pages/examine/examine",
+    "pages/mianze/mianze"
   ],
   "subPackages": [],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "红娘清姐单身脱单交友",
+    "navigationBarTitleText": "清姐资料管理工具",
     "navigationBarBackgroundColor": "#FFFFFF",
     "backgroundColor": "#FFFFFF"
   },
@@ -26,9 +27,9 @@
     "list": [
       {
         "pagePath": "pages/xqlist/xqlist",
-        "iconPath": "static/love.png",
-        "selectedIconPath": "static/love_cur.png",
-        "text": "相亲"
+        "iconPath": "static/cz.png",
+        "selectedIconPath": "static/cz_cur.png",
+        "text": "查询"
       },
       {
         "pagePath": "pages/my/my",
@@ -39,5 +40,5 @@
     ]
   },
   "usingComponents": {},
-  "sitemapLocation": "sitemap77.json"
+  "sitemapLocation": "sitemap56.json"
 }

@@ -146,6 +146,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
@@ -158,6 +171,7 @@ var _default =
       userinfo: {},
       code: '',
       isPhone: true,
+      noagree: true,
       isCanUse: uni.getStorageSync('isCanUse') || true //默认为true
     };
   },
@@ -182,7 +196,9 @@ var _default =
 
   },
   methods: {
-
+    agreeEvent: function agreeEvent() {
+      this.noagree = false;
+    },
     //第一授权获取用户信息===》按钮触发
     wxGetUserInfo: function wxGetUserInfo() {
 

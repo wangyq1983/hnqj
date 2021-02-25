@@ -1,0 +1,8 @@
+{
+  "onReachBottomDistance": 126,
+  "usingComponents": {
+    "listitem": "/components/listitem/listitem",
+    "nodata": "/components/nodata/nodata",
+    "end-line": "/components/endLine/endLine"
+  }
+}

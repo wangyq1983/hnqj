@@ -6,8 +6,11 @@ import store from '@/store'
 // var webhost = "http://192.168.3.86:8081/";
 
 // 开发服务器
-var webhost = "https://jielongtest.vsclouds.com/ceshi/";
+//var webhost = "http://2378qm9101.51vip.biz/";  //tbl临时地址
+//var webhost = "https://jielongtest.vsclouds.com/ceshi/";
+// abroad   abroadHome   infoPublic
 
+var webhost = "https://qingjie.vsclouds.com/qingjie/";
 // 接口列表
 var webapi = {
 	//会员与微信用户绑定接口 post
@@ -34,11 +37,16 @@ var webapi = {
 	// 牵线申请同意接口
 	qianxianApply: webhost + 'member/introduce/apply/check',
 	
-	// 被动房同意接口
+	// 被动方同意接口
 	agreeApply:webhost + 'member/introduce/apply/agree',
 	
 	//图片内容检查
 	mediaCheck:webhost + 'media/check/url',
+	
+	// 隐藏资料 是否公开资料
+	
+	
+	
 	
 	//
 	// 微信登陆

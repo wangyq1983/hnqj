@@ -105,15 +105,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components = {
-  listitem: function() {
-    return __webpack_require__.e(/*! import() | components/listitem/listitem */ "components/listitem/listitem").then(__webpack_require__.bind(null, /*! @/components/listitem/listitem.vue */ 95))
-  },
-  nodata: function() {
-    return __webpack_require__.e(/*! import() | components/nodata/nodata */ "components/nodata/nodata").then(__webpack_require__.bind(null, /*! @/components/nodata/nodata.vue */ 102))
-  },
-  endLine: function() {
-    return __webpack_require__.e(/*! import() | components/endLine/endLine */ "components/endLine/endLine").then(__webpack_require__.bind(null, /*! @/components/endLine/endLine.vue */ 109))
+var components
+try {
+  components = {
+    listitem: function() {
+      return __webpack_require__.e(/*! import() | components/listitem/listitem */ "components/listitem/listitem").then(__webpack_require__.bind(null, /*! @/components/listitem/listitem.vue */ 103))
+    },
+    nodata: function() {
+      return __webpack_require__.e(/*! import() | components/nodata/nodata */ "components/nodata/nodata").then(__webpack_require__.bind(null, /*! @/components/nodata/nodata.vue */ 110))
+    },
+    endLine: function() {
+      return __webpack_require__.e(/*! import() | components/endLine/endLine */ "components/endLine/endLine").then(__webpack_require__.bind(null, /*! @/components/endLine/endLine.vue */ 117))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
   }
 }
 var render = function() {
@@ -170,6 +189,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 var _default =
 {
   data: function data() {
@@ -178,12 +200,18 @@ var _default =
       isEmpty: 0,
       isEnd: false,
       rwlist: [],
+
+
+      nodatalist: [],
       searchTxt: '',
       loginState: true };
 
   },
   onLoad: function onLoad(options) {
     this.init();
+  },
+  onShareAppMessage: function onShareAppMessage() {
+
   },
   onReachBottom: function () {var _onReachBottom = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var params;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
               params = {
@@ -212,7 +240,6 @@ var _default =
     init: function init() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
                 _this.renderList(1, _this.dataStep);case 1:case "end":return _context2.stop();}}}, _callee2);}))();
     },
-
     renderList: function renderList(from, count) {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var params, cjlist;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
                 params = {
                   from: from,

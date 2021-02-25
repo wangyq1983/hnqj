@@ -62,10 +62,18 @@
             }
             
         }
+        ,{
+            "path" : "pages/mianze/mianze",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "红娘清姐单身脱单交友",
+		"navigationBarTitleText": "清姐资料管理工具",
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#FFFFFF"
 	},
@@ -76,9 +84,9 @@
 		"backgroundColor": "#F8F8F8",
 		"list": [{
 					"pagePath": "pages/xqlist/xqlist",
-					"iconPath": "static/love.png",
-					"selectedIconPath": "static/love_cur.png",
-					"text": "相亲"
+					"iconPath": "static/cz.png",
+					"selectedIconPath": "static/cz_cur.png",
+					"text": "查询"
 				},
 				{
 					"pagePath": "pages/my/my",

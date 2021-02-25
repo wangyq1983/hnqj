@@ -92,9 +92,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components = {
-  listitem: function() {
-    return __webpack_require__.e(/*! import() | components/listitem/listitem */ "components/listitem/listitem").then(__webpack_require__.bind(null, /*! @/components/listitem/listitem.vue */ 95))
+var components
+try {
+  components = {
+    listitem: function() {
+      return __webpack_require__.e(/*! import() | components/listitem/listitem */ "components/listitem/listitem").then(__webpack_require__.bind(null, /*! @/components/listitem/listitem.vue */ 103))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
   }
 }
 var render = function() {
@@ -209,6 +228,7 @@ var _default =
 
   },
   onLoad: function onLoad(options) {
+    console.log('examine share options is');
     console.log(options);
     this.applyNumber = decodeURIComponent(options.applyNumber);
     this.responseNumber = decodeURIComponent(options.responseNumber);
@@ -223,11 +243,10 @@ var _default =
   },
   onShareAppMessage: function () {var _onShareAppMessage = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var jielongpath, params, applypath, applyTitle;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
               //console.log('分享');
-
               jielongpath = '/pages/examine/examine';
               params = {
                 applyNumber: this.applyNumber,
-                responseNumber: this.applyNumber,
+                responseNumber: this.responseNumber,
                 eventType: this.eventType };
 
               applypath = "/pages/examine/examine?" + this.$api.encodeData(params);
@@ -270,11 +289,13 @@ var _default =
                   _this.$api.getData(_this.$api.webapi.memberInfoNum, params));case 6:applyInfo = _context2.sent;_context2.next = 9;return (
                   _this.$api.getData(_this.$api.webapi.memberInfoNum, params1));case 9:responseInfo = _context2.sent;_context2.next = 12;return (
                   _this.$api.hideLoading());case 12: // 等待请求数据成功后，隐藏loading
-                console.log(applyInfo);
-                console.log(responseInfo);
-                _this.applyInfo = applyInfo.data;
-                _this.responseInfo = responseInfo.data;
-                _this.infoOk = true;case 17:case "end":return _context2.stop();}}}, _callee2);}))();
+                if (_this.$api.reshook(applyInfo, _this.$mp.page.route)) {
+                  console.log(applyInfo);
+                  console.log(responseInfo);
+                  _this.applyInfo = applyInfo.data;
+                  _this.responseInfo = responseInfo.data;
+                  _this.infoOk = true;
+                }case 13:case "end":return _context2.stop();}}}, _callee2);}))();
     },
     hnapplyimg: function hnapplyimg() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var params, hnimgRes;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
                 params = {
@@ -283,10 +304,23 @@ var _default =
                   state: 1 };_context3.next = 3;return (
 
                   _this2.$api.showLoading());case 3:_context3.next = 5;return (
-                  _this2.$api.getData(_this2.$api.webapi.imgapply, params1));case 5:hnimgRes = _context3.sent;_context3.next = 8;return (
+                  _this2.$api.postData(_this2.$api.webapi.imgapply, params));case 5:hnimgRes = _context3.sent;_context3.next = 8;return (
                   _this2.$api.hideLoading());case 8: // 等待请求数据成功后，隐藏loading
                 if (_this2.$api.reshook(hnimgRes, _this2.$mp.page.route)) {
                   console.log(hnimgRes);
+                  if (hnimgRes.resultCode == 0) {
+                    uni.showToast({
+                      title: '操作成功',
+                      icon: 'none',
+                      duration: 2000 });
+
+                  } else {
+                    uni.showToast({
+                      title: '操作失败',
+                      icon: 'none',
+                      duration: 2000 });
+
+                  }
                 }case 9:case "end":return _context3.stop();}}}, _callee3);}))();
     },
     hnapplyglz: function hnapplyglz() {var _this3 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4() {var params, hnglzRes;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
@@ -296,10 +330,23 @@ var _default =
                   state: 1 };_context4.next = 3;return (
 
                   _this3.$api.showLoading());case 3:_context4.next = 5;return (
-                  _this3.$api.getData(_this3.$api.webapi.qianxianApply, params1));case 5:hnglzRes = _context4.sent;_context4.next = 8;return (
+                  _this3.$api.postData(_this3.$api.webapi.qianxianApply, params));case 5:hnglzRes = _context4.sent;_context4.next = 8;return (
                   _this3.$api.hideLoading());case 8: // 等待请求数据成功后，隐藏loading
                 if (_this3.$api.reshook(hnglzRes, _this3.$mp.page.route)) {
                   console.log(hnglzRes);
+                  if (hnglzRes.resultCode == 0) {
+                    uni.showToast({
+                      title: '操作成功',
+                      icon: 'none',
+                      duration: 2000 });
+
+                  } else {
+                    uni.showToast({
+                      title: '操作失败',
+                      icon: 'none',
+                      duration: 2000 });
+
+                  }
                 }case 9:case "end":return _context4.stop();}}}, _callee4);}))();
     },
     bdfapply: function bdfapply() {var _this4 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5() {var params, bdfagreeRes;return _regenerator.default.wrap(function _callee5$(_context5) {while (1) {switch (_context5.prev = _context5.next) {case 0:
@@ -309,10 +356,23 @@ var _default =
                   state: 1 };_context5.next = 3;return (
 
                   _this4.$api.showLoading());case 3:_context5.next = 5;return (
-                  _this4.$api.getData(_this4.$api.webapi.agreeApply, params1));case 5:bdfagreeRes = _context5.sent;_context5.next = 8;return (
+                  _this4.$api.postData(_this4.$api.webapi.agreeApply, params));case 5:bdfagreeRes = _context5.sent;_context5.next = 8;return (
                   _this4.$api.hideLoading());case 8: // 等待请求数据成功后，隐藏loading
                 if (_this4.$api.reshook(bdfagreeRes, _this4.$mp.page.route)) {
                   console.log(bdfagreeRes);
+                  if (bdfagreeRes.resultCode == 0) {
+                    uni.showToast({
+                      title: '操作成功',
+                      icon: 'none',
+                      duration: 2000 });
+
+                  } else {
+                    uni.showToast({
+                      title: '操作失败',
+                      icon: 'none',
+                      duration: 2000 });
+
+                  }
                 }case 9:case "end":return _context5.stop();}}}, _callee5);}))();
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

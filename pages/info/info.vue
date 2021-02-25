@@ -12,6 +12,7 @@
 							<view>{{ item.name }}</view>
 						</label>
 					</radio-group>
+					<text>*必填</text>
 				</view>
 			</view>
 			<view class="infoItem">
@@ -20,6 +21,7 @@
 					<picker mode="date" :value="date" :start="startDate" :end="endDate" fields="month" @change="bindDateChange">
 						<view class="uni-input">{{ date }}</view>
 					</picker>
+					<text>*必填</text>
 				</view>
 			</view>
 			<view class="infoItem">
@@ -46,12 +48,18 @@
 			<view class="infoItem">
 				<view class="left">学历：</view>
 				<view class="right">
-					<radio-group @change="radioChangeEdu">
+					<picker class="pickerStyle" @change="bindChangeEdu" :value="edu_index" :range="edu_array">
+					    <view class="picker">
+					      <!-- {{edu_array[edu_index]}} -->
+						  {{edu}}
+					    </view>
+					</picker>
+					<!-- <radio-group @change="radioChangeEdu">
 						<label v-for="(item, index) in itemsEdu" :key="item.value">
 							<view><radio :value="item.value" :checked="item.checked" /></view>
 							<view>{{ item.name }}</view>
 						</label>
-					</radio-group>
+					</radio-group> -->
 				</view>
 			</view>
 			<view class="infoItem">
@@ -71,12 +79,18 @@
 			<view class="infoItem">
 				<view class="left">是否有房:</view>
 				<view class="right">
-					<radio-group @change="radioChangeHouse">
+					<picker class="pickerStyle" @change="bindChangeHouse" :value="house_index" :range="house_array">
+					    <view class="picker">
+					      <!-- {{edu_array[edu_index]}} -->
+						  {{house_array[house_index]}}
+					    </view>
+					</picker>
+					<!-- <radio-group @change="radioChangeHouse">
 						<label v-for="(item, index) in itemsHouse" :key="item.value">
 							<view><radio :value="item.value" :checked="item.checked" /></view>
 							<view>{{ item.name }}</view>
 						</label>
-					</radio-group>
+					</radio-group> -->
 				</view>
 			</view>
 			<view class="infoItem">
@@ -103,16 +117,60 @@
 				</view>
 			</view>
 			<view class="infoItem">
+				<view class="left">家乡地区是否海外:</view>
+				<view class="right">
+					<radio-group @change="radioChangeAbroadHome">
+						<label v-for="(item, index) in itemsAbroadHome" :key="item.value">
+							<view><radio :value="item.value" :checked="item.checked" /></view>
+							<view>{{ item.name }}</view>
+						</label>
+					</radio-group>
+				</view>
+			</view>
+			<view class="infoItem" v-if="abroadHome == 1">
 				<view class="left">家乡地区:</view>
 				<view class="right">
 					<input type="text" v-model="hometown" />
-					<text>老家是哪里</text>
+					<!-- <text>老家是哪里</text> -->
+				</view>
+			</view>
+			<view class="infoItem" v-if="abroadHome == 0">
+				<view class="left">家乡地区:</view>
+				<view class="right">
+					<picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem" class="pickerStyle">
+					    <view class="picker">
+					      {{region[0]}}，{{region[1]}}，{{region[2]}}
+					    </view>
+					  </picker>
 				</view>
 			</view>
 			<view class="infoItem">
+				<view class="left">工作地区是否海外:</view>
+				<view class="right">
+					<radio-group @change="radioChangeAbroad">
+						<label v-for="(item, index) in itemsAbroad" :key="item.value">
+							<view><radio :value="item.value" :checked="item.checked" /></view>
+							<view>{{ item.name }}</view>
+						</label>
+					</radio-group>
+				</view>
+			</view>
+			
+			<view class="infoItem" v-if="abroad == 1">
 				<view class="left">工作地区:</view>
 				<view class="right">
 					<input type="text" v-model="workArea" />
+				</view>
+			</view>
+			<view class="infoItem" v-if="abroad == 0">
+				<view class="left">工作地区:</view>
+				<view class="right">
+					<!-- <input type="text" v-model="workArea" /> -->
+					<picker mode="region" @change="bindRegionWorkChange" :value="regionwork" :custom-item="customItem" class="pickerStyle">
+					    <view class="picker">
+					      {{regionwork[0]}}，{{regionwork[1]}}，{{regionwork[2]}}
+					    </view>
+					  </picker>
 				</view>
 			</view>
 			<view class="infoItem">
@@ -141,12 +199,21 @@
 			<view class="infoItem">
 				<view class="left">婚姻情况:</view>
 				<view class="right">
-					<radio-group @change="radioChangeMarriage">
+					
+					<picker class="pickerStyle" @change="bindChangeMarriage" :value="marriage_index" :range="marriage_array">
+					    <view class="picker">
+					      <!-- {{edu_array[edu_index]}} -->
+						  {{marriage_array[marriage_index]}}
+					    </view>
+					</picker>
+					
+					<!-- <radio-group @change="radioChangeMarriage">
 						<label v-for="(item, index) in itemsMarriage" :key="item.value">
 							<view><radio :value="item.value" :checked="item.checked" /></view>
 							<view>{{ item.name }}</view>
 						</label>
-					</radio-group>
+					</radio-group> -->
+					
 				</view>
 			</view>
 			<view class="infoItem">
@@ -162,9 +229,9 @@
 				</view>
 			</view>
 			<view class="infoItem">
-				<view class="left">择偶要求:</view>
+				<view class="left">备注:</view>
 				<view class="right">
-					<textarea v-model="requirement" placeholder="择偶要求"></textarea>
+					<textarea v-model="requirement" placeholder="备注"></textarea>
 				</view>
 			</view>
 			
@@ -191,10 +258,21 @@
 				<helang-compress ref="helangCompress"></helang-compress>
 			</view>
 			<view class="infoItem">
-				<view class="left">照片是否公开:</view>
+				<view class="left">照片公开:</view>
 				<view class="right">
 					<radio-group @change="radioChangePhotoPublic">
 						<label v-for="(item, index) in itemsPhotoPublic" :key="item.value">
+							<view><radio :value="item.value" :checked="item.checked" /></view>
+							<view>{{ item.name }}</view>
+						</label>
+					</radio-group>
+				</view>
+			</view>
+			<view class="infoItem">
+				<view class="left">信息公开:</view>
+				<view class="right">
+					<radio-group @change="radioChangeInfoPublic">
+						<label v-for="(item, index) in itemsInfoPublic" :key="item.value">
 							<view><radio :value="item.value" :checked="item.checked" /></view>
 							<view>{{ item.name }}</view>
 						</label>
@@ -217,7 +295,6 @@ export default {
 			format: true
 		});
 		return {
-			state:null,
 			id:null,
 			number:'',
 			isEdit:false,
@@ -235,6 +312,10 @@ export default {
 				}
 			],
 			edu: '',
+			edu_index:2,
+			edu_array:[
+				'博士','硕士','本科','专科','高中或职专','初中及以下'
+			],
 			itemsEdu: [
 				{
 					value: '博士',
@@ -267,6 +348,8 @@ export default {
 					checked: false
 				}
 			],
+			house_array:['无房','有房无贷款','有房有贷款'],
+			house_index:0,
 			itemsHouse:[
 				{
 					value:'0',
@@ -296,18 +379,44 @@ export default {
 					checked:false
 				}
 			],
+			itemsAbroad:[
+				{
+					value:'0',
+					name:'国内',
+					checked:true
+				},
+				{
+					value:'1',
+					name:'海外',
+					checked:false
+				}
+			],
+			itemsAbroadHome:[
+				{
+					value:'0',
+					name:'国内',
+					checked:true
+				},
+				{
+					value:'1',
+					name:'海外',
+					checked:false
+				}
+			],
 			itemsOnlyChild:[
 				{
 					value:'1',
-					name:'是独生子女',
+					name:'是',
 					checked:false
 				},
 				{
 					value:'2',
-					name:'非独生子女',
+					name:'非',
 					checked:false
 				}
 			],
+			marriage_index:0,
+			marriage_array:['未婚','离异无孩子','离异有孩子'],
 			itemsMarriage:[
 				{
 					value:'0',
@@ -337,6 +446,18 @@ export default {
 					checked:false
 				},
 			],
+			itemsInfoPublic:[
+				{
+					value:'0',
+					name:'不公开',
+					checked:false
+				},
+				{
+					value:'1',
+					name:'公开',
+					checked:true
+				}
+			],
 			date: currentDate,
 			shengao: '',
 			tizhong: '',
@@ -363,7 +484,13 @@ export default {
 			compressPaths: [],
 			paths: [],
 			curindex:0,
-			filelist:[]
+			filelist:[],
+			abroad:0, // 工作区域是否海外
+			abroadHome:0,  // 生活区域是否海外
+			region: ['山东省', '青岛市', '市南区'],  //生活区域
+			regionwork: ['山东省', '青岛市', '市南区'], //工作区域
+			customItem: '',
+			infopublic:''  // 公开资料
 		};
 	},
 	computed: {
@@ -400,20 +527,51 @@ export default {
 					this.number = oldData.number;
 					this.sex = oldData.gender;
 					this.edu = oldData.education;
-					this.house = oldData.house;
+					
 					this.car = oldData.car;
 					this.onlyChild = oldData.onlyChild;
-					this.marriage = oldData.marriage;
+					this.abroad = oldData.abroad;
+					this.abroadHome = oldData.abroadHome;
 					this.photoPublic = oldData.photoPublic;
 					
-					var valItem = [this.sex,this.edu,this.house,this.car,this.onlyChild,this.marriage,this.photoPublic];
-					var arrItem = [this.itemsSex,this.itemsEdu,this.itemsHouse,this.itemsCar,this.itemsOnlyChild,this.itemsMarriage,this.itemsPhotoPublic];
+					if(this.abroad == 0){
+						// 工作地非海外
+						this.regionwork = oldData.workArea.split(',');
+						
+						console.log(this.regionwork)
+					}
+					if(this.abroadHome == 0){
+						this.region = oldData.hometown.split(',');
+						
+						console.log(this.region);
+					}
+					if(this.abroad == 1){
+						this.workArea = oldData.workArea;
+					}
+					if(this.abroadHome == 1){
+						this.hometown = oldData.hometown;
+					}
+					
+					this.house = oldData.house;
+					this.marriage = oldData.marriage;
+					
+					var valItem = [this.sex,this.car,this.onlyChild,this.photoPublic,this.abroadHome,this.abroad,this.infoPublic];
+					var arrItem = [this.itemsSex,this.itemsCar,this.itemsOnlyChild,this.itemsPhotoPublic,this.itemsAbroadHome,this.itemsAbroad,this.itemsInfoPublic];
+					
+					var valItem1 = [this.house,this.marriage];
+					
+					this.house_index = this.house;
+					this.marriage_index = this.marriage;
+					
 					
 					//this.initItem(this.itemsSex,this.sex);
 					
 					for(var i = 0; i < valItem.length; i++){
+						// 初始化 radio 的数据
 						this.initItem(arrItem[i],valItem[i]);
 					}
+					
+					
 					
 					this.date = oldData.birthYear + '-' + (oldData.birthMonth?oldData.birthMonth:'');
 					this.shengao = oldData.height;
@@ -425,8 +583,7 @@ export default {
 					this.houseTxt = oldData.houseTxt;
 
 					this.carTxt = oldData.carTxt;
-					this.hometown = oldData.hometown;
-					this.workArea = oldData.workArea;
+					
 					this.parentsInfo = oldData.parentsInfo;
 					this.family = oldData.family;
 					this.marriageTxt = oldData.marriageTxt;
@@ -457,12 +614,16 @@ export default {
 			}
 		},
 		initItem:function(arr,val){
+			// 初始化单选框数据
 			for (let i = 0; i < arr.length; i++) {
 				if (arr[i].value === String(val)) {
 					arr[i].checked = true;
 					break;
 				}
 			}
+		},
+		initItem1:function(arr,val){
+			
 		},
 		radioChangeOnlyChild: function(evt) {
 			for (let i = 0; i < this.itemsOnlyChild.length; i++) {
@@ -487,9 +648,54 @@ export default {
 				if (this.itemsCar[i].value === evt.target.value) {
 					this.current = i;
 					this.car = evt.target.value;
+					console.log('this_car is'+this.car)
 					break;
 				}
 			}
+		},
+		radioChangeAbroad: function(evt) {
+			console.log(evt.target.value)
+			for (let i = 0; i < this.itemsAbroad.length; i++) {
+				if (this.itemsAbroad[i].value === evt.target.value) {
+					this.current = i;
+					this.abroad = evt.target.value;
+					console.log('this_abroad is'+this.abroad);
+					break;
+				}
+			}
+		},
+		radioChangeAbroadHome: function(evt) {
+			console.log(evt.target.value)
+			for (let i = 0; i < this.itemsAbroadHome.length; i++) {
+				if (this.itemsAbroadHome[i].value === evt.target.value) {
+					this.current = i;
+					this.abroadHome = evt.target.value;
+					console.log('this_abroad is'+this.abroadHome);
+					break;
+				}
+			}
+		},
+		bindRegionChange: function (e) {
+		    console.log('picker发送选择改变，携带值为', e.detail.value);
+			this.region = e.detail.value;
+			console.log(this.region)
+		},
+		
+		bindRegionWorkChange: function (e) {
+		    console.log('picker发送选择改变，携带值为', e.detail.value);
+			this.regionwork = e.detail.value;
+			console.log(this.regionwork)
+		},
+		bindChangeEdu:function(e){
+			this.edu = this.edu_array[e.detail.value];
+		},
+		bindChangeHouse:function(e){
+			this.house_index = e.detail.value;
+			this.house = e.detail.value;
+		},
+		bindChangeMarriage:function(e){
+			this.marriage_index = e.detail.value;
+			this.marriage = e.detail.value;
 		},
 		radioChangeEdu: function(evt) {
 			for (let i = 0; i < this.itemsEdu.length; i++) {
@@ -505,6 +711,15 @@ export default {
 				if (this.itemsMarriage[i].value === evt.target.value) {
 					this.current = i;
 					this.marriage = evt.target.value;
+					break;
+				}
+			}
+		},
+		radioChangeInfoPublic:function(evt){
+			for (let i = 0; i < this.itemsInfoPublic.length; i++) {
+				if (this.itemsInfoPublic[i].value === evt.target.value) {
+					this.current = i;
+					this.infopublic = evt.target.value;
 					break;
 				}
 			}
@@ -723,7 +938,7 @@ export default {
 			
 			
 		},
-
+		
 		// 单张压缩
 		compress(paths, extname, imgtype) {
 			uni.showLoading({
@@ -812,98 +1027,154 @@ export default {
 		
 		submitEvent: async function() {
 			var that = this;
-			if(this.sex == ''){
+			console.log(this.sex);
+			console.log(this.date)
+			console.log(this.region);
+			console.log(this.regionwork);
+			if(this.sex == '' || this.sex == undefined || this.sex == 'undefined' || this.date == ''){
 				uni.showToast({
-					title:'请必须填写性别',
+					title:'请必须填写性别以及年龄',
 					icon:'none'
 				})
-			}
-			var yearmonth = this.date.split('-');
-			var birthYear = yearmonth[0];
-			var birthMonth = yearmonth[1];
-			if(this.isEdit == true){
-				var params = {
-					id:this.id,
-					number:this.number,
-					gender: this.sex?this.sex:'',
-					birthYear: birthYear,
-					birthMonth:birthMonth,
-					zodiacConstellation:this.sxxz,
-					height: this.shengao,
-					bodyWeight: this.tizhong,
-					education: this.edu,
-					job:this.job,
-					income:this.income,
-					house:this.house,
-					houseTxt:this.houseTxt,
-					car:this.car,
-					carTxt:this.carTxt,
-					hometown:this.hometown,
-					workArea:this.workArea,
-					parentsInfo:this.parentsInfo,
-					onlyChild:this.onlyChild,
-					family:this.family,
-					marriage:this.marriage,
-					marriageTxt:this.marriageTxt,
-					introduction:this.introduction,
-					requirement:this.requirement,
-					imageList:JSON.stringify(this.imglist)
-				};
-				console.log(params);
-				await this.$api.showLoading(); // 显示loading
-				var memcreat = await this.$api.postData(this.$api.webapi.memberUpdate, params);
-				await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
-				if (this.$api.reshook(memcreat, this.$mp.page.route)) {
-					// this.createSuccess(memcreat,true); 
-					console.log(memcreat);
-					uni.showToast({
-						title:'提交成功,后台审核通过后自动发布此信息',
-						icon:'none'
-					})
-					that.submitSuccess()
-				}
 			}else{
-				var params = {
-					
-					gender: this.sex?this.sex:'',
-					birthYear: birthYear,
-					birthMonth:birthMonth,
-					zodiacConstellation:this.sxxz,
-					height: this.shengao,
-					bodyWeight: this.tizhong,
-					education: this.edu,
-					job:this.job,
-					income:this.income,
-					house:this.house,
-					houseTxt:this.houseTxt,
-					car:this.car,
-					carTxt:this.carTxt,
-					hometown:this.hometown,
-					workArea:this.workArea,
-					parentsInfo:this.parentsInfo,
-					onlyChild:this.onlyChild,
-					family:this.family,
-					marriage:this.marriage,
-					marriageTxt:this.marriageTxt,
-					introduction:this.introduction,
-					requirement:this.requirement,
-					imageList:JSON.stringify(this.imglist)
-				};
-				console.log(params);
-				await this.$api.showLoading(); // 显示loading
-				var memcreat = await this.$api.postData(this.$api.webapi.memberCreate, params);
-				await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
-				if (this.$api.reshook(memcreat, this.$mp.page.route)) {
-					// this.createSuccess(memcreat,true); 
-					console.log(memcreat);
-					uni.showToast({
-						title:'提交成功',
-						icon:'none'
-					})
-					that.submitSuccess()
+				var yearmonth = this.date.split('-');
+				var birthYear = yearmonth[0];
+				var birthMonth = yearmonth[1];
+				for (let i = 0; i < this.itemsInfoPublic.length; i++) {
+					if (this.itemsInfoPublic[i].checked === true) {
+						this.current = i;
+						this.infopublic = this.itemsInfoPublic[i].value;
+						break;
+					}
+				}
+				var hometown,workArea;
+				var that = this;
+				function initParams(){
+					if(that.abroad == 0 || that.abroad == '0'){
+						// 工作地非海外
+						workArea = that.regionwork.join(',');
+					}
+					if(that.abroad == 1 || that.abroad == '1'){
+						// 工作地是海外
+						workArea = that.workArea
+					}
+					if(that.abroadHome == 0 || that.abroad == '0'){
+						// 家乡非海外
+						hometown = that.region.join(',');
+					}
+					if(that.abroadHome == 1 || that.abroad == '1'){
+						// 家乡是海外
+						hometown = that.hometown;
+					}
+				}
+				
+				initParams()
+				
+				if(this.isEdit == true){
+					var params = {
+						id:this.id,
+						number:this.number,
+						gender: this.sex?this.sex:'',
+						birthYear: birthYear,
+						birthMonth:birthMonth,
+						zodiacConstellation:this.sxxz,
+						height: this.shengao,
+						bodyWeight: this.tizhong,
+						education: this.edu,
+						job:this.job,
+						income:this.income,
+						house:this.house,
+						houseTxt:this.houseTxt,
+						car:this.car,
+						carTxt:this.carTxt,
+						abroad:this.abroad,
+						abroadHome:this.abroadHome,
+						hometown:hometown,
+						workArea:workArea,
+						parentsInfo:this.parentsInfo,
+						onlyChild:this.onlyChild,
+						family:this.family,
+						marriage:this.marriage,
+						marriageTxt:this.marriageTxt,
+						introduction:this.introduction,
+						requirement:this.requirement,
+						imageList:JSON.stringify(this.imglist),
+						infoPublic:this.infopublic
+					};
+					console.log(params);
+					if(this.infoLock == 1){
+						uni.showToast({
+							title:'该用户已锁定',
+							icon:'none',
+							duration:1500
+						})
+					}else{
+						await this.$api.showLoading(); // 显示loading
+						var memcreat = await this.$api.postData(this.$api.webapi.memberUpdate, params);
+						await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
+						if (this.$api.reshook(memcreat, this.$mp.page.route)) {
+							// this.createSuccess(memcreat,true); 
+							console.log(memcreat);
+							uni.showToast({
+								title:'提交成功,后台审核通过后自动发布此信息',
+								icon:'none'
+							})
+							that.submitSuccess()
+						}
+					}
+				}else{
+					var params = {
+						
+						gender: this.sex?this.sex:'',
+						birthYear: birthYear,
+						birthMonth:birthMonth,
+						zodiacConstellation:this.sxxz,
+						height: this.shengao,
+						bodyWeight: this.tizhong,
+						education: this.edu,
+						job:this.job,
+						income:this.income,
+						house:this.house,
+						houseTxt:this.houseTxt,
+						car:this.car,
+						carTxt:this.carTxt,
+						abroad:this.abroad,
+						abroadHome:this.abroadHome,
+						hometown:hometown,
+						workArea:workArea,
+						parentsInfo:this.parentsInfo,
+						onlyChild:this.onlyChild,
+						family:this.family,
+						marriage:this.marriage,
+						marriageTxt:this.marriageTxt,
+						introduction:this.introduction,
+						requirement:this.requirement,
+						imageList:JSON.stringify(this.imglist),
+						infoPublic:this.infopublic
+					};
+					console.log(params);
+					// if(this.infoLock == 1){
+					// 	uni.showToast({
+					// 		title:'该用户已锁定',
+					// 		icon:'none',
+					// 		duration:1500
+					// 	})
+					// }else{
+					// }
+					await this.$api.showLoading(); // 显示loading
+					var memcreat = await this.$api.postData(this.$api.webapi.memberCreate, params);
+					await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
+					if (this.$api.reshook(memcreat, this.$mp.page.route)) {
+						// this.createSuccess(memcreat,true); 
+						console.log(memcreat);
+						uni.showToast({
+							title:'提交成功',
+							icon:'none'
+						})
+						that.submitSuccess()
+					}
 				}
 			}
-			
 		}
 	}
 };
@@ -926,6 +1197,7 @@ export default {
 			width: 160upx;
 			text-align: right;
 			padding-right: 40upx;
+			font-weight: bold;
 		}
 		.right {
 			width: 500upx;
@@ -1022,5 +1294,10 @@ input {
 }
 textarea{
 	border:2upx solid #999
+}
+.pickerStyle{
+	width:100%;
+	background: url(../../static/arraw.png) right no-repeat;
+	background-size: 32upx 32upx;
 }
 </style>
