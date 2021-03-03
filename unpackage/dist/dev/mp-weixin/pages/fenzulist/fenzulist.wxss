@@ -1,0 +1,35 @@
+
+.fzwarp{
+	width: 100%;
+	padding-top: 20px;
+}
+.fenzuList{
+	width: 90%;
+	height:60px;
+	line-height: 60px;
+	margin: auto;
+	border-bottom: 1px solid #c9c9c9;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+}
+.cityName{
+	padding-left: 20px;
+	font-size: 14px;
+	font-weight: bold;
+}
+.actionArea{
+	color: #7691f8;
+	font-size: 14px;
+}
+

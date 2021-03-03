@@ -43,11 +43,17 @@ var webapi = {
 	//图片内容检查
 	mediaCheck:webhost + 'media/check/url',
 	
-	// 隐藏资料 是否公开资料
+	//分组列表
+	groupList:webhost + 'member/group/list',
 	
+	//获取分组要求码
+	groupCode:webhost + 'member/group/code',
 	
+	//请求加入分组
+	groupJoin:webhost + 'member/group/join', 
 	
-	
+	// 退出分组
+	groupQuit:webhost + 'member/group/quit',
 	//
 	// 微信登陆
 	// #ifdef MP-WEIXIN
@@ -176,6 +182,11 @@ const strbool = (str) =>{
   }
 }
 
+//时间是否超时
+const timelock = (timedata) => {
+	
+} 
+
 
 // 获取用户信息
 const getUserinfo = async() => {
@@ -249,7 +260,7 @@ const hideLoading = () => {
 
 const checkCode = (code) => {
 	// console.log(code);
-	if (code == 0 ) {
+	if (code == 0 || code==4000 ) {
 		return true;
 	} else {
 		return false
@@ -333,5 +344,6 @@ export default {
 	uploading,
 	hideLoading,
 	getUserinfo,
-	trim
+	trim,
+	timelock
 }

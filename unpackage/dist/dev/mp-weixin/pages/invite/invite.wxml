@@ -1,0 +1,1 @@
+<view class="yaoqingBox"><view><image class="yqimg" src="../../static/yq.png"></image></view><view class="title">邀请您加入<text>{{"【 "+name+" 】"}}</text>分组</view><view data-event-opts="{{[['tap',[['joinEvent',['$event']]]]]}}" class="wxloginbtn" bindtap="__e">确认加入</view></view>

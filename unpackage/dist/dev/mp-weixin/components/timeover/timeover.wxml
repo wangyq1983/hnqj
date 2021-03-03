@@ -1,0 +1,1 @@
+<block wx:if="{{isover}}"><view class="timeover">您的会员权限已经过期，请及时联系</view></block>

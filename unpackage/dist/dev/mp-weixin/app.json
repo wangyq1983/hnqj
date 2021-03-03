@@ -10,7 +10,9 @@
     "pages/detail/detail",
     "pages/search/search",
     "pages/examine/examine",
-    "pages/mianze/mianze"
+    "pages/mianze/mianze",
+    "pages/fenzulist/fenzulist",
+    "pages/invite/invite"
   ],
   "subPackages": [],
   "window": {
@@ -39,6 +41,5 @@
       }
     ]
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap56.json"
+  "usingComponents": {}
 }

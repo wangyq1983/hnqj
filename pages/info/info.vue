@@ -18,7 +18,7 @@
 			<view class="infoItem">
 				<view class="left">出生年月:</view>
 				<view class="right">
-					<picker mode="date" :value="date" :start="startDate" :end="endDate" fields="month" @change="bindDateChange">
+					<picker mode="date" :value="date" :start="startDate" :end="endDate" fields="month" @change="bindDateChange" class="pickerStyle">
 						<view class="uni-input">{{ date }}</view>
 					</picker>
 					<text>*必填</text>
@@ -54,6 +54,7 @@
 						  {{edu}}
 					    </view>
 					</picker>
+					
 					<!-- <radio-group @change="radioChangeEdu">
 						<label v-for="(item, index) in itemsEdu" :key="item.value">
 							<view><radio :value="item.value" :checked="item.checked" /></view>
@@ -93,9 +94,15 @@
 					</radio-group> -->
 				</view>
 			</view>
-			<view class="infoItem">
-				<view class="left">房屋描述:</view>
-				<view class="right">
+			<view class="newinfoItem">
+				<view class="title">
+					<view class="infoItem">
+						<view class="left1">
+							房屋描述:
+						</view>
+					</view>
+				</view>
+				<view class="con">
 					<textarea placeholder="房子信息描述" v-model="houseTxt"></textarea>
 				</view>
 			</view>
@@ -110,9 +117,15 @@
 					</radio-group>
 				</view>
 			</view>
-			<view class="infoItem">
-				<view class="left">车辆描述:</view>
-				<view class="right">
+			<view class="newinfoItem">
+				<view class="title">
+					<view class="infoItem">
+						<view class="left1">
+							车辆描述:
+						</view>
+					</view>
+				</view>
+				<view class="con">
 					<textarea placeholder="车辆描述" v-model="carTxt"></textarea>
 				</view>
 			</view>
@@ -141,7 +154,7 @@
 					    <view class="picker">
 					      {{region[0]}}，{{region[1]}}，{{region[2]}}
 					    </view>
-					  </picker>
+					</picker>
 				</view>
 			</view>
 			<view class="infoItem">
@@ -155,7 +168,6 @@
 					</radio-group>
 				</view>
 			</view>
-			
 			<view class="infoItem" v-if="abroad == 1">
 				<view class="left">工作地区:</view>
 				<view class="right">
@@ -173,9 +185,13 @@
 					  </picker>
 				</view>
 			</view>
-			<view class="infoItem">
-				<view class="left">父母情况:</view>
-				<view class="right">
+			<view class="newinfoItem">
+				<view class="title">
+					<view class="infoItem">
+						<view class="left1">父母情况:</view>
+					</view>
+				</view>
+				<view class="con">
 					<textarea v-model="parentsInfo"></textarea>
 				</view>
 			</view>
@@ -190,16 +206,19 @@
 					</radio-group>
 				</view>
 			</view>
-			<view class="infoItem">
-				<view class="left">家庭成员描述:</view>
-				<view class="right">
+			<view class="newinfoItem">
+				<view class="title">
+					<view class="infoItem">
+						<view class="left1">家庭成员描述:</view>
+					</view>
+				</view>
+				<view class="con">
 					<textarea v-model="family" placeholder="例如兄弟姐妹信息"></textarea>
 				</view>
 			</view>
 			<view class="infoItem">
 				<view class="left">婚姻情况:</view>
 				<view class="right">
-					
 					<picker class="pickerStyle" @change="bindChangeMarriage" :value="marriage_index" :range="marriage_array">
 					    <view class="picker">
 					      <!-- {{edu_array[edu_index]}} -->
@@ -216,21 +235,33 @@
 					
 				</view>
 			</view>
-			<view class="infoItem">
-				<view class="left">补充说明:</view>
-				<view class="right">
+			<view class="newinfoItem">
+				<view class="title">
+					<view class="infoItem">
+						<view class="left">补充说明:</view>
+					</view>
+				</view>
+				<view class="con">
 					<textarea v-model="marriageTxt" placeholder="婚姻情况补充说明"></textarea>
 				</view>
 			</view>
-			<view class="infoItem">
-				<view class="left">个人介绍:</view>
-				<view class="right">
+			<view class="newinfoItem">
+				<view class="title">
+					<view class="infoItem">
+						<view class="left1">个人介绍:</view>
+					</view>
+				</view>
+				<view class="con">
 					<textarea v-model="introduction" placeholder="个人优缺点"></textarea>
 				</view>
 			</view>
-			<view class="infoItem">
-				<view class="left">备注:</view>
-				<view class="right">
+			<view class="newinfoItem">
+				<view class="title">
+					<view class="infoItem">
+						<view class="left1">备注:</view>
+					</view>
+				</view>
+				<view class="con">
 					<textarea v-model="requirement" placeholder="备注"></textarea>
 				</view>
 			</view>
@@ -455,7 +486,7 @@ export default {
 				{
 					value:'1',
 					name:'公开',
-					checked:true
+					checked:false
 				}
 			],
 			date: currentDate,
@@ -487,10 +518,10 @@ export default {
 			filelist:[],
 			abroad:0, // 工作区域是否海外
 			abroadHome:0,  // 生活区域是否海外
-			region: ['山东省', '青岛市', '市南区'],  //生活区域
-			regionwork: ['山东省', '青岛市', '市南区'], //工作区域
-			customItem: '',
-			infopublic:''  // 公开资料
+			region: ['全部', '全部', '全部'],  //生活区域
+			regionwork: ['全部', '全部', '全部'], //工作区域
+			customItem: '全部',
+			infoPublic:''// 公开资料
 		};
 	},
 	computed: {
@@ -521,7 +552,6 @@ export default {
 				}else{
 					this.isEdit = true;
 					var oldData = searchRes.data;
-					
 										//this.initItem(this.itemsSex,this.sex);
 					this.id = oldData.id;
 					this.number = oldData.number;
@@ -533,22 +563,22 @@ export default {
 					this.abroad = oldData.abroad;
 					this.abroadHome = oldData.abroadHome;
 					this.photoPublic = oldData.photoPublic;
-					
-					if(this.abroad == 0){
+					this.infoPublic = oldData.infoPublic;
+					if(this.abroad == 0 || this.abroad == '0'){
 						// 工作地非海外
 						this.regionwork = oldData.workArea.split(',');
 						
 						console.log(this.regionwork)
 					}
-					if(this.abroadHome == 0){
+					if(this.abroadHome == 0 || this.abroadHome == '0'){
 						this.region = oldData.hometown.split(',');
 						
 						console.log(this.region);
 					}
-					if(this.abroad == 1){
+					if(this.abroad == 1 || this.abroad == '1'){
 						this.workArea = oldData.workArea;
 					}
-					if(this.abroadHome == 1){
+					if(this.abroadHome == 1 || this.abroadHome == '1'){
 						this.hometown = oldData.hometown;
 					}
 					
@@ -719,7 +749,7 @@ export default {
 			for (let i = 0; i < this.itemsInfoPublic.length; i++) {
 				if (this.itemsInfoPublic[i].value === evt.target.value) {
 					this.current = i;
-					this.infopublic = evt.target.value;
+					this.infoPublic = evt.target.value;
 					break;
 				}
 			}
@@ -1058,17 +1088,18 @@ export default {
 						// 工作地是海外
 						workArea = that.workArea
 					}
-					if(that.abroadHome == 0 || that.abroad == '0'){
+					if(that.abroadHome == 0 || that.abroadHome == '0'){
 						// 家乡非海外
 						hometown = that.region.join(',');
 					}
-					if(that.abroadHome == 1 || that.abroad == '1'){
+					if(that.abroadHome == 1 || that.abroadHome == '1'){
 						// 家乡是海外
 						hometown = that.hometown;
 					}
 				}
-				
-				initParams()
+				 
+				 
+				initParams(); 
 				
 				if(this.isEdit == true){
 					var params = {
@@ -1099,7 +1130,8 @@ export default {
 						introduction:this.introduction,
 						requirement:this.requirement,
 						imageList:JSON.stringify(this.imglist),
-						infoPublic:this.infopublic
+						infoPublic:this.infoPublic,
+						photoPublic:this.photoPublic
 					};
 					console.log(params);
 					if(this.infoLock == 1){
@@ -1150,7 +1182,8 @@ export default {
 						introduction:this.introduction,
 						requirement:this.requirement,
 						imageList:JSON.stringify(this.imglist),
-						infoPublic:this.infopublic
+						infoPublic:this.infopublic,
+						photoPublic:this.photoPublic
 					};
 					console.log(params);
 					// if(this.infoLock == 1){
@@ -1182,122 +1215,148 @@ export default {
 </script>
 
 <style lang="scss">
-.infoList {
-	width: 700upx;
-	padding: 25upx;
-	.infoItem {
-		width: 660upx;
-		display: flex;
-		padding: 25upx 20upx;
-		flex-direction: row;
-		justify-content: flex-start;
-		align-items: center;
-		border-bottom: 1upx solid #eee;
-		.left {
-			width: 160upx;
-			text-align: right;
-			padding-right: 40upx;
-			font-weight: bold;
-		}
-		.right {
-			width: 500upx;
+	
+	.infoList {
+		width: 700upx;
+		padding: 25upx;
+		.infoItem {
+			width: 660upx;
 			display: flex;
+			padding: 25upx 20upx;
 			flex-direction: row;
 			justify-content: flex-start;
 			align-items: center;
-			text {
-				color: #999;
-				font-size: 24upx;
-				padding-left: 20upx;
+			border-bottom: 1upx solid #eee;
+			.left {
+				width: 160upx;
+				text-align: right;
+				padding-right: 40upx;
+				font-weight: bold;
+			}
+			.left1 {
+				width: 200upx;
+				text-align: left;
+				padding-right: 40upx;
+				font-weight: bold;
+				padding-left: 20px;
+			}
+			.right {
+				width: 500upx;
+				display: flex;
+				flex-direction: row;
+				justify-content: flex-start;
+				align-items: center;
+				text {
+					color: #999;
+					font-size: 24upx;
+					padding-left: 20upx;
+				}
 			}
 		}
 	}
-}
-.actionBox {
-	width: 100%;
-	height: 80upx;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	padding-top: 60upx;
-	.btn {
-		width: 320upx;
+	.newinfoItem{
+			.title{
+				width:100%;
+				display: block;
+				background: #ececec;
+				box-sizing: border-box;
+			}
+			.con{
+				width:100%;
+				height:120px;
+				display: block;
+			}
+		}
+	.actionBox {
+		width: 100%;
 		height: 80upx;
-		line-height: 80upx;
-		text-align: center;
-		background: #fb4446;
-		border-radius: 10upx;
-		color: #fff;
-	}
-}
-.uploadimg {
-	width: 100upx;
-	text-align: center;
-	height: 100upx;
-	line-height: 100upx;
-	background: #efefef;
-	border: 2upx solid #999;
-	border-radius: 6upx;
-	font-size: 70upx;
-	font-weight: bold;
-	color: #999;
-}
-.imageArea {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	align-items: center;
-	flex-wrap: wrap;
-	.imgwarp,
-	.bg-img {
-		width: 200upx;
-		height: 290upx;
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		justify-content: center;
 		align-items: center;
-		image {
-			width: 200upx;
-			height: 200upx;
+		padding-top: 60upx;
+		.btn {
+			width: 320upx;
+			height: 80upx;
+			line-height: 80upx;
+			text-align: center;
+			background: #fb4446;
+			border-radius: 10upx;
+			color: #fff;
 		}
 	}
-	.delimg {
-		width: 50upx;
-		height: 50upx;
-		line-height: 50upx;
+	.uploadimg {
+		width: 100upx;
 		text-align: center;
-		background: #fd4344;
-		color: #fff;
-		font-size: 38upx;
+		height: 100upx;
+		line-height: 100upx;
+		background: #efefef;
+		border: 2upx solid #999;
+		border-radius: 6upx;
+		font-size: 70upx;
+		font-weight: bold;
+		color: #999;
 	}
-}
-radio-group {
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	align-items: center;
-	flex-wrap: wrap;
-}
-label {
-	margin-right: 50upx;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	align-items: center;
-	padding: 10upx 0;
-}
-input {
-	width:180upx;
-	border: 2upx solid #999;
-	height: 60upx;
-}
-textarea{
-	border:2upx solid #999
-}
-.pickerStyle{
-	width:100%;
-	background: url(../../static/arraw.png) right no-repeat;
-	background-size: 32upx 32upx;
-}
+	.imageArea {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		align-items: center;
+		flex-wrap: wrap;
+		.imgwarp,
+		.bg-img {
+			width: 200upx;
+			height: 290upx;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			image {
+				width: 200upx;
+				height: 200upx;
+			}
+		}
+		.delimg {
+			width: 50upx;
+			height: 50upx;
+			line-height: 50upx;
+			text-align: center;
+			background: #fd4344;
+			color: #fff;
+			font-size: 38upx;
+		}
+	}
+	radio-group {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+	label {
+		margin-right: 50upx;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		padding: 10upx 0;
+	}
+	input {
+		width:180upx;
+		border: 2upx solid #999;
+		height: 60upx;
+	}
+	textarea{
+		border:2upx solid #999;
+		width:100%;
+		height:120px;
+		box-sizing: border-box;
+	}
+	.pickerStyle{
+		width:100%;
+		height:36px;
+		line-height: 36px;
+		background: url(../../static/arraw.png) right no-repeat;
+		background-size: 32upx 32upx;
+	}
 </style>

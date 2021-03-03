@@ -1,4 +1,3 @@
-
 <template>
 	<view>
 		<detailinfo :info = "detail" v-if="dataok"></detailinfo>

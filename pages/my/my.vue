@@ -3,6 +3,7 @@
 		<view class="bgimg">
 			<!-- <image src="/static/bg.jpg" mode=""></image> -->
 		</view>
+		<timeover :membertime = "expiryDate" v-if="expiryDate"></timeover>
 		<view class="userbox">
 			<view class="userinfo">
 				<image :src="icon" mode="" class="usericon"></image>
@@ -40,12 +41,12 @@
 						查看个人资料
 					</view>
 				</view>
-				<!-- <view class="menuItem" @tap="mianzeEvent" v-if="isbind">
-					<image src="/static/mz.png" mode=""></image>
+				<view class="menuItem" @tap="fenzuEvent" v-if="isbind">
+					<image src="/static/fenzu.png" mode=""></image>
 					<view class="menuTxt">
-						友情提示 免责声明
+						分组
 					</view>
-				</view> -->
+				</view>
 			</view>
 			
 			<!-- <button class="" style="width:600upx; margin-top: 100upx;;" @tap="infoEvent">填写/编辑 个人资料</button> -->
@@ -110,6 +111,11 @@ export default {
 		infoDetail(){
 			uni.navigateTo({
 				url:'/pages/detail/detail?number=self'
+			})
+		},
+		fenzuEvent(){
+			uni.navigateTo({
+				url:'/pages/fenzulist/fenzulist'
 			})
 		},
 		infoEvent() {

@@ -109,13 +109,13 @@ var components
 try {
   components = {
     listitem: function() {
-      return __webpack_require__.e(/*! import() | components/listitem/listitem */ "components/listitem/listitem").then(__webpack_require__.bind(null, /*! @/components/listitem/listitem.vue */ 103))
+      return __webpack_require__.e(/*! import() | components/listitem/listitem */ "components/listitem/listitem").then(__webpack_require__.bind(null, /*! @/components/listitem/listitem.vue */ 117))
     },
     nodata: function() {
-      return __webpack_require__.e(/*! import() | components/nodata/nodata */ "components/nodata/nodata").then(__webpack_require__.bind(null, /*! @/components/nodata/nodata.vue */ 110))
+      return __webpack_require__.e(/*! import() | components/nodata/nodata */ "components/nodata/nodata").then(__webpack_require__.bind(null, /*! @/components/nodata/nodata.vue */ 124))
     },
     endLine: function() {
-      return __webpack_require__.e(/*! import() | components/endLine/endLine */ "components/endLine/endLine").then(__webpack_require__.bind(null, /*! @/components/endLine/endLine.vue */ 117))
+      return __webpack_require__.e(/*! import() | components/endLine/endLine */ "components/endLine/endLine").then(__webpack_require__.bind(null, /*! @/components/endLine/endLine.vue */ 131))
     }
   }
 } catch (e) {
@@ -192,6 +192,108 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
@@ -204,7 +306,50 @@ var _default =
 
       nodatalist: [],
       searchTxt: '',
-      loginState: true };
+      loginState: true,
+      showType: false,
+      tsEvent: 'default', // 点击触发了分类搜索   default为普通列表   filter为筛选列表
+      edu: '',
+      edu_index: 2,
+      edu_array: [
+      '博士', '硕士', '本科', '专科', '高中或职专', '初中及以下'],
+
+      age: '',
+      age_index: 2,
+      age_array: [
+      '25岁以下', '25-29岁', '30-34岁', '35-39岁', '40及以上'],
+
+      abroad: 0, // 工作区域是否海外
+      abroadHome: 0, // 生活区域是否海外
+      region: ['全部', '全部', '全部'], //生活区域
+      regionwork: ['全部', '全部', '全部'], //工作区域
+      customItem: '全部',
+      hometown: '',
+      workArea: '',
+      itemsAbroad: [
+      {
+        value: '0',
+        name: '国内',
+        checked: true },
+
+      {
+        value: '1',
+        name: '海外',
+        checked: false }],
+
+
+      itemsAbroadHome: [
+      {
+        value: '0',
+        name: '国内',
+        checked: true },
+
+      {
+        value: '1',
+        name: '海外',
+        checked: false }] };
+
+
 
   },
   onLoad: function onLoad(options) {
@@ -218,12 +363,14 @@ var _default =
                 from: this.rwlist.length + 1,
                 count: this.dataStep };
 
-
               if (this.isEnd !== true) {
                 this.renderList(this.rwlist.length + 1, this.dataStep, this.date);
               }case 2:case "end":return _context.stop();}}}, _callee, this);}));function onReachBottom() {return _onReachBottom.apply(this, arguments);}return onReachBottom;}(),
 
   methods: {
+    closeEvent: function closeEvent() {
+      this.showType = false;
+    },
     searchEvent: function searchEvent() {
       console.log(this.searchTxt);
       if (this.searchTxt == '') {
@@ -237,16 +384,119 @@ var _default =
 
       }
     },
+    typeSearchEvent: function typeSearchEvent() {
+      this.showType = true;
+    },
+    reloadDefault: function reloadDefault() {
+      uni.reLaunch({
+        url: '/pages/xqlist/xqlist' });
+
+    },
     init: function init() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
                 _this.renderList(1, _this.dataStep);case 1:case "end":return _context2.stop();}}}, _callee2);}))();
     },
-    renderList: function renderList(from, count) {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var params, cjlist;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
-                params = {
-                  from: from,
-                  count: count };_context3.next = 3;return (
+    bindChangeEdu: function bindChangeEdu(e) {
+      this.edu_index = e.detail.value;
+    },
+    bindChangeAge: function bindChangeAge(e) {
+      this.age_index = e.detail.value;
+      // this.age = this.age_array[e.detail.value];
+    },
+    radioChangeAbroad: function radioChangeAbroad(evt) {
+      console.log(evt.target.value);
+      for (var i = 0; i < this.itemsAbroad.length; i++) {
+        if (this.itemsAbroad[i].value === evt.target.value) {
+          this.current = i;
+          this.abroad = evt.target.value;
+          console.log('this_abroad is' + this.abroad);
+          break;
+        }
+      }
+    },
+    radioChangeAbroadHome: function radioChangeAbroadHome(evt) {
+      console.log(evt.target.value);
+      for (var i = 0; i < this.itemsAbroadHome.length; i++) {
+        if (this.itemsAbroadHome[i].value === evt.target.value) {
+          this.current = i;
+          this.abroadHome = evt.target.value;
+          console.log('this_abroad is' + this.abroadHome);
+          break;
+        }
+      }
+    },
+    bindRegionChange: function bindRegionChange(e) {
+      console.log('picker发送选择改变，携带值为', e.detail.value);
+      this.region = e.detail.value;
+      console.log(this.region);
+    },
+    bindRegionWorkChange: function bindRegionWorkChange(e) {
+      console.log('picker发送选择改变，携带值为', e.detail.value);
+      this.regionwork = e.detail.value;
+      console.log(this.regionwork);
+    },
+    submitEvent: function () {var _submitEvent = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var hometown, workArea, params, cjlist;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
 
-                  _this2.$api.showLoading());case 3:_context3.next = 5;return (
-                  _this2.$api.getData(_this2.$api.webapi.memberList, params));case 5:cjlist = _context3.sent;_context3.next = 8;return (
+                if (this.abroad == 0 || this.abroad == '0') {
+                  // 工作地非海外
+                  workArea = this.regionwork.join(',');
+                }
+                if (this.abroad == 1 || this.abroad == '1') {
+                  // 工作地是海外
+                  workArea = this.workArea;
+                }
+                if (this.abroadHome == 0 || this.abroadHome == '0') {
+                  // 家乡非海外
+                  hometown = this.region.join(',');
+                }
+                if (this.abroadHome == 1 || this.abroadHome == '1') {
+                  // 家乡是海外
+                  hometown = this.hometown;
+                }
+                params = {
+                  from: 1,
+                  count: this.dataStep,
+                  education: this.edu_array[this.edu_index],
+                  age: this.age_array[this.age_index],
+                  abroad: this.abroad, // 工作区域是否海外
+                  abroadHome: this.abroadHome, // 生活区域是否海外
+                  hometown: hometown,
+                  workArea: workArea };
+
+                this.showType = false;
+                this.tsEvent = 'filter';_context3.next = 9;return (
+                  this.$api.showLoading());case 9:_context3.next = 11;return (
+                  this.$api.getData(this.$api.webapi.memberList, params));case 11:cjlist = _context3.sent;_context3.next = 14;return (
+                  this.$api.hideLoading());case 14:
+                if (cjlist.resultCode == 4001 || cjlist.resultCode == 4000) {
+                  this.loginState = false;
+                } else {
+                  this.loginState = true;
+                  this.isEmpty = 1;
+                  this.isEnd = false;
+                  this.rwlist = cjlist.data;
+                }case 15:case "end":return _context3.stop();}}}, _callee3, this);}));function submitEvent() {return _submitEvent.apply(this, arguments);}return submitEvent;}(),
+
+    renderList: function renderList(from, count) {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4() {var params, cjlist;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
+                if (_this2.tsEvent == 'default') {
+                  params = {
+                    from: from,
+                    count: count };
+
+                } else {
+                  params = {
+                    from: from,
+                    count: count,
+                    education: _this2.edu,
+                    age: _this2.age,
+                    abroad: _this2.abroad, // 工作区域是否海外
+                    abroadHome: _this2.abroadHome, // 生活区域是否海外
+                    hometown: _this2.hometown,
+                    workArea: _this2.workArea };
+
+                }_context4.next = 3;return (
+
+                  _this2.$api.showLoading());case 3:_context4.next = 5;return (
+                  _this2.$api.getData(_this2.$api.webapi.memberList, params));case 5:cjlist = _context4.sent;_context4.next = 8;return (
                   _this2.$api.hideLoading());case 8: // 等待请求数据成功后，隐藏loading
                 console.log(cjlist);
                 if (cjlist.resultCode == 4001 || cjlist.resultCode == 4000) {
@@ -262,7 +512,7 @@ var _default =
                     _this2.isEnd = cjlist.data.length < _this2.dataStep ? true : false;
                     _this2.rwlist = _this2.rwlist.length == 0 ? cjlist.data : _this2.rwlist.concat(cjlist.data);
                   }
-                }case 10:case "end":return _context3.stop();}}}, _callee3);}))();
+                }case 10:case "end":return _context4.stop();}}}, _callee4);}))();
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
