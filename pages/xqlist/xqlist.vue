@@ -50,8 +50,8 @@
 						</radio-group> -->
 					</view>
 				</view>
-				<view class="infoItem">
-					<view class="left">家乡地区是否海外:</view>
+				<view class="infoItem" style="border: none;">
+					<view class="left">家乡地区:</view>
 					<view class="right">
 						<radio-group @change="radioChangeAbroadHome">
 							<label v-for="(item, index) in itemsAbroadHome" :key="item.value">
@@ -62,14 +62,14 @@
 					</view>
 				</view>
 				<view class="infoItem" v-if="abroadHome == 1">
-					<view class="left">家乡地区:</view>
+					<view class="left"></view>
 					<view class="right">
 						<input type="text" v-model="hometown" />
 						<!-- <text>老家是哪里</text> -->
 					</view>
 				</view>
 				<view class="infoItem" v-if="abroadHome == 0">
-					<view class="left">家乡地区:</view>
+					<view class="left"></view>
 					<view class="right">
 						<picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem" class="pickerStyle">
 						    <view class="picker">
@@ -78,7 +78,7 @@
 						</picker>
 					</view>
 				</view>
-				<view class="infoItem">
+				<view class="infoItem" style="border:none">
 					<view class="left">工作地区:</view>
 					<view class="right">
 						<radio-group @change="radioChangeAbroad">
@@ -90,13 +90,13 @@
 					</view>
 				</view>
 				<view class="infoItem" v-if="abroad == 1">
-					<view class="left">工作地区:</view>
+					<view class="left"></view>
 					<view class="right">
 						<input type="text" v-model="workArea" />
 					</view>
 				</view>
 				<view class="infoItem" v-if="abroad == 0">
-					<view class="left">工作地区:</view>
+					<view class="left"></view>
 					<view class="right">
 						<!-- <input type="text" v-model="workArea" /> -->
 						<picker mode="region" @change="bindRegionWorkChange" :value="regionwork" :custom-item="customItem" class="pickerStyle">
@@ -108,7 +108,7 @@
 				</view>
 				
 			</view>
-			<view class="actionBox"><view class="btn" @tap="submitEvent">确认提交</view></view>
+			<view class="actionBox"><view class="btn" @tap="submitEvent">搜索</view></view>
 		</view>
 		<view class="xqlist" v-if="loginState">
 			<listitem v-for="items in rwlist" :key="items.id" :info="items"></listitem>
@@ -138,19 +138,19 @@
 				showType:false,
 				tsEvent:'default', // 点击触发了分类搜索   default为普通列表   filter为筛选列表
 				edu: '',
-				edu_index:2,
+				edu_index:0,
 				edu_array:[
-					'博士','硕士','本科','专科','高中或职专','初中及以下'
+					'不限','博士','硕士','本科','专科','高中或职专','初中及以下'
 				],
 				age: '',
-				age_index:2,
+				age_index:0,
 				age_array:[
-					'25岁以下','25-29岁','30-34岁','35-39岁','40及以上'
+					'不限','25岁以下','25-29岁','30-34岁','35-39岁','40及以上'
 				],
-				abroad:0, // 工作区域是否海外
-				abroadHome:0,  // 生活区域是否海外
-				region: ['全部', '全部', '全部'],  //生活区域
-				regionwork: ['全部', '全部', '全部'], //工作区域
+				abroad:2, // 工作区域是否海外
+				abroadHome:2,  // 生活区域是否海外
+				region: ['全部','全部','全部'],  //生活区域
+				regionwork: ['全部','全部','全部'], //工作区域
 				customItem: '全部',
 				hometown:'',
 				workArea:'',
@@ -158,7 +158,7 @@
 					{
 						value:'0',
 						name:'国内',
-						checked:true
+						checked:false
 					},
 					{
 						value:'1',
@@ -170,7 +170,7 @@
 					{
 						value:'0',
 						name:'国内',
-						checked:true
+						checked:false
 					},
 					{
 						value:'1',
@@ -192,7 +192,7 @@
 				count: this.dataStep
 			};
 			if (this.isEnd !== true) {
-				this.renderList(this.rwlist.length + 1, this.dataStep, this.date);
+				this.renderList(this.rwlist.length + 1, this.dataStep);
 			}
 		},
 		methods: {
@@ -262,11 +262,41 @@
 				this.regionwork = e.detail.value;
 				console.log(this.regionwork)
 			},
-			submitEvent:async function(){
+			strReplace:function(strrep){
+				//筛选条件过滤字符串
+				var okstr = strrep.replace(/,全部/g, "");
+				okstr = okstr.replace(/全部/g, "");
+				okstr = okstr.replace(/不限/g, "");
+				return okstr
+			},
+			strundefined:function(obj){
+				console.log(obj)
+				if(obj.abroad == 2){
+					delete obj.abroad
+				}
+				if(obj.abroadHome == 2){
+					delete obj.abroadHome
+				}
+				if(obj.age == ""){
+					delete obj.age
+				}
+				if(obj.education == ""){
+					delete obj.education
+				}
+				if(obj.hometown == undefined || obj.hometown == "undefined" || obj.hometown == ""){
+					delete obj.hometown
+				}
+				if(obj.workArea == undefined || obj.workArea == "undefined" || obj.workArea == ""){
+					delete obj.workArea
+				}
+				return obj
+			},
+			filterParams:function(){
+				// 过滤条件筛选参数
 				var hometown,workArea;
 				if(this.abroad == 0 || this.abroad == '0'){
 					// 工作地非海外
-					workArea = this.regionwork.join(',');
+					workArea = this.strReplace(this.regionwork.join(','));
 				}
 				if(this.abroad == 1 || this.abroad == '1'){
 					// 工作地是海外
@@ -274,22 +304,34 @@
 				}
 				if(this.abroadHome == 0 || this.abroadHome == '0'){
 					// 家乡非海外
-					hometown = this.region.join(',');
+					hometown = this.strReplace(this.region.join(','));
 				}
 				if(this.abroadHome == 1 || this.abroadHome == '1'){
 					// 家乡是海外
 					hometown = this.hometown;
 				}
-				var params = {
-					from:1,
-					count:this.dataStep,
-					education:this.edu_array[this.edu_index],
-					age:this.age_array[this.age_index],
+				var paramsObj ={
+					education:this.strReplace(this.edu_array[this.edu_index]),
+					age:this.strReplace(this.age_array[this.age_index]),
 					abroad:this.abroad, // 工作区域是否海外
 					abroadHome:this.abroadHome,  // 生活区域是否海外
 					hometown,
 					workArea
 				}
+				var otherParam = this.strundefined(paramsObj);
+				console.log(otherParam);
+				return otherParam;
+			},
+			submitEvent:async function(){
+				
+				var param = {
+					from:1,
+					count:this.dataStep
+				}
+				var otherParam = this.filterParams();
+				var newObj = {};
+				var params = Object.assign(newObj,param,otherParam);
+				this.rwlist = [];
 				this.showType = false;
 				this.tsEvent = 'filter';
 				await this.$api.showLoading(); // 显示loading
@@ -299,9 +341,15 @@
 					this.loginState = false;
 				}else{
 					this.loginState = true;
-					this.isEmpty = 1;
-					this.isEnd = false;
-					this.rwlist = cjlist.data;
+					if (cjlist.data.length == 0) {
+						this.isEmpty = 1;
+						this.isEnd = false;
+						this.rwlist = cjlist.data;
+					} else {
+						this.isEmpty = 0;
+						this.isEnd = cjlist.data.length < this.dataStep ? true : false;
+						this.rwlist = this.rwlist.length == 0 ? cjlist.data : this.rwlist.concat(cjlist.data);
+					}
 				}
 			},
 			async renderList(from, count) {
@@ -311,18 +359,15 @@
 						count
 					};
 				}else{
-					var params = {
+					this.isEmpty = 0
+					var param = {
 						from,
-						count,
-						education:this.edu,
-						age:this.age,
-						abroad:this.abroad, // 工作区域是否海外
-						abroadHome:this.abroadHome,  // 生活区域是否海外
-						hometown:this.hometown,
-						workArea:this.workArea,
+						count
 					}
+					var otherParam = this.filterParams();
+					var newObj = {};
+					var params = Object.assign(newObj,param,otherParam);
 				}
-				
 				await this.$api.showLoading(); // 显示loading
 				var cjlist = await this.$api.getData(this.$api.webapi.memberList, params);
 				await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading

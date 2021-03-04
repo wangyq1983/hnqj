@@ -227,7 +227,6 @@ var _default =
     init: function () {var _init = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
                 this.renderList(1, this.dataStep);case 1:case "end":return _context3.stop();}}}, _callee3, this);}));function init() {return _init.apply(this, arguments);}return init;}(),
 
-
     createShare: function () {var _createShare = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(e) {var id, name, params, groupcode, code;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
                 id = e.currentTarget.dataset.id;
                 name = e.currentTarget.dataset.name;_context4.next = 4;return (
@@ -246,17 +245,37 @@ var _default =
                   url: "/pages/invite/invite?id=" + id + '&name=' + name + '&code=' + code });case 12:case "end":return _context4.stop();}}}, _callee4, this);}));function createShare(_x3) {return _createShare.apply(this, arguments);}return createShare;}(),
 
 
-    exitFz: function () {var _exitFz = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(e) {var id, params, groupquit;return _regenerator.default.wrap(function _callee5$(_context5) {while (1) {switch (_context5.prev = _context5.next) {case 0:
-                id = e.currentTarget.dataset.id;_context5.next = 3;return (
-                  this.$api.showLoading());case 3:
-                params = {
-                  groupIdList: [id] };_context5.next = 6;return (
+    exitFz: function () {var _exitFz = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6(e) {var id, that;return _regenerator.default.wrap(function _callee6$(_context6) {while (1) {switch (_context6.prev = _context6.next) {case 0:
+                id = e.currentTarget.dataset.id;
+                console.log(e.currentTarget.dataset.id);
+                that = this;
+                uni.showModal({
+                  title: '提示',
+                  content: '您确定要退出分组吗？',
+                  cancelText: "取消", // 取消按钮的文字  
+                  confirmText: "退出", // 确认按钮文字  
+                  showCancel: true, // 是否显示取消按钮，默认为 true
+                  confirmColor: '#f55850',
+                  cancelColor: '#39B54A',
+                  success: function () {var _success = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(res) {var params, groupquit;return _regenerator.default.wrap(function _callee5$(_context5) {while (1) {switch (_context5.prev = _context5.next) {case 0:if (!
+                              res.confirm) {_context5.next = 12;break;}_context5.next = 3;return (
+                                that.$api.showLoading());case 3:
+                              params = {
+                                groupIdList: [id] };_context5.next = 6;return (
 
-                  this.$api.postData(this.$api.webapi.groupQuit, params));case 6:groupquit = _context5.sent;_context5.next = 9;return (
-                  this.$api.hideLoading());case 9:
-                if (this.$api.reshook(groupquit, this.$mp.page.route)) {
-                  console.log(groupquit);
-                }case 10:case "end":return _context5.stop();}}}, _callee5, this);}));function exitFz(_x4) {return _exitFz.apply(this, arguments);}return exitFz;}() } };exports.default = _default;
+                                that.$api.postData(that.$api.webapi.groupQuit, params));case 6:groupquit = _context5.sent;_context5.next = 9;return (
+                                that.$api.hideLoading());case 9:
+                              if (that.$api.reshook(groupquit, that.$mp.page.route)) {
+                                console.log(groupquit);
+                                uni.showToast({
+                                  title: '退出成功',
+                                  icon: 'none' });
+
+                                that.fenzuList = [];
+                                that.init();
+                              }_context5.next = 13;break;case 12:
+
+                              console.log('else', res);case 13:case "end":return _context5.stop();}}}, _callee5);}));function success(_x5) {return _success.apply(this, arguments);}return success;}() });case 4:case "end":return _context6.stop();}}}, _callee6, this);}));function exitFz(_x4) {return _exitFz.apply(this, arguments);}return exitFz;}() } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

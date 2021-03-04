@@ -57,13 +57,19 @@
 				await this.$api.showLoading(); // 显示loading
 				var groupJoin = await this.$api.postData(this.$api.webapi.groupJoin,params);
 				await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
-				if (this.$api.reshook(groupJoin, this.$mp.page.route)) {
+				console.log(this.$mp.page.route)
+				
+				if (this.$api.reshook(groupJoin, this.currentPage)) {
 					console.log(groupJoin.resultCode);
 					if(groupJoin.resultCode == 0 || groupJoin.resultCode == 4000){
 						uni.showToast({
 							title:groupJoin.message,
 							icon:'none',
 							duration:1500
+						})
+						
+						uni.switchTab({
+							url:'/pages/my/my'
 						})
 					}
 				}

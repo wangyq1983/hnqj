@@ -209,7 +209,7 @@
 			<view class="newinfoItem">
 				<view class="title">
 					<view class="infoItem">
-						<view class="left1">家庭成员描述:</view>
+						<view class="left1">家庭成员:</view>
 					</view>
 				</view>
 				<view class="con">

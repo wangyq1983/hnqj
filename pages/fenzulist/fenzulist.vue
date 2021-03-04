@@ -68,7 +68,6 @@
 			},
 			init:async function(){
 				this.renderList(1, this.dataStep);
-				
 			},
 			createShare: async function(e){
 				var id = e.currentTarget.dataset.id;
@@ -90,15 +89,39 @@
 			},
 			exitFz:async function(e){
 				var id = e.currentTarget.dataset.id;
-				await this.$api.showLoading();
-				var params = {
-					groupIdList:[id]
-				}
-				var groupquit = await this.$api.postData(this.$api.webapi.groupQuit,params);
-				await this.$api.hideLoading();
-				if (this.$api.reshook(groupquit, this.$mp.page.route)) {
-					console.log(groupquit);
-				}
+				console.log(e.currentTarget.dataset.id);
+				var that = this;
+				uni.showModal({
+					title: '提示',
+					content: '您确定要退出分组吗？',
+					cancelText: "取消", // 取消按钮的文字  
+					confirmText: "退出", // 确认按钮文字  
+					showCancel: true, // 是否显示取消按钮，默认为 true
+					confirmColor: '#f55850',
+					cancelColor: '#39B54A',
+					success: async(res) => {
+						if(res.confirm) {
+							await that.$api.showLoading();
+							var params = {
+								groupIdList:[id]
+							}
+							var groupquit = await that.$api.postData(that.$api.webapi.groupQuit,params);
+							await that.$api.hideLoading();
+							if (that.$api.reshook(groupquit, that.$mp.page.route)) {
+								console.log(groupquit);
+								uni.showToast({
+									title:'退出成功',
+									icon:'none'
+								});
+								that.fenzuList = []
+								that.init()
+							}
+						} else {  
+							console.log('else', res)
+						}
+					} 
+				})
+				
 			}
 		}
 	}

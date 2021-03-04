@@ -74,7 +74,7 @@
             "path" : "pages/fenzulist/fenzulist",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "分组列表",
                 "enablePullDownRefresh": false
             }
             

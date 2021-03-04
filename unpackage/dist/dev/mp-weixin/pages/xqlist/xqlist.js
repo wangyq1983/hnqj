@@ -310,17 +310,17 @@ var _default =
       showType: false,
       tsEvent: 'default', // 点击触发了分类搜索   default为普通列表   filter为筛选列表
       edu: '',
-      edu_index: 2,
+      edu_index: 0,
       edu_array: [
-      '博士', '硕士', '本科', '专科', '高中或职专', '初中及以下'],
+      '不限', '博士', '硕士', '本科', '专科', '高中或职专', '初中及以下'],
 
       age: '',
-      age_index: 2,
+      age_index: 0,
       age_array: [
-      '25岁以下', '25-29岁', '30-34岁', '35-39岁', '40及以上'],
+      '不限', '25岁以下', '25-29岁', '30-34岁', '35-39岁', '40及以上'],
 
-      abroad: 0, // 工作区域是否海外
-      abroadHome: 0, // 生活区域是否海外
+      abroad: 2, // 工作区域是否海外
+      abroadHome: 2, // 生活区域是否海外
       region: ['全部', '全部', '全部'], //生活区域
       regionwork: ['全部', '全部', '全部'], //工作区域
       customItem: '全部',
@@ -330,7 +330,7 @@ var _default =
       {
         value: '0',
         name: '国内',
-        checked: true },
+        checked: false },
 
       {
         value: '1',
@@ -342,7 +342,7 @@ var _default =
       {
         value: '0',
         name: '国内',
-        checked: true },
+        checked: false },
 
       {
         value: '1',
@@ -364,7 +364,7 @@ var _default =
                 count: this.dataStep };
 
               if (this.isEnd !== true) {
-                this.renderList(this.rwlist.length + 1, this.dataStep, this.date);
+                this.renderList(this.rwlist.length + 1, this.dataStep);
               }case 2:case "end":return _context.stop();}}}, _callee, this);}));function onReachBottom() {return _onReachBottom.apply(this, arguments);}return onReachBottom;}(),
 
   methods: {
@@ -434,34 +434,76 @@ var _default =
       this.regionwork = e.detail.value;
       console.log(this.regionwork);
     },
-    submitEvent: function () {var _submitEvent = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var hometown, workArea, params, cjlist;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
+    strReplace: function strReplace(strrep) {
+      //筛选条件过滤字符串
+      var okstr = strrep.replace(/,全部/g, "");
+      okstr = okstr.replace(/全部/g, "");
+      okstr = okstr.replace(/不限/g, "");
+      return okstr;
+    },
+    strundefined: function strundefined(obj) {
+      console.log(obj);
+      if (obj.abroad == 2) {
+        delete obj.abroad;
+      }
+      if (obj.abroadHome == 2) {
+        delete obj.abroadHome;
+      }
+      if (obj.age == "") {
+        delete obj.age;
+      }
+      if (obj.education == "") {
+        delete obj.education;
+      }
+      if (obj.hometown == undefined || obj.hometown == "undefined" || obj.hometown == "") {
+        delete obj.hometown;
+      }
+      if (obj.workArea == undefined || obj.workArea == "undefined" || obj.workArea == "") {
+        delete obj.workArea;
+      }
+      return obj;
+    },
+    filterParams: function filterParams() {
+      // 过滤条件筛选参数
+      var hometown, workArea;
+      if (this.abroad == 0 || this.abroad == '0') {
+        // 工作地非海外
+        workArea = this.strReplace(this.regionwork.join(','));
+      }
+      if (this.abroad == 1 || this.abroad == '1') {
+        // 工作地是海外
+        workArea = this.workArea;
+      }
+      if (this.abroadHome == 0 || this.abroadHome == '0') {
+        // 家乡非海外
+        hometown = this.strReplace(this.region.join(','));
+      }
+      if (this.abroadHome == 1 || this.abroadHome == '1') {
+        // 家乡是海外
+        hometown = this.hometown;
+      }
+      var paramsObj = {
+        education: this.strReplace(this.edu_array[this.edu_index]),
+        age: this.strReplace(this.age_array[this.age_index]),
+        abroad: this.abroad, // 工作区域是否海外
+        abroadHome: this.abroadHome, // 生活区域是否海外
+        hometown: hometown,
+        workArea: workArea };
 
-                if (this.abroad == 0 || this.abroad == '0') {
-                  // 工作地非海外
-                  workArea = this.regionwork.join(',');
-                }
-                if (this.abroad == 1 || this.abroad == '1') {
-                  // 工作地是海外
-                  workArea = this.workArea;
-                }
-                if (this.abroadHome == 0 || this.abroadHome == '0') {
-                  // 家乡非海外
-                  hometown = this.region.join(',');
-                }
-                if (this.abroadHome == 1 || this.abroadHome == '1') {
-                  // 家乡是海外
-                  hometown = this.hometown;
-                }
-                params = {
+      var otherParam = this.strundefined(paramsObj);
+      console.log(otherParam);
+      return otherParam;
+    },
+    submitEvent: function () {var _submitEvent = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var param, otherParam, newObj, params, cjlist;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
+
+                param = {
                   from: 1,
-                  count: this.dataStep,
-                  education: this.edu_array[this.edu_index],
-                  age: this.age_array[this.age_index],
-                  abroad: this.abroad, // 工作区域是否海外
-                  abroadHome: this.abroadHome, // 生活区域是否海外
-                  hometown: hometown,
-                  workArea: workArea };
+                  count: this.dataStep };
 
+                otherParam = this.filterParams();
+                newObj = {};
+                params = Object.assign(newObj, param, otherParam);
+                this.rwlist = [];
                 this.showType = false;
                 this.tsEvent = 'filter';_context3.next = 9;return (
                   this.$api.showLoading());case 9:_context3.next = 11;return (
@@ -471,30 +513,33 @@ var _default =
                   this.loginState = false;
                 } else {
                   this.loginState = true;
-                  this.isEmpty = 1;
-                  this.isEnd = false;
-                  this.rwlist = cjlist.data;
+                  if (cjlist.data.length == 0) {
+                    this.isEmpty = 1;
+                    this.isEnd = false;
+                    this.rwlist = cjlist.data;
+                  } else {
+                    this.isEmpty = 0;
+                    this.isEnd = cjlist.data.length < this.dataStep ? true : false;
+                    this.rwlist = this.rwlist.length == 0 ? cjlist.data : this.rwlist.concat(cjlist.data);
+                  }
                 }case 15:case "end":return _context3.stop();}}}, _callee3, this);}));function submitEvent() {return _submitEvent.apply(this, arguments);}return submitEvent;}(),
 
-    renderList: function renderList(from, count) {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4() {var params, cjlist;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
+    renderList: function renderList(from, count) {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4() {var params, param, otherParam, newObj, cjlist;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
                 if (_this2.tsEvent == 'default') {
                   params = {
                     from: from,
                     count: count };
 
                 } else {
-                  params = {
+                  _this2.isEmpty = 0;
+                  param = {
                     from: from,
-                    count: count,
-                    education: _this2.edu,
-                    age: _this2.age,
-                    abroad: _this2.abroad, // 工作区域是否海外
-                    abroadHome: _this2.abroadHome, // 生活区域是否海外
-                    hometown: _this2.hometown,
-                    workArea: _this2.workArea };
+                    count: count };
 
+                  otherParam = _this2.filterParams();
+                  newObj = {};
+                  params = Object.assign(newObj, param, otherParam);
                 }_context4.next = 3;return (
-
                   _this2.$api.showLoading());case 3:_context4.next = 5;return (
                   _this2.$api.getData(_this2.$api.webapi.memberList, params));case 5:cjlist = _context4.sent;_context4.next = 8;return (
                   _this2.$api.hideLoading());case 8: // 等待请求数据成功后，隐藏loading

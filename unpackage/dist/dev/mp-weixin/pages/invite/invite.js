@@ -189,7 +189,9 @@ var _default =
                   _this.$api.showLoading());case 3:_context2.next = 5;return (
                   _this.$api.postData(_this.$api.webapi.groupJoin, params));case 5:groupJoin = _context2.sent;_context2.next = 8;return (
                   _this.$api.hideLoading());case 8: // 等待请求数据成功后，隐藏loading
-                if (_this.$api.reshook(groupJoin, _this.$mp.page.route)) {
+                console.log(_this.$mp.page.route);
+
+                if (_this.$api.reshook(groupJoin, _this.currentPage)) {
                   console.log(groupJoin.resultCode);
                   if (groupJoin.resultCode == 0 || groupJoin.resultCode == 4000) {
                     uni.showToast({
@@ -197,8 +199,12 @@ var _default =
                       icon: 'none',
                       duration: 1500 });
 
+
+                    uni.switchTab({
+                      url: '/pages/my/my' });
+
                   }
-                }case 9:case "end":return _context2.stop();}}}, _callee2);}))();
+                }case 10:case "end":return _context2.stop();}}}, _callee2);}))();
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
