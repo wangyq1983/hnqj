@@ -130,6 +130,7 @@ input.data-v-5ece160e, textarea.data-v-5ece160e {
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+  overflow-y: auto;
 }
 .typeSearch .close.data-v-5ece160e {
   width: 150rpx;

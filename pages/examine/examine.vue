@@ -11,7 +11,7 @@
 			</view>
 			<view class="ganlanzhi" v-if="type == 2">
 				<view class="">
-					会员<text>{{applyNumber}}</text>请红娘给
+					会员<text>{{applyNumber}}</text>请清姐给
 				</view>
 				<view class="">
 					会员<text>{{responseNumber}}</text>递橄榄枝
@@ -21,9 +21,9 @@
 		</view>
 		<view class="applyAction">
 
-			<button class="defaultBtn" v-if="type == 1" open-type="share">点击按钮分享此页给红娘申请查看照片</button>
+			<button class="defaultBtn" v-if="type == 1" open-type="share">点击按钮分享此页给清姐申请查看照片</button>
 
-			<button class="defaultBtn" v-if="type == 2" open-type="share">点击按钮分享此页给红娘申请递橄榄枝</button>
+			<button class="defaultBtn" v-if="type == 2" open-type="share">点击按钮分享此页给清姐申请递橄榄枝</button>
 
 		</view>
 		<view class="applyDetail">

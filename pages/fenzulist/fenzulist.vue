@@ -6,7 +6,7 @@
 			</view>
 			<view class="actionArea">
 				<view class="" v-if="userType == 3" @tap="createShare" :data-id = "items.id" :data-name = "items.name">
-					生成分享页面
+					邀请成员
 				</view>
 				<view class="" v-if="userType == 4" @tap="exitFz" :data-id = "items.id">
 					退出

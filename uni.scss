@@ -163,6 +163,7 @@ input,textarea{
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
+	overflow-y: auto;
 	.close{
 		width:150upx;
 		height: 150upx;

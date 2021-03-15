@@ -10,7 +10,8 @@ import store from '@/store'
 //var webhost = "https://jielongtest.vsclouds.com/ceshi/";
 // abroad   abroadHome   infoPublic
 
-var webhost = "https://qingjie.vsclouds.com/qingjie/";
+// var webhost = "https://qingjie.vsclouds.com/qingjie/";
+var webhost = "https://qingjie.hongniangqingjie.com/qingjie/";
 // 接口列表
 var webapi = {
 	//会员与微信用户绑定接口 post

@@ -27,7 +27,6 @@
 					</view>
 				</view>
 			</view>
-			
 			<view class="userMenu">
 				<view class="menuItem" @tap="infoEvent" v-if="isbind">
 					<image src="/static/edit.png" mode=""></image>
@@ -48,7 +47,6 @@
 					</view>
 				</view>
 			</view>
-			
 			<!-- <button class="" style="width:600upx; margin-top: 100upx;;" @tap="infoEvent">填写/编辑 个人资料</button> -->
 		</view>
 	</view>
@@ -103,6 +101,10 @@ export default {
 					uni.setStorage({
 						key: 'state',
 						data: userinfo.data.memberInfo.state
+					});
+					uni.setStorage({
+						key: 'userType',
+						data: userinfo.data.userBaseInfo.type
 					});
 					this.expiryDate =  userinfo.data.memberInfo.expiryDate
 				}

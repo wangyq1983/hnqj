@@ -96,7 +96,7 @@ var components
 try {
   components = {
     timeover: function() {
-      return __webpack_require__.e(/*! import() | components/timeover/timeover */ "components/timeover/timeover").then(__webpack_require__.bind(null, /*! @/components/timeover/timeover.vue */ 171))
+      return __webpack_require__.e(/*! import() | components/timeover/timeover */ "components/timeover/timeover").then(__webpack_require__.bind(null, /*! @/components/timeover/timeover.vue */ 140))
     }
   }
 } catch (e) {
@@ -207,8 +207,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 var _default =
 {
   data: function data() {
@@ -258,6 +256,10 @@ var _default =
                     uni.setStorage({
                       key: 'state',
                       data: userinfo.data.memberInfo.state });
+
+                    uni.setStorage({
+                      key: 'userType',
+                      data: userinfo.data.userBaseInfo.type });
 
                     _this.expiryDate = userinfo.data.memberInfo.expiryDate;
                   }

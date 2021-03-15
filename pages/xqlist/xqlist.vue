@@ -22,13 +22,7 @@
 							  <!-- {{edu}} -->
 						    </view>
 						</picker>
-						
-						<!-- <radio-group @change="radioChangeEdu">
-							<label v-for="(item, index) in itemsEdu" :key="item.value">
-								<view><radio :value="item.value" :checked="item.checked" /></view>
-								<view>{{ item.name }}</view>
-							</label>
-						</radio-group> -->
+
 					</view>
 				</view>
 				
@@ -73,7 +67,7 @@
 					<view class="right">
 						<picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem" class="pickerStyle">
 						    <view class="picker">
-						      {{region[0]}}，{{region[1]}}，{{region[2]}}
+						      {{region[0]}} {{region[1]}} {{region[2]}}
 						    </view>
 						</picker>
 					</view>
@@ -101,7 +95,7 @@
 						<!-- <input type="text" v-model="workArea" /> -->
 						<picker mode="region" @change="bindRegionWorkChange" :value="regionwork" :custom-item="customItem" class="pickerStyle">
 						    <view class="picker">
-						      {{regionwork[0]}}，{{regionwork[1]}}，{{regionwork[2]}}
+						      {{regionwork[0]}} {{regionwork[1]}} {{regionwork[2]}}
 						    </view>
 						  </picker>
 					</view>
@@ -149,8 +143,8 @@
 				],
 				abroad:2, // 工作区域是否海外
 				abroadHome:2,  // 生活区域是否海外
-				region: ['全部','全部','全部'],  //生活区域
-				regionwork: ['全部','全部','全部'], //工作区域
+				region: ['北京市','',''],//生活区域
+				regionwork: ['北京市','',''],//工作区域
 				customItem: '全部',
 				hometown:'',
 				workArea:'',
@@ -267,6 +261,7 @@
 				var okstr = strrep.replace(/,全部/g, "");
 				okstr = okstr.replace(/全部/g, "");
 				okstr = okstr.replace(/不限/g, "");
+				okstr = okstr.replace(/,,/g, "");
 				return okstr
 			},
 			strundefined:function(obj){
@@ -283,10 +278,10 @@
 				if(obj.education == ""){
 					delete obj.education
 				}
-				if(obj.hometown == undefined || obj.hometown == "undefined" || obj.hometown == ""){
+				if(obj.hometown == undefined || obj.hometown == ""){
 					delete obj.hometown
 				}
-				if(obj.workArea == undefined || obj.workArea == "undefined" || obj.workArea == ""){
+				if(obj.workArea == undefined || obj.workArea == ""){
 					delete obj.workArea
 				}
 				return obj

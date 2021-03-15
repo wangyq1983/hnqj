@@ -109,13 +109,13 @@ var components
 try {
   components = {
     listitem: function() {
-      return __webpack_require__.e(/*! import() | components/listitem/listitem */ "components/listitem/listitem").then(__webpack_require__.bind(null, /*! @/components/listitem/listitem.vue */ 117))
+      return __webpack_require__.e(/*! import() | components/listitem/listitem */ "components/listitem/listitem").then(__webpack_require__.bind(null, /*! @/components/listitem/listitem.vue */ 119))
     },
     nodata: function() {
-      return __webpack_require__.e(/*! import() | components/nodata/nodata */ "components/nodata/nodata").then(__webpack_require__.bind(null, /*! @/components/nodata/nodata.vue */ 124))
+      return __webpack_require__.e(/*! import() | components/nodata/nodata */ "components/nodata/nodata").then(__webpack_require__.bind(null, /*! @/components/nodata/nodata.vue */ 126))
     },
     endLine: function() {
-      return __webpack_require__.e(/*! import() | components/endLine/endLine */ "components/endLine/endLine").then(__webpack_require__.bind(null, /*! @/components/endLine/endLine.vue */ 131))
+      return __webpack_require__.e(/*! import() | components/endLine/endLine */ "components/endLine/endLine").then(__webpack_require__.bind(null, /*! @/components/endLine/endLine.vue */ 133))
     }
   }
 } catch (e) {
@@ -288,12 +288,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 var _default =
 {
   data: function data() {
@@ -321,8 +315,8 @@ var _default =
 
       abroad: 2, // 工作区域是否海外
       abroadHome: 2, // 生活区域是否海外
-      region: ['全部', '全部', '全部'], //生活区域
-      regionwork: ['全部', '全部', '全部'], //工作区域
+      region: ['北京市', '', ''], //生活区域
+      regionwork: ['北京市', '', ''], //工作区域
       customItem: '全部',
       hometown: '',
       workArea: '',
@@ -439,6 +433,7 @@ var _default =
       var okstr = strrep.replace(/,全部/g, "");
       okstr = okstr.replace(/全部/g, "");
       okstr = okstr.replace(/不限/g, "");
+      okstr = okstr.replace(/,,/g, "");
       return okstr;
     },
     strundefined: function strundefined(obj) {
@@ -455,10 +450,10 @@ var _default =
       if (obj.education == "") {
         delete obj.education;
       }
-      if (obj.hometown == undefined || obj.hometown == "undefined" || obj.hometown == "") {
+      if (obj.hometown == undefined || obj.hometown == "") {
         delete obj.hometown;
       }
-      if (obj.workArea == undefined || obj.workArea == "undefined" || obj.workArea == "") {
+      if (obj.workArea == undefined || obj.workArea == "") {
         delete obj.workArea;
       }
       return obj;

@@ -100,9 +100,9 @@
 			<view class="actionBox" v-if="itemcon.userId == userId">
 				<button class="shareAc" open-type="share"><view class="">分享一下</view></button>
 			</view>
-			<!-- <view class="actionBox" v-if="imglist.length > 0 && itemcon.photoPublic == 0 && itemcon.photoPermission == 0 && itemcon.userId !== userId">
+			<view class="actionBox" v-if="imglist.length > 0 && itemcon.photoPublic == 0 && itemcon.photoPermission == 0 && itemcon.userId !== userId">
 				<view class="btn" @tap="viewphoto">申请查看照片</view>
-			</view> -->
+			</view>
 			<!-- <view class="actionBox" v-if="itemcon.userId !== userId"><view class="btn" @tap="ganlanzhi">请红娘递橄榄枝</view></view> -->
 		</view>
 	</view>

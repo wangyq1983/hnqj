@@ -130,6 +130,7 @@ input, textarea {
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+  overflow-y: auto;
 }
 .typeSearch .close {
   width: 150rpx;

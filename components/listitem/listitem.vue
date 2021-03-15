@@ -18,13 +18,13 @@
 			</view>
 		</view>
 		<view class="userimg" v-if="hasImg && itemcon.photoPublic == 1">
-			<image :src="item" mode="aspectFill" v-for="(item, index) in imglist" :key="index"></image>
+			<image :src="item" mode="aspectFill" v-for="(item, index) in imglist" :key="index" @tap="preview"></image>
 		</view>
 		<view class="userimg" v-if="hasImg && (itemcon.photoPublic == 0) && itemcon.photoPermission == 1">
-			<image :src="item" mode="aspectFill" v-for="(item, index) in imglist" :key="index"></image>
+			<image :src="item" mode="aspectFill" v-for="(item, index) in imglist" :key="index" @tap="preview"></image>
 		</view>
 		<view class="userimg" v-if="hasImg && (itemcon.photoPublic == 0) && itemcon.photoPermission == 0 && userType == 3">
-			<image :src="item" mode="aspectFill" v-for="(item, index) in imglist" :key="index"></image>
+			<image :src="item" mode="aspectFill" v-for="(item, index) in imglist" :key="index" @tap="preview"></image>
 		</view>
 		<view class="userimg" v-if="hasImg && (itemcon.photoPublic == 0) && itemcon.photoPermission == 0">
 			<text>用户已设置照片不公开</text>
@@ -36,10 +36,10 @@
 				<text>查看详情</text>
 				
 			</view>
-			<view class="" @tap="ganlanzhi" :data-number = "itemcon.number" v-if="showButton">
+			<!-- <view class="" @tap="ganlanzhi" :data-number = "itemcon.number" v-if="showButton">
 				<image src="/static/glz.png" mode=""></image>
 				<text>请红娘递橄榄枝</text>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>
@@ -126,6 +126,13 @@
 					})
 				}
 				
+			},
+			preview(e) {
+				const index = e.currentTarget.dataset.index;
+				uni.previewImage({
+					current: this.imglist[index],
+					urls: this.imglist
+				});
 			},
 			ganlanzhi(e){
 				var params = {

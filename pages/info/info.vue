@@ -51,7 +51,7 @@
 					<picker class="pickerStyle" @change="bindChangeEdu" :value="edu_index" :range="edu_array">
 					    <view class="picker">
 					      <!-- {{edu_array[edu_index]}} -->
-						  {{edu}}
+						  {{edu?edu:edu_array[edu_index]}}
 					    </view>
 					</picker>
 					
@@ -73,8 +73,8 @@
 			<view class="infoItem">
 				<view class="left">年收入:</view>
 				<view class="right">
-					<input type="text" style="width:180upx" v-model="income" />
-					<text>例如: 12万</text>
+					<input type="text" style="width:180upx" v-model="income" @blur="checkmoney" />
+					<text>万元（年收入）</text>
 				</view>
 			</view>
 			<view class="infoItem">
@@ -152,7 +152,7 @@
 				<view class="right">
 					<picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem" class="pickerStyle">
 					    <view class="picker">
-					      {{region[0]}}，{{region[1]}}，{{region[2]}}
+					      {{region[0]}} {{region[1]}} {{region[2]}}
 					    </view>
 					</picker>
 				</view>
@@ -180,7 +180,7 @@
 					<!-- <input type="text" v-model="workArea" /> -->
 					<picker mode="region" @change="bindRegionWorkChange" :value="regionwork" :custom-item="customItem" class="pickerStyle">
 					    <view class="picker">
-					      {{regionwork[0]}}，{{regionwork[1]}}，{{regionwork[2]}}
+					      {{regionwork[0]}} {{regionwork[1]}} {{regionwork[2]}}
 					    </view>
 					  </picker>
 				</view>
@@ -343,6 +343,7 @@ export default {
 				}
 			],
 			edu: '',
+			edu1:'',
 			edu_index:2,
 			edu_array:[
 				'博士','硕士','本科','专科','高中或职专','初中及以下'
@@ -447,7 +448,7 @@ export default {
 				}
 			],
 			marriage_index:0,
-			marriage_array:['未婚','离异无孩子','离异有孩子'],
+			marriage_array:['未婚','离异无子女','离异有子女自己抚养','离异有子女对方抚养'],
 			itemsMarriage:[
 				{
 					value:'0',
@@ -518,8 +519,8 @@ export default {
 			filelist:[],
 			abroad:0, // 工作区域是否海外
 			abroadHome:0,  // 生活区域是否海外
-			region: ['全部', '全部', '全部'],  //生活区域
-			regionwork: ['全部', '全部', '全部'], //工作区域
+			region: ['北京市','',''],  //生活区域
+			regionwork: ['北京市','',''], //工作区域
 			customItem: '全部',
 			infoPublic:''// 公开资料
 		};
@@ -543,36 +544,37 @@ export default {
 			await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
 			if(searchRes.resultCode == 0){
 				var arr = Object.keys(searchRes.data);
-				console.log('searchRes.data');
-				console.log(searchRes.data);
-				console.log(arr);
-				console.log(arr.length)
 				if(arr.length == 0){
 					this.isEdit = false;
 				}else{
 					this.isEdit = true;
 					var oldData = searchRes.data;
-										//this.initItem(this.itemsSex,this.sex);
+				  //this.initItem(this.itemsSex,this.sex);
 					this.id = oldData.id;
 					this.number = oldData.number;
 					this.sex = oldData.gender;
 					this.edu = oldData.education;
-					
 					this.car = oldData.car;
 					this.onlyChild = oldData.onlyChild;
 					this.abroad = oldData.abroad;
 					this.abroadHome = oldData.abroadHome;
 					this.photoPublic = oldData.photoPublic;
 					this.infoPublic = oldData.infoPublic;
-					if(this.abroad == 0 || this.abroad == '0'){
+					// console.log('----------------------------------------------------------------------------------------')
+					// console.log('工作地 abroad')
+					// console.log(this.abroad)
+					// console.log('----------------------------------------------------------------------------------------')
+					if(this.abroad == 0 || this.abroad == '0' || this.abroad == undefined){
 						// 工作地非海外
-						this.regionwork = oldData.workArea.split(',');
-						
+						if(oldData.workArea !== undefined){
+							this.regionwork = oldData.workArea.split(',');
+						}
 						console.log(this.regionwork)
 					}
-					if(this.abroadHome == 0 || this.abroadHome == '0'){
-						this.region = oldData.hometown.split(',');
-						
+					if(this.abroadHome == 0 || this.abroadHome == '0' || this.abroadHome == undefined){
+						if(oldData.hometown !== undefined){
+							this.region = oldData.hometown.split(',');
+						}
 						console.log(this.region);
 					}
 					if(this.abroad == 1 || this.abroad == '1'){
@@ -626,6 +628,13 @@ export default {
 				}
 			}
 		},
+		strReplace:function(strrep){
+			//筛选条件过滤字符串
+			var okstr = strrep.replace(/,全部/g, "");
+			okstr = okstr.replace(/全部/g, "");
+			okstr = okstr.replace(/不限/g, "");
+			return okstr
+		},
 		delimg: function(e) {
 			var delid = e.target.dataset.fileid;
 			console.log(e);
@@ -654,6 +663,22 @@ export default {
 		},
 		initItem1:function(arr,val){
 			
+		},
+		checkmoney:function(e){
+			console.log('blur event');
+			console.log(e.detail.value);
+			var reg = /^([1-9][0-9]*)+(.[0-9]{1,2})?$/;
+			console.log(reg.test(e.detail.value))
+			// return reg.test(e.detail.value)
+			if(reg.test(e.detail.value) == true){
+				
+			}else{
+				// console.log('sadsdfasdf')
+				uni.showToast({
+					title:'年收入请填写整数数字',
+					icon:'none'
+				})
+			}
 		},
 		radioChangeOnlyChild: function(evt) {
 			for (let i = 0; i < this.itemsOnlyChild.length; i++) {
@@ -1080,27 +1105,30 @@ export default {
 				var hometown,workArea;
 				var that = this;
 				function initParams(){
-					if(that.abroad == 0 || that.abroad == '0'){
+					if(that.abroad == 0 || that.abroad == '0' || that.abroad == undefined){
 						// 工作地非海外
-						workArea = that.regionwork.join(',');
+						if(that.workArea !== undefined){
+							workArea = that.regionwork.join(',');
+						}
+						
 					}
 					if(that.abroad == 1 || that.abroad == '1'){
 						// 工作地是海外
 						workArea = that.workArea
 					}
-					if(that.abroadHome == 0 || that.abroadHome == '0'){
+					if(that.abroadHome == 0 || that.abroadHome == '0' || that.abroadHome == undefined){
 						// 家乡非海外
-						hometown = that.region.join(',');
+						if(that.hometown !== undefined){
+							hometown = that.region.join(',');
+						}
+						
 					}
 					if(that.abroadHome == 1 || that.abroadHome == '1'){
 						// 家乡是海外
 						hometown = that.hometown;
 					}
-				}
-				 
-				 
+				} 
 				initParams(); 
-				
 				if(this.isEdit == true){
 					var params = {
 						id:this.id,
@@ -1134,29 +1162,34 @@ export default {
 						photoPublic:this.photoPublic
 					};
 					console.log(params);
-					if(this.infoLock == 1){
-						uni.showToast({
-							title:'该用户已锁定',
-							icon:'none',
-							duration:1500
-						})
-					}else{
-						await this.$api.showLoading(); // 显示loading
-						var memcreat = await this.$api.postData(this.$api.webapi.memberUpdate, params);
-						await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
-						if (this.$api.reshook(memcreat, this.$mp.page.route)) {
-							// this.createSuccess(memcreat,true); 
-							console.log(memcreat);
+					
+					
+					await this.$api.showLoading(); // 显示loading
+					var memcreat = await this.$api.postData(this.$api.webapi.memberUpdate, params);
+					await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
+					if (this.$api.reshook(memcreat, this.$mp.page.route)) {
+						// this.createSuccess(memcreat,true); 
+						console.log(memcreat);
+						
+						if(that.infoLock == 1){
 							uni.showToast({
 								title:'提交成功,后台审核通过后自动发布此信息',
+								icon:'none',
+								duration:1500
+							})
+						}else{
+							uni.showToast({
+								title:'提交成功',
 								icon:'none'
 							})
-							that.submitSuccess()
 						}
+						
+						
+						that.submitSuccess()
 					}
+					
 				}else{
 					var params = {
-						
 						gender: this.sex?this.sex:'',
 						birthYear: birthYear,
 						birthMonth:birthMonth,
@@ -1186,24 +1219,28 @@ export default {
 						photoPublic:this.photoPublic
 					};
 					console.log(params);
-					// if(this.infoLock == 1){
-					// 	uni.showToast({
-					// 		title:'该用户已锁定',
-					// 		icon:'none',
-					// 		duration:1500
-					// 	})
-					// }else{
-					// }
+					
 					await this.$api.showLoading(); // 显示loading
 					var memcreat = await this.$api.postData(this.$api.webapi.memberCreate, params);
 					await this.$api.hideLoading(); // 等待请求数据成功后，隐藏loading
 					if (this.$api.reshook(memcreat, this.$mp.page.route)) {
 						// this.createSuccess(memcreat,true); 
 						console.log(memcreat);
-						uni.showToast({
-							title:'提交成功',
-							icon:'none'
-						})
+						
+						if(that.infoLock == 1){
+							uni.showToast({
+								title:'提交成功,后台审核通过后自动发布此信息',
+								icon:'none',
+								duration:1500
+							})
+						}else{
+							uni.showToast({
+								title:'提交成功',
+								icon:'none'
+							})
+						}
+						
+						
 						that.submitSuccess()
 					}
 				}
